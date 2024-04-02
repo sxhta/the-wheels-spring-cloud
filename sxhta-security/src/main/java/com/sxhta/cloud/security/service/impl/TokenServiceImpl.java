@@ -32,7 +32,9 @@ import java.util.concurrent.TimeUnit;
  * token验证处理
  */
 @Service
-public class TokenServiceImpl<Cache extends AbstractUserCacheVo<Entity>, Entity extends AbstractUserEntity> implements TokenService<Cache, Entity>, Serializable {
+public class TokenServiceImpl<Cache extends AbstractUserCacheVo<Entity>, Entity
+        extends AbstractUserEntity>
+        implements TokenService<Cache, Entity>, Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

@@ -1,4 +1,4 @@
-package com.wheels.cloud.backend.dto;
+package com.wheels.cloud.backend.response;
 
 /**
  * 文章类型web数据

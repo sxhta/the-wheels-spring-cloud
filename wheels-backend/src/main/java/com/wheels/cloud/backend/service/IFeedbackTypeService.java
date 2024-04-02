@@ -1,6 +1,6 @@
 package com.wheels.cloud.backend.service;
 
-import com.wheels.cloud.backend.dto.FeedbackTypeDto;
+import com.wheels.cloud.backend.response.FeedbackTypeDto;
 
 public interface IFeedbackTypeService {
     Boolean saveFeedbackType(FeedbackTypeDto feedbackTypeDto);

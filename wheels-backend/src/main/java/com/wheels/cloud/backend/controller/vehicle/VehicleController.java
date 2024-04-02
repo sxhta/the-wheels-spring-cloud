@@ -1,7 +1,7 @@
 package com.wheels.cloud.backend.controller.vehicle;
 
 import com.sxhta.cloud.common.web.domain.CommonResponse;
-import com.wheels.cloud.backend.dto.VehicleDto;
+import com.wheels.cloud.backend.response.VehicleDto;
 import com.wheels.cloud.backend.service.IVehicleService;
 import jakarta.inject.Inject;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +21,7 @@ public class VehicleController {
      * @param vehicleDto 车辆web新增数据
      * @return true新增成功 false新增失败
      */
-    @PostMapping("/saveVehicle")
+    @PostMapping("/save")
     public CommonResponse<String> saveVehicle(VehicleDto vehicleDto) {
         //TODO:车辆web数据，判断必填项数据是否填写，其他数据是否填写正确
         if (vehicleService.saveVehicle(vehicleDto)) {
