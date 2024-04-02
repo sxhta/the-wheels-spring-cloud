@@ -126,7 +126,7 @@ public class AuthFilter implements GlobalFilter, Ordered, Serializable {
     }
 
     @Override
-    public Integer getOrder() {
+    public int getOrder() {
         return -200;
     }
 }
