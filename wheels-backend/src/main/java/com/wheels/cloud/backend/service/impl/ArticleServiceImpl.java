@@ -1,6 +1,6 @@
 package com.wheels.cloud.backend.service.impl;
 
-import com.wheels.cloud.backend.dto.ArticleDto;
+import com.wheels.cloud.backend.response.ArticleDto;
 import com.wheels.cloud.backend.service.IArticleService;
 import org.springframework.stereotype.Service;
 

@@ -2,7 +2,7 @@ package com.wheels.cloud.backend.controller.content;
 
 
 import com.sxhta.cloud.common.web.domain.CommonResponse;
-import com.wheels.cloud.backend.dto.ArticleDto;
+import com.wheels.cloud.backend.response.ArticleDto;
 import com.wheels.cloud.backend.service.IArticleService;
 import com.wheels.cloud.backend.service.IArticleTypeService;
 import jakarta.inject.Inject;

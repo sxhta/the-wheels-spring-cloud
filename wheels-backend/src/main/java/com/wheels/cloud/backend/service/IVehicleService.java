@@ -1,6 +1,6 @@
 package com.wheels.cloud.backend.service;
 
-import com.wheels.cloud.backend.dto.VehicleDto;
+import com.wheels.cloud.backend.response.VehicleDto;
 
 public interface IVehicleService {
     Boolean saveVehicle(VehicleDto vehicleDto);

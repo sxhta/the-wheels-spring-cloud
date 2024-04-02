@@ -1,6 +1,6 @@
 package com.wheels.cloud.backend.service;
 
-import com.wheels.cloud.backend.dto.ArticleDto;
+import com.wheels.cloud.backend.response.ArticleDto;
 
 /**
  * 平台文章服务

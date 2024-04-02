@@ -1,7 +1,7 @@
 package com.wheels.cloud.backend.controller.finance;
 
 import com.sxhta.cloud.common.web.domain.CommonResponse;
-import com.wheels.cloud.backend.dto.FinanceRecordDto;
+import com.wheels.cloud.backend.response.FinanceRecordDto;
 import com.wheels.cloud.backend.service.IFinanceRecordService;
 import jakarta.inject.Inject;
 import org.springframework.web.bind.annotation.*;

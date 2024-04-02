@@ -1,4 +1,4 @@
-package com.wheels.cloud.backend.dto;
+package com.wheels.cloud.backend.response;
 
 import com.wheels.cloud.backend.entity.BaseEntity;
 import lombok.Data;

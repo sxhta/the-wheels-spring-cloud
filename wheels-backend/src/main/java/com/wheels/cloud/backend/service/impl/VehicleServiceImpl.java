@@ -1,6 +1,6 @@
 package com.wheels.cloud.backend.service.impl;
 
-import com.wheels.cloud.backend.dto.VehicleDto;
+import com.wheels.cloud.backend.response.VehicleDto;
 import com.wheels.cloud.backend.service.IVehicleService;
 
 public class VehicleServiceImpl implements IVehicleService {
