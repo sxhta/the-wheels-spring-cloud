@@ -1,15 +1,15 @@
 package com.wheels.cloud.backend.controller.content;
 
 
-import com.sxhta.cloud.common.web.domain.AjaxResult;
+import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.wheels.cloud.backend.dto.ArticleDto;
 import com.wheels.cloud.backend.service.IArticleService;
 import com.wheels.cloud.backend.service.IArticleTypeService;
 import jakarta.inject.Inject;
 import org.springframework.web.bind.annotation.*;
 
-import static com.sxhta.cloud.common.web.domain.AjaxResult.error;
-import static com.sxhta.cloud.common.web.domain.AjaxResult.success;
+import static com.sxhta.cloud.common.web.domain.CommonResponse.error;
+import static com.sxhta.cloud.common.web.domain.CommonResponse.success;
 
 /**
  * 平台文章
@@ -31,7 +31,7 @@ public class ArticleController {
      * @return true新增成功 false新增失败
      */
     @PostMapping("/saveArticle")
-    public AjaxResult saveArticle(@RequestBody ArticleDto articleDto) {
+    public CommonResponse<String> saveArticle(@RequestBody ArticleDto articleDto) {
         //TODO:平台文章web数据，判断必填项数据是否填写，其他数据是否填写正确
         if (articleService.saveArticle(articleDto)) {
             return success("新增成功");
@@ -46,7 +46,7 @@ public class ArticleController {
      * @return true删除成功 false删除失败
      */
     @DeleteMapping("/deleteArticle")
-    public AjaxResult deleteArticle(@RequestParam String articleCode) {
+    public CommonResponse<String> deleteArticle(@RequestParam String articleCode) {
         //TODO:判断articleCode是否为null
         if (articleService.deleteArticle(articleCode)) {
             return success("删除成功");
@@ -61,7 +61,7 @@ public class ArticleController {
      * @return true修改成功 false修改失败
      */
     @PutMapping("/updateArticle")
-    public AjaxResult updateArticle(@RequestBody ArticleDto articleDto) {
+    public CommonResponse<String> updateArticle(@RequestBody ArticleDto articleDto) {
         //TODO:平台文章web数据，判断必填项数据是否填写，其他数据是否填写正确
         if (articleService.updateArticle(articleDto)) {
             return success("修改成功");
@@ -71,13 +71,13 @@ public class ArticleController {
 
     //查询平台文章所有
     @GetMapping("/articleList")
-    public AjaxResult selectArticleAll() {
+    public CommonResponse selectArticleAll() {
         return success("查询成功", articleService.selectArticleAll());
     }
 
     //查询平台文章详情
     @GetMapping("/articleInfo")
-    public AjaxResult selectArticleInfo() {
+    public CommonResponse selectArticleInfo() {
         return success("查询成功", articleService.selectArticleInfo());
     }
 
@@ -88,7 +88,7 @@ public class ArticleController {
      * @return true新增成功 false新增失败
      */
     @PostMapping("/saveType")
-    public AjaxResult saveArticleType(@RequestBody ArticleDto articleDto) {
+    public CommonResponse<String> saveArticleType(@RequestBody ArticleDto articleDto) {
         //TODO:平台文章web数据，判断必填项数据是否填写，其他数据是否填写正确
         if (articleTypeService.saveArticleType(articleDto)) {
             return success("新增成功");
@@ -103,7 +103,7 @@ public class ArticleController {
      * @return true删除成功 false删除失败
      */
     @DeleteMapping("/deleteType")
-    public AjaxResult deleteArticleType(@RequestParam String articleTypeCode) {
+    public CommonResponse<String> deleteArticleType(@RequestParam String articleTypeCode) {
         //TODO:判断articleCode是否为null
         if (articleTypeService.deleteArticleType(articleTypeCode)) {
             return success("删除成功");
@@ -118,7 +118,7 @@ public class ArticleController {
      * @return true修改成功 false修改失败
      */
     @PutMapping("/updateType")
-    public AjaxResult updateArticleType(@RequestBody ArticleDto articleDto) {
+    public CommonResponse<String> updateArticleType(@RequestBody ArticleDto articleDto) {
         //TODO:平台文章web数据，判断必填项数据是否填写，其他数据是否填写正确
         if (articleTypeService.updateArticleType(articleDto)) {
             return success("修改成功");
@@ -128,13 +128,13 @@ public class ArticleController {
 
     //查询文章类型所有
     @GetMapping("/typeList")
-    public AjaxResult selectArticleTypeAll() {
+    public CommonResponse selectArticleTypeAll() {
         return success("查询成功", articleTypeService.selectArticleTypeAll());
     }
 
     //查询文章类型详情
     @GetMapping("/typeInfo")
-    public AjaxResult selectArticleTypeInfo() {
+    public CommonResponse selectArticleTypeInfo() {
         return success("查询成功", articleTypeService.selectArticleTypeInfo());
     }
 

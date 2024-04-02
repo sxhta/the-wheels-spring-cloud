@@ -1,6 +1,6 @@
 package com.wheels.cloud.backend.controller.feedback;
 
-import com.sxhta.cloud.common.web.domain.AjaxResult;
+import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.wheels.cloud.backend.dto.FeedbackDto;
 import com.wheels.cloud.backend.dto.FeedbackTypeDto;
 import com.wheels.cloud.backend.service.IFeedbackInformationService;
@@ -8,8 +8,8 @@ import com.wheels.cloud.backend.service.IFeedbackTypeService;
 import jakarta.inject.Inject;
 import org.springframework.web.bind.annotation.*;
 
-import static com.sxhta.cloud.common.web.domain.AjaxResult.error;
-import static com.sxhta.cloud.common.web.domain.AjaxResult.success;
+import static com.sxhta.cloud.common.web.domain.CommonResponse.error;
+import static com.sxhta.cloud.common.web.domain.CommonResponse.success;
 
 @RestController
 @RequestMapping("/feedback")
@@ -27,7 +27,7 @@ public class FeedbackController {
      * @return true新增成功 false新增失败
      */
     @PostMapping("/saveFeedback")
-    public AjaxResult saveFeedback(@RequestBody FeedbackDto feedbackDto) {
+    public CommonResponse<String> saveFeedback(@RequestBody FeedbackDto feedbackDto) {
         //TODO:反馈信息web数据，判断必填项数据是否填写，其他数据是否填写正确
         if (feedbackInformationService.saveFeedback(feedbackDto)) {
             return success("新增成功");
@@ -43,7 +43,7 @@ public class FeedbackController {
      */
 
     @DeleteMapping("/deleteFeedback")
-    public AjaxResult deleteFeedback(@RequestParam String feedbackCode) {
+    public CommonResponse<String> deleteFeedback(@RequestParam String feedbackCode) {
         //TODO:判断articleCode是否为null
         if (feedbackInformationService.deleteFeedback(feedbackCode)) {
             return success("删除成功");
@@ -58,7 +58,7 @@ public class FeedbackController {
      * @return true修改成功 false修改失败
      */
     @PutMapping("/updateFeedback")
-    public AjaxResult updateFeedback(@RequestBody FeedbackDto feedbackDto) {
+    public CommonResponse<String> updateFeedback(@RequestBody FeedbackDto feedbackDto) {
         //TODO:反馈信息web数据，判断必填项数据是否填写，其他数据是否填写正确
         if (feedbackInformationService.updateFeedback(feedbackDto)) {
             return success("修改成功");
@@ -68,13 +68,13 @@ public class FeedbackController {
 
     //反馈信息列表
     @GetMapping("/feedbackList")
-    public AjaxResult selectFeedbackAll() {
+    public CommonResponse selectFeedbackAll() {
         return success("查询成功", feedbackInformationService.selectFeedbackAll());
     }
 
     //反馈信息详情
     @GetMapping("/feedbackInfo")
-    public AjaxResult selectFeedbackInfo() {
+    public CommonResponse selectFeedbackInfo() {
         return success("查询成功", feedbackInformationService.selectFeedbackInfo());
     }
 
@@ -85,7 +85,7 @@ public class FeedbackController {
      * @return true新增成功 false新增失败
      */
     @PostMapping("/saveType")
-    public AjaxResult saveFeedbackType(@RequestBody FeedbackTypeDto feedbackTypeDto) {
+    public CommonResponse<String> saveFeedbackType(@RequestBody FeedbackTypeDto feedbackTypeDto) {
         //TODO:反馈信息类型web数据，判断必填项数据是否填写，其他数据是否填写正确
         if (feedbackTypeService.saveFeedbackType(feedbackTypeDto)) {
             return success("新增成功");
@@ -100,7 +100,7 @@ public class FeedbackController {
      * @return true删除成功 false删除失败
      */
     @DeleteMapping("/deleteType")
-    public AjaxResult deleteFeedbackType(@RequestParam String feedbackTypeCode) {
+    public CommonResponse<String> deleteFeedbackType(@RequestParam String feedbackTypeCode) {
         //TODO:判断articleCode是否为null
         if (feedbackTypeService.deleteFeedbackType(feedbackTypeCode)) {
             return success("删除成功");
@@ -115,7 +115,7 @@ public class FeedbackController {
      * @return true修改成功 false修改失败
      */
     @PutMapping("/updateType")
-    public AjaxResult updateFeedbackType(@RequestBody FeedbackTypeDto feedbackTypeDto) {
+    public CommonResponse<String> updateFeedbackType(@RequestBody FeedbackTypeDto feedbackTypeDto) {
         //TODO:反馈信息类型web数据，判断必填项数据是否填写，其他数据是否填写正确
         if (feedbackTypeService.updateFeedbackType(feedbackTypeDto)) {
             return success("修改成功");
@@ -125,13 +125,13 @@ public class FeedbackController {
 
     //反馈信息类型修改列表
     @GetMapping("/typeList")
-    public AjaxResult selectFeedbackTypeAll() {
+    public CommonResponse selectFeedbackTypeAll() {
         return success("查询成功", feedbackTypeService.selectFeedbackTypeAll());
     }
 
     //反馈信息类型详情
     @GetMapping("/typeInfo")
-    public AjaxResult selectFeedbackTypeInfo() {
+    public CommonResponse selectFeedbackTypeInfo() {
         return success("查询成功", feedbackTypeService.selectFeedbackTypeInfo());
     }
 

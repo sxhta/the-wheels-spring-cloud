@@ -1,13 +1,13 @@
 package com.wheels.cloud.backend.controller.finance;
 
-import com.sxhta.cloud.common.web.domain.AjaxResult;
+import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.wheels.cloud.backend.dto.FinanceRecordDto;
 import com.wheels.cloud.backend.service.IFinanceRecordService;
 import jakarta.inject.Inject;
 import org.springframework.web.bind.annotation.*;
 
-import static com.sxhta.cloud.common.web.domain.AjaxResult.error;
-import static com.sxhta.cloud.common.web.domain.AjaxResult.success;
+import static com.sxhta.cloud.common.web.domain.CommonResponse.error;
+import static com.sxhta.cloud.common.web.domain.CommonResponse.success;
 
 /**
  * 财务管理
@@ -25,7 +25,7 @@ public class FinanceController {
      * @return true新增成功 false新增失败
      */
     @PostMapping("/saveFinanceRecord")
-    public AjaxResult saveFinanceRecord(FinanceRecordDto financeRecordDto) {
+    public CommonResponse<String> saveFinanceRecord(FinanceRecordDto financeRecordDto) {
         //TODO:财务记录web数据，判断必填项数据是否填写，其他数据是否填写正确
         if (financeRecordService.saveFinanceRecord(financeRecordDto)) {
             return success("新增成功");
@@ -40,7 +40,7 @@ public class FinanceController {
      * @return true删除成功 false删除失败
      */
     @DeleteMapping("/deleteFinanceRecord")
-    public AjaxResult deleteFinanceRecord(String financeRecordCode) {
+    public CommonResponse<String> deleteFinanceRecord(String financeRecordCode) {
         //TODO:财务编号是否未null
         if (financeRecordService.deleteFinanceRecord(financeRecordCode)) {
             return success("删除成功");
@@ -55,7 +55,7 @@ public class FinanceController {
      * @return true修改成功 false修改失败
      */
     @PutMapping("/updateFinanceRecord")
-    public AjaxResult updateFinanceRecord(FinanceRecordDto financeRecordDto) {
+    public CommonResponse<String> updateFinanceRecord(FinanceRecordDto financeRecordDto) {
         //TODO:财务记录web数据，判断必填项数据是否填写，其他数据是否填写正确
         if (financeRecordService.updateFinanceRecord(financeRecordDto)) {
             return success("修改成功");
@@ -65,16 +65,16 @@ public class FinanceController {
 
     //查询全部财务记录
     @GetMapping("/selectFinanceRecordList")
-    public AjaxResult selectFinanceRecordAll() {
+    public CommonResponse selectFinanceRecordAll() {
         //TODO:判断模糊查询web数据
-        return success("修改成功", financeRecordService.selectFinanceRecordAll());
+        return success("查询成功", financeRecordService.selectFinanceRecordAll());
 
     }
 
     //查询财务记录详情
     @GetMapping("/selectFinanceRecordList")
-    public AjaxResult selectFinanceRecordInfo(String financeRecordCode) {
-        return success("修改成功", financeRecordService.selectFinanceRecordInfo(financeRecordCode));
+    public CommonResponse selectFinanceRecordInfo(String financeRecordCode) {
+        return success("查询成功", financeRecordService.selectFinanceRecordInfo(financeRecordCode));
 
     }
 
