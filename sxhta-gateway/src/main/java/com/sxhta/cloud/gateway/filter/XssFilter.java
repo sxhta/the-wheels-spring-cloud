@@ -118,7 +118,7 @@ public class XssFilter implements GlobalFilter, Ordered, Serializable {
     }
 
     @Override
-    public Integer getOrder() {
+    public int getOrder() {
         return -100;
     }
 }
