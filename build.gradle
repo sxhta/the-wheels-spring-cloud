@@ -1,0 +1,60 @@
+plugins {
+    id 'java-library'
+    id 'org.springframework.boot' version '3.2.4'
+    id 'io.spring.dependency-management' version '1.1.4'
+}
+
+group = 'com.sxhta.cloud'
+version = '1.0.0'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    set('springCloudVersion', '2023.0.0')
+    set('springCloudAlibabaVersion', '2023.0.0.0-RC1')
+    set('springBootVersion', '3.2.4')
+    set('springShellVersion', '3.2.3')
+    set('fastJsonVersion', '2.0.48')
+    set('pageHelperVersion', '2.1.0')
+    set('kaptchaVersion', '2.3.3')
+    set('threadLocalVersion', '2.14.5')
+}
+
+allprojects {
+
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+            mavenBom "com.alibaba.cloud:spring-cloud-alibaba-dependencies:${springCloudAlibabaVersion}"
+            mavenBom "org.springframework.shell:spring-shell-dependencies:${springShellVersion}"
+        }
+    }
+
+    jar {
+        enabled = true
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+wrapper {
+    gradleVersion '8.7'
+}

@@ -1,0 +1,11 @@
+com.sxhta.cloud.security.config.WebMvcConfiguration
+com.sxhta.cloud.security.feign.FeignRequestInterceptor
+com.sxhta.cloud.security.interceptor.HeaderInterceptor
+com.sxhta.cloud.security.service.impl.TokenServiceImpl
+com.sxhta.cloud.security.service.impl.AuthServiceImpl
+com.sxhta.cloud.security.service.impl.SecurityServiceImpl
+com.sxhta.cloud.security.service.impl.DictionaryServiceImpl
+com.sxhta.cloud.security.aspect.PreAuthorizeAspect
+com.sxhta.cloud.security.aspect.InnerAuthAspect
+com.sxhta.cloud.security.handler.GlobalExceptionHandler
+com.sxhta.cloud.security.datascop.aspect.DataScopeAspect

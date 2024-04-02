@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.sxhta.cloud'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.2')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation project(':sxhta-remote')
+    implementation project(':sxhta-common')
+    implementation project(':sxhta-security')
+    implementation project(':sxhta-log')
+    implementation project(':sxhta-cache')
+    compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+    implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery'
+    implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config'
+    implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-sentinel'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'com.baomidou:mybatis-plus-boot-starter:3.5.5'
+    implementation 'org.mariadb.jdbc:mariadb-java-client:3.3.3'
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+
+}
+
+test {
+    useJUnitPlatform()
+}

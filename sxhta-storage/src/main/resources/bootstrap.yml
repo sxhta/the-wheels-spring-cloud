@@ -1,0 +1,30 @@
+# Tomcat
+server:
+  port: 9206
+
+# Spring
+spring:
+  application:
+    # 应用名称
+    name: sxhta-storage
+  servlet:
+    multipart:
+      max-file-size: 1024MB #设置单个文件大小
+      max-request-size: 1024MB #设置单次请求文件的总大小
+  profiles:
+    # 环境配置
+    active: dev
+  cloud:
+    nacos:
+      discovery:
+        # 服务注册地址
+        server-addr: localhost:8848
+      config:
+        # 配置中心地址
+        server-addr: localhost:8848
+        # 配置文件格式
+        file-extension: yml
+        # 共享配置
+        shared-configs:
+          - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+        namespace: the-wheels-cloud
