@@ -12,13 +12,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * 文件请求处理
- *
- * @author ruoyi
  */
 @RestController
-public class SysFileController {
+public class SysFileController implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     private static final Logger log = LoggerFactory.getLogger(SysFileController.class);
 
     @Inject

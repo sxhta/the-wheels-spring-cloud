@@ -14,6 +14,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.inject.Inject;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * 平台文章
  */
@@ -21,7 +24,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/article/category")
 @Tag(name = "文章管理", description = "文章管理控制器")
 public class ArticleCategoryController extends BaseController
-        implements ICommonController<ArticleCategorySearchRequest, ArticleCategoryRequest, ArticleCategoryResponse> {
+        implements ICommonController<ArticleCategorySearchRequest, ArticleCategoryRequest, ArticleCategoryResponse>,
+        Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Inject
     private ArticleCategoryService articleCategoryService;

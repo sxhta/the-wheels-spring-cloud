@@ -14,13 +14,21 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.inject.Inject;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * 平台文章
  */
 @RestController
 @RequestMapping("/article")
 @Tag(name = "文章管理", description = "文章管理控制器")
-public class ArticleController extends BaseController implements ICommonController<ArticleSearchRequest, ArticleRequest, ArticleResponse> {
+public class ArticleController extends BaseController
+        implements ICommonController<ArticleSearchRequest, ArticleRequest, ArticleResponse>,
+        Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Inject
     private ArticleService articleService;

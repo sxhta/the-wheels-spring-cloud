@@ -1,35 +1,46 @@
-package com.sxhta.cloud.storage.utils;
+package com.sxhta.cloud.storage.component.impl;
 
 import com.sxhta.cloud.common.exception.file.FileException;
 import com.sxhta.cloud.common.exception.file.FileNameLengthLimitExceededException;
 import com.sxhta.cloud.common.exception.file.FileSizeLimitExceededException;
 import com.sxhta.cloud.common.exception.file.InvalidExtensionException;
-import com.sxhta.cloud.common.utils.CommonStringUtil;
 import com.sxhta.cloud.common.utils.CommonDateUtil;
+import com.sxhta.cloud.common.utils.CommonStringUtil;
 import com.sxhta.cloud.common.utils.file.FileTypeUtils;
 import com.sxhta.cloud.common.utils.file.MimeTypeUtils;
 import com.sxhta.cloud.common.utils.uuid.Seq;
+import com.sxhta.cloud.storage.component.FileUploadComponent;
+import jakarta.inject.Singleton;
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serial;
+import java.io.Serializable;
 import java.nio.file.Paths;
 import java.util.Objects;
 
 /**
  * 文件上传工具类
  */
-public class FileUploadUtils {
+@Singleton
+@Component
+public class FileUploadComponentImpl implements FileUploadComponent, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     /**
      * 默认大小 50M
      */
-    public static final Long DEFAULT_MAX_SIZE = 10 * 1024 * 1024L;
+    private static final Long DEFAULT_MAX_SIZE = 10 * 1024 * 1024L;
 
     /**
      * 默认的文件名最大长度 100
      */
-    public static final Integer DEFAULT_FILE_NAME_LENGTH = 100;
+    private static final Integer DEFAULT_FILE_NAME_LENGTH = 100;
 
     /**
      * 根据文件路径上传
@@ -38,7 +49,8 @@ public class FileUploadUtils {
      * @param file    上传的文件
      * @return 文件名称
      */
-    public static String upload(String baseDir, MultipartFile file) throws IOException {
+    @Override
+    public String upload(String baseDir, MultipartFile file) throws IOException {
         try {
             return upload(baseDir, file, MimeTypeUtils.DEFAULT_ALLOWED_EXTENSION);
         } catch (FileException fe) {
@@ -60,12 +72,13 @@ public class FileUploadUtils {
      * @throws IOException                          比如读写文件出错时
      * @throws InvalidExtensionException            文件校验异常
      */
-    public static String upload(String baseDir, MultipartFile file, String[] allowedExtension)
+    @Override
+    public String upload(String baseDir, MultipartFile file, String[] allowedExtension)
             throws FileSizeLimitExceededException, IOException, FileNameLengthLimitExceededException,
             InvalidExtensionException {
         final var fileNameLength = Objects.requireNonNull(file.getOriginalFilename()).length();
-        if (fileNameLength > FileUploadUtils.DEFAULT_FILE_NAME_LENGTH) {
-            throw new FileNameLengthLimitExceededException(FileUploadUtils.DEFAULT_FILE_NAME_LENGTH);
+        if (fileNameLength > FileUploadComponentImpl.DEFAULT_FILE_NAME_LENGTH) {
+            throw new FileNameLengthLimitExceededException(FileUploadComponentImpl.DEFAULT_FILE_NAME_LENGTH);
         }
 
         assertAllowed(file, allowedExtension);
@@ -80,12 +93,14 @@ public class FileUploadUtils {
     /**
      * 编码文件名
      */
-    public static String extractFilename(MultipartFile file) {
+    @Override
+    public String extractFilename(MultipartFile file) {
         return CommonStringUtil.format("{}/{}_{}.{}", CommonDateUtil.datePath(),
                 FilenameUtils.getBaseName(file.getOriginalFilename()), Seq.getId(Seq.uploadSeqType), FileTypeUtils.getExtension(file));
     }
 
-    private static File getAbsoluteFile(String uploadDir, String fileName) throws IOException {
+    @Override
+    public File getAbsoluteFile(String uploadDir, String fileName) throws IOException {
         final var desc = new File(uploadDir + File.separator + fileName);
 
         if (!desc.exists()) {
@@ -99,7 +114,8 @@ public class FileUploadUtils {
         return desc.isAbsolute() ? desc : desc.getAbsoluteFile();
     }
 
-    private static String getPathFileName(String fileName) {
+    @Override
+    public String getPathFileName(String fileName) {
         return "/" + fileName;
     }
 
@@ -110,7 +126,8 @@ public class FileUploadUtils {
      * @throws FileSizeLimitExceededException 如果超出最大大小
      * @throws InvalidExtensionException      文件校验异常
      */
-    public static void assertAllowed(MultipartFile file, String[] allowedExtension)
+    @Override
+    public void assertAllowed(MultipartFile file, String[] allowedExtension)
             throws FileSizeLimitExceededException, InvalidExtensionException {
         final var size = file.getSize();
         if (size > DEFAULT_MAX_SIZE) {
@@ -144,7 +161,8 @@ public class FileUploadUtils {
      * @param allowedExtension 允许上传文件类型
      * @return true/false
      */
-    public static Boolean isAllowedExtension(String extension, String[] allowedExtension) {
+    @Override
+    public Boolean isAllowedExtension(String extension, String[] allowedExtension) {
         for (final var str : allowedExtension) {
             if (str.equalsIgnoreCase(extension)) {
                 return true;

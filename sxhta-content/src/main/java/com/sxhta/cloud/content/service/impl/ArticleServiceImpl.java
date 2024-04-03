@@ -18,6 +18,8 @@ import jakarta.inject.Inject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +27,11 @@ import java.util.List;
  * 平台文章服务实现类
  */
 @Service
-public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements ArticleService {
+public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
+        implements ArticleService, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Inject
     private TokenService<SystemUserCacheVo, SysUser> tokenService;
@@ -80,6 +86,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     public List<ArticleResponse> getAdminList(ArticleSearchRequest request) {
         final var lqw = new LambdaQueryWrapper<Article>();
+        lqw.isNull(Article::getDeleteTime);
         final var searchTitle = request.getTitle();
         if (StrUtil.isNotBlank(searchTitle)) {
             lqw.and(consumer -> consumer.eq(Article::getTitle, searchTitle));

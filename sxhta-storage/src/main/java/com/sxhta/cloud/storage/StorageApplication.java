@@ -6,6 +6,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableAsync;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * 文件服务
  */
@@ -13,10 +16,12 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableCustomConfig
 @EnableCustomFeignClients
 @SpringBootApplication
-public class StorageApplication
-{
-    public static void main(String[] args)
-    {
+public class StorageApplication implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    public static void main(String[] args) {
         SpringApplication.run(StorageApplication.class, args);
     }
 }

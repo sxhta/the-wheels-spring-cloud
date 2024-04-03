@@ -1,18 +1,29 @@
 package com.sxhta.cloud.storage.service.impl;
 
+import com.sxhta.cloud.storage.component.FileUploadComponent;
 import com.sxhta.cloud.storage.service.ISysFileService;
-import com.sxhta.cloud.storage.utils.FileUploadUtils;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.Serial;
+import java.io.Serializable;
 
 /**
  * 本地文件存储
  */
-@Primary
+@Singleton
 @Service
-public class LocalSysFileServiceImpl implements ISysFileService {
+public class LocalSysFileServiceImpl implements ISysFileService, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    @Inject
+    private FileUploadComponent fileUploadComponent;
+
     /**
      * 资源映射路径 前缀
      */
@@ -39,7 +50,7 @@ public class LocalSysFileServiceImpl implements ISysFileService {
      */
     @Override
     public String uploadFile(MultipartFile file) throws Exception {
-        final var name = FileUploadUtils.upload(localFilePath, file);
+        final var name = fileUploadComponent.upload(localFilePath, file);
         return domain + localFilePrefix + name;
     }
 }

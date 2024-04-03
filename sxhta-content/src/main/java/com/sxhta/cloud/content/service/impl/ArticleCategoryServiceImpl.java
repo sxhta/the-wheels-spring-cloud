@@ -18,21 +18,30 @@ import jakarta.inject.Inject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ArticleCategoryServiceImpl extends ServiceImpl<ArticleCategoryMapper, ArticleCategory> implements ArticleCategoryService {
+public class ArticleCategoryServiceImpl
+        extends ServiceImpl<ArticleCategoryMapper, ArticleCategory>
+        implements ArticleCategoryService, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     @Inject
     private TokenService<SystemUserCacheVo, SysUser> tokenService;
 
     @Override
     public Boolean create(ArticleCategoryRequest request) {
-
         final var entity = new ArticleCategory();
         BeanUtils.copyProperties(request, entity);
-        entity.setCreateBy(tokenService.getLoginUser().getUsername());
+        final var loginUser = tokenService.getLoginUser();
+        final var createBy = loginUser.getUsername();
+        entity.setCreateBy(createBy);
         return save(entity);
     }
 
@@ -88,6 +97,7 @@ public class ArticleCategoryServiceImpl extends ServiceImpl<ArticleCategoryMappe
     @Override
     public List<ArticleCategoryResponse> getAdminList(ArticleCategorySearchRequest request) {
         final var lqw = new LambdaQueryWrapper<ArticleCategory>();
+        lqw.isNull(ArticleCategory::getDeleteTime);
         final var searchTitle = request.getTitle();
         if (StrUtil.isNotBlank(searchTitle)) {
             lqw.and(consumer -> consumer.eq(ArticleCategory::getTitle, searchTitle));
@@ -104,7 +114,12 @@ public class ArticleCategoryServiceImpl extends ServiceImpl<ArticleCategoryMappe
 
     @Override
     public List<ArticleCategoryResponse> getArticleCategoryList() {
-        final var entityList = list();
+        final var lqw = new LambdaQueryWrapper<ArticleCategory>();
+        lqw.isNull(ArticleCategory::getDeleteTime)
+                .select(ArticleCategory::getId)
+                .select(ArticleCategory::getTitle)
+                .select(ArticleCategory::getHash);
+        final var entityList = list(lqw);
         final var responseList = new ArrayList<ArticleCategoryResponse>();
         entityList.forEach(entity -> {
             final var response = new ArticleCategoryResponse();

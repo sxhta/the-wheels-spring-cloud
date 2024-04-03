@@ -28,6 +28,7 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.4.0'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-api:2.4.0'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
+    implementation 'com.github.yulichang:mybatis-plus-join-boot-starter:1.4.11'
 }
 
 test {

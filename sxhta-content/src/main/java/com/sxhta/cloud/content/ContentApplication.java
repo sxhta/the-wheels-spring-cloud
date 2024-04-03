@@ -10,6 +10,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Import;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * 系统模块
  */
@@ -19,7 +22,11 @@ import org.springframework.context.annotation.Import;
 @MapperScan("com.sxhta.cloud.**.mapper")
 @EnableFeignClients(basePackages = "com.sxhta.cloud")
 @Import({ApplicationConfiguration.class, FeignAutoConfiguration.class})
-public class ContentApplication {
+public class ContentApplication implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     public static void main(String[] args) {
         SpringApplication.run(ContentApplication.class, args);
     }
