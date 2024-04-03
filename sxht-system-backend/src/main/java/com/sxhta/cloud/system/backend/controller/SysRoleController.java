@@ -11,7 +11,7 @@ import com.sxhta.cloud.log.enums.BusinessType;
 import com.sxhta.cloud.remote.domain.SysDept;
 import com.sxhta.cloud.remote.domain.SysRole;
 import com.sxhta.cloud.remote.domain.SysUser;
-import com.sxhta.cloud.remote.model.SystemUserCacheVo;
+import com.sxhta.cloud.remote.vo.SystemUserCacheVo;
 import com.sxhta.cloud.security.annotation.RequiresPermissions;
 import com.sxhta.cloud.security.service.TokenService;
 import com.sxhta.cloud.system.backend.domain.SysUserRole;

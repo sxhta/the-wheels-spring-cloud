@@ -3,12 +3,12 @@ package com.sxhta.cloud.auth.controller;
 import cn.hutool.core.util.ObjectUtil;
 import com.sxhta.cloud.auth.form.SystemLoginRequest;
 import com.sxhta.cloud.auth.form.SystemRegisterRequest;
-import com.sxhta.cloud.auth.service.LoginService;
+import com.sxhta.cloud.auth.service.SystemLoginService;
 import com.sxhta.cloud.common.component.JwtComponent;
 import com.sxhta.cloud.common.exception.CommonException;
 import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.sxhta.cloud.remote.domain.SysUser;
-import com.sxhta.cloud.remote.model.SystemUserCacheVo;
+import com.sxhta.cloud.remote.vo.SystemUserCacheVo;
 import com.sxhta.cloud.security.response.TokenResponse;
 import com.sxhta.cloud.security.service.TokenService;
 import jakarta.inject.Inject;
@@ -29,7 +29,7 @@ public class SystemTokenController {
     private TokenService<SystemUserCacheVo, SysUser> tokenService;
 
     @Inject
-    private LoginService<SystemUserCacheVo, SysUser> loginService;
+    private SystemLoginService<SystemUserCacheVo, SysUser> loginService;
 
     @Inject
     private JwtComponent jwtComponent;

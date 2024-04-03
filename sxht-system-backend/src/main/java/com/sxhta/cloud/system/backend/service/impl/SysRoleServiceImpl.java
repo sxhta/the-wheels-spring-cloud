@@ -9,7 +9,7 @@ import com.sxhta.cloud.common.constant.UserConstants;
 import com.sxhta.cloud.common.exception.ServiceException;
 import com.sxhta.cloud.remote.domain.SysRole;
 import com.sxhta.cloud.remote.domain.SysUser;
-import com.sxhta.cloud.remote.model.SystemUserCacheVo;
+import com.sxhta.cloud.remote.vo.SystemUserCacheVo;
 import com.sxhta.cloud.remote.util.AdminChecker;
 import com.sxhta.cloud.security.datascop.annotation.DataScope;
 import com.sxhta.cloud.security.service.TokenService;

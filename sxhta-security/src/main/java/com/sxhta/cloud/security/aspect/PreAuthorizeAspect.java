@@ -3,7 +3,7 @@ package com.sxhta.cloud.security.aspect;
 import com.sxhta.cloud.security.annotation.RequiresLogin;
 import com.sxhta.cloud.security.annotation.RequiresPermissions;
 import com.sxhta.cloud.security.annotation.RequiresRoles;
-import com.sxhta.cloud.security.service.AuthService;
+import com.sxhta.cloud.security.service.SystemAuthService;
 import com.sxhta.cloud.security.service.TokenService;
 import jakarta.inject.Inject;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -30,7 +30,7 @@ public class PreAuthorizeAspect implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Inject
-    private AuthService authService;
+    private SystemAuthService authService;
 
     @Inject
     private TokenService tokenService;

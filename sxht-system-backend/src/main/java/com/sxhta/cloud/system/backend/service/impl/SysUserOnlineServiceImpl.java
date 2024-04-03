@@ -1,7 +1,7 @@
 package com.sxhta.cloud.system.backend.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.sxhta.cloud.remote.model.SystemUserCacheVo;
+import com.sxhta.cloud.remote.vo.SystemUserCacheVo;
 import com.sxhta.cloud.system.backend.domain.SysUserOnline;
 import com.sxhta.cloud.system.backend.service.ISysUserOnlineService;
 import org.apache.commons.lang3.StringUtils;

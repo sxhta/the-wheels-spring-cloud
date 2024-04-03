@@ -1,7 +1,7 @@
 package com.sxhta.cloud.security.service;
 
-import com.sxhta.cloud.remote.model.AbstractUserCacheVo;
-import com.sxhta.cloud.remote.model.AbstractUserEntity;
+import com.sxhta.cloud.common.domain.AbstractUserCacheVo;
+import com.sxhta.cloud.common.domain.AbstractUserEntity;
 import com.sxhta.cloud.security.response.TokenResponse;
 import jakarta.servlet.http.HttpServletRequest;
 

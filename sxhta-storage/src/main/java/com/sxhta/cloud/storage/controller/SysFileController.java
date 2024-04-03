@@ -1,6 +1,7 @@
 package com.sxhta.cloud.storage.controller;
 
-import com.sxhta.cloud.common.utils.file.FileUtils;
+import com.sxhta.cloud.common.component.FileComponent;
+import com.sxhta.cloud.common.component.impl.FileComponentImpl;
 import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.sxhta.cloud.remote.domain.SysFile;
 import com.sxhta.cloud.storage.service.ISysFileService;
@@ -29,6 +30,9 @@ public class SysFileController implements Serializable {
     @Inject
     private ISysFileService sysFileService;
 
+    @Inject
+    private FileComponent fileComponent;
+
     /**
      * 文件上传请求
      */
@@ -38,7 +42,7 @@ public class SysFileController implements Serializable {
             // 上传并返回访问地址
             final var url = sysFileService.uploadFile(file);
             final var sysFile = new SysFile();
-            sysFile.setName(FileUtils.getName(url));
+            sysFile.setName(fileComponent.getName(url));
             sysFile.setUrl(url);
             return CommonResponse.success(sysFile);
         } catch (Exception e) {

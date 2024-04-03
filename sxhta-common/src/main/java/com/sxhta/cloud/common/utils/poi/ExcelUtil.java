@@ -150,7 +150,6 @@ public class ExcelUtil<T> {
      * 隐藏Excel中列属性
      *
      * @param fields 列属性名 示例[单个"name"/多个"id","name"]
-     * @throws Exception
      */
     public void hideColumn(String... fields) {
         this.excludeFields = fields;
@@ -177,7 +176,7 @@ public class ExcelUtil<T> {
         if (ObjectUtil.isNotEmpty(title)) {
             subMergedFirstRowNum++;
             subMergedLastRowNum++;
-            Integer titleLastCol = this.fields.size() - 1;
+            int titleLastCol = this.fields.size() - 1;
             if (isSubList()) {
                 titleLastCol = titleLastCol + subFields.size() - 1;
             }
@@ -198,7 +197,7 @@ public class ExcelUtil<T> {
             subMergedFirstRowNum++;
             subMergedLastRowNum++;
             Row subRow = sheet.createRow(rownum);
-            Integer excelNum = 0;
+            int excelNum = 0;
             for (Object[] objects : fields) {
                 Excel attr = (Excel) objects[1];
                 Cell headCell1 = subRow.createCell(excelNum);
@@ -206,8 +205,8 @@ public class ExcelUtil<T> {
                 headCell1.setCellStyle(styles.get(CommonStringUtil.format("header_{}_{}", attr.headerColor(), attr.headerBackgroundColor())));
                 excelNum++;
             }
-            Integer headFirstRow = excelNum - 1;
-            Integer headLastRow = headFirstRow + subFields.size() - 1;
+            int headFirstRow = excelNum - 1;
+            int headLastRow = headFirstRow + subFields.size() - 1;
             if (headLastRow > headFirstRow) {
                 sheet.addMergedRegion(new CellRangeAddress(rownum, rownum, headFirstRow, headLastRow));
             }
@@ -264,7 +263,7 @@ public class ExcelUtil<T> {
         }
 
         // 获取最后一个非空行的行下标，比如总行数为n，则返回的为n-1
-        Integer rows = sheet.getLastRowNum();
+        final var rows = sheet.getLastRowNum();
         if (rows > 0) {
             // 定义一个map用于存放excel列的序号和field.
             Map<String, Integer> cellMap = new HashMap<>();
@@ -289,7 +288,7 @@ public class ExcelUtil<T> {
                     fieldsMap.put(column, objects);
                 }
             }
-            for (Integer i = titleNum + 1; i <= rows; i++) {
+            for (int i = titleNum + 1; i <= rows; i++) {
                 // 从第2行开始取数据,默认第一行是表头.
                 Row row = sheet.getRow(i);
                 // 判断当前行是否是空行
@@ -363,7 +362,6 @@ public class ExcelUtil<T> {
      * @param response  返回数据
      * @param list      导出数据集合
      * @param sheetName 工作表的名称
-     * @return 结果
      */
     public void exportExcel(HttpServletResponse response, List<T> list, String sheetName) {
         exportExcel(response, list, sheetName, StringUtils.EMPTY);
@@ -376,7 +374,6 @@ public class ExcelUtil<T> {
      * @param list      导出数据集合
      * @param sheetName 工作表的名称
      * @param title     标题
-     * @return 结果
      */
     public void exportExcel(HttpServletResponse response, List<T> list, String sheetName, String title) {
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -389,7 +386,6 @@ public class ExcelUtil<T> {
      * 对list数据源将其里面的数据导入到excel表单
      *
      * @param sheetName 工作表的名称
-     * @return 结果
      */
     public void importTemplateExcel(HttpServletResponse response, String sheetName) {
         importTemplateExcel(response, sheetName, StringUtils.EMPTY);
@@ -400,7 +396,6 @@ public class ExcelUtil<T> {
      *
      * @param sheetName 工作表的名称
      * @param title     标题
-     * @return 结果
      */
     public void importTemplateExcel(HttpServletResponse response, String sheetName, String title) {
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -412,7 +407,6 @@ public class ExcelUtil<T> {
     /**
      * 对list数据源将其里面的数据导入到excel表单
      *
-     * @return 结果
      */
     public void exportExcel(HttpServletResponse response) {
         try {
@@ -465,10 +459,10 @@ public class ExcelUtil<T> {
      */
     @SuppressWarnings("unchecked")
     public void fillExcelData(Integer index, Row row) {
-        Integer startNo = index * sheetSize;
-        Integer endNo = Math.min(startNo + sheetSize, list.size());
-        Integer rowNo = (1 + rownum) - startNo;
-        for (Integer i = startNo; i < endNo; i++) {
+        int startNo = index * sheetSize;
+        int endNo = Math.min(startNo + sheetSize, list.size());
+        int rowNo = (1 + rownum) - startNo;
+        for (int i = startNo; i < endNo; i++) {
             rowNo = isSubList() ? (i > 1 ? rowNo + 1 : rowNo + i) : i + 1 + rownum - startNo;
             row = sheet.createRow(rowNo);
             // 得到导出对象.
@@ -488,7 +482,7 @@ public class ExcelUtil<T> {
                 Field field = (Field) os[0];
                 Excel excel = (Excel) os[1];
                 if (Collection.class.isAssignableFrom(field.getType()) && ObjectUtil.isNotNull(subList)) {
-                    Boolean subFirst = false;
+                    boolean subFirst = false;
                     for (Object obj : subList) {
                         if (subFirst) {
                             rowNo++;
@@ -818,7 +812,7 @@ public class ExcelUtil<T> {
     public void setXSSFValidationWithHidden(Sheet sheet, String[] textlist, String promptContent, Integer firstRow, Integer endRow, Integer firstCol, Integer endCol) {
         String hideSheetName = "combo_" + firstCol + "_" + endCol;
         Sheet hideSheet = wb.createSheet(hideSheetName); // 用于存储 下拉菜单数据
-        for (Integer i = 0; i < textlist.length; i++) {
+        for (int i = 0; i < textlist.length; i++) {
             hideSheet.createRow(i).createCell(0).setCellValue(textlist[i]);
         }
         // 创建名称，可被其他单元格引用
@@ -913,7 +907,6 @@ public class ExcelUtil<T> {
      *
      * @param value 数据值
      * @param excel 数据注解
-     * @return
      */
     public String dataFormatHandlerAdapter(Object value, Excel excel, Cell cell) {
         try {
@@ -970,7 +963,6 @@ public class ExcelUtil<T> {
      * @param field 字段
      * @param excel 注解
      * @return 最终的属性值
-     * @throws Exception
      */
     private Object getTargetValue(T vo, Field field, Excel excel) throws Exception {
         Object o = field.get(vo);
@@ -991,10 +983,7 @@ public class ExcelUtil<T> {
     /**
      * 以类的属性的get方法方法形式获取值
      *
-     * @param o
-     * @param name
      * @return value
-     * @throws Exception
      */
     private Object getValue(Object o, String name) throws Exception {
         if (ObjectUtil.isNotNull(o) && ObjectUtil.isNotEmpty(name)) {
@@ -1139,7 +1128,6 @@ public class ExcelUtil<T> {
      * 判断是否是空行
      *
      * @param row 判断的行
-     * @return
      */
     private Boolean isRowEmpty(Row row) {
         if (row == null) {

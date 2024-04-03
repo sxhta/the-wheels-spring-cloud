@@ -9,8 +9,7 @@ import com.sxhta.cloud.common.constant.CacheConstants;
 import com.sxhta.cloud.common.constant.SecurityConstants;
 import com.sxhta.cloud.common.exception.CommonNullException;
 import com.sxhta.cloud.common.exception.ServiceException;
-import com.sxhta.cloud.common.component.impl.JwtComponentImpl;
-import com.sxhta.cloud.security.service.AuthService;
+import com.sxhta.cloud.security.service.SystemAuthService;
 import com.sxhta.cloud.security.service.SecurityService;
 import com.wheels.cloud.frontend.domain.user.FrontUser;
 import com.wheels.cloud.frontend.mapper.user.FrontUserMapper;
@@ -45,7 +44,7 @@ public class FrontAuthServiceImpl implements FrontAuthService {
     private FrontUserMapper frontUserMapper;
 
     @Inject
-    private AuthService authService;
+    private SystemAuthService authService;
 
     @Inject
     private SecurityService securityService;

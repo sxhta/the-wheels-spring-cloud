@@ -4,14 +4,12 @@ package com.sxhta.cloud.remote.domain;
 import com.sxhta.cloud.common.annotation.Excel;
 import com.sxhta.cloud.common.annotation.Excels;
 import com.sxhta.cloud.common.xss.Xss;
-import com.sxhta.cloud.remote.model.AbstractUserEntity;
+import com.sxhta.cloud.common.domain.AbstractUserEntity;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.io.Serial;
 import java.time.LocalDateTime;
 import java.util.List;
 

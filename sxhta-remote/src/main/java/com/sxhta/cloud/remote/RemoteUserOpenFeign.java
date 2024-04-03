@@ -5,7 +5,7 @@ import com.sxhta.cloud.common.constant.ServiceNameConstants;
 import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.sxhta.cloud.remote.domain.SysUser;
 import com.sxhta.cloud.remote.factory.RemoteUserFallbackFactory;
-import com.sxhta.cloud.remote.model.SystemUserCacheVo;
+import com.sxhta.cloud.remote.vo.SystemUserCacheVo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 

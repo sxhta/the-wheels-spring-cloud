@@ -1,5 +1,0 @@
-com.sxhta.cloud.common.component.impl.SpringBeanComponentImpl
-com.sxhta.cloud.common.context.impl.SecurityContextHolderImpl
-com.sxhta.cloud.common.component.impl.ServletComponentImpl
-com.sxhta.cloud.common.component.impl.IpComponentImpl
-com.sxhta.cloud.common.component.impl.JwtComponentImpl

@@ -2,6 +2,7 @@ package com.sxhta.cloud.cache.redis.service.impl;
 
 import com.sxhta.cloud.cache.redis.service.RedisService;
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.springframework.data.redis.core.BoundSetOperations;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -9,12 +10,10 @@ import org.springframework.stereotype.Service;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+@Singleton
 @Service
 public class RedisServiceImpl<K, V> implements RedisService<K, V>, Serializable {
 
@@ -122,7 +121,7 @@ public class RedisServiceImpl<K, V> implements RedisService<K, V>, Serializable 
      */
     @Override
     public Boolean deleteObject(final Collection<K> collection) {
-        return redisTemplate.delete(collection) > 0;
+        return Objects.requireNonNull(redisTemplate.delete(collection)).compareTo(0L) > 0;
     }
 
     /**
@@ -156,11 +155,12 @@ public class RedisServiceImpl<K, V> implements RedisService<K, V>, Serializable 
      * @param dataSet 缓存的数据
      * @return 缓存数据的对象
      */
+    @SuppressWarnings("unchecked")
     @Override
     public BoundSetOperations<K, V> setCacheSet(final K key, final Set<V> dataSet) {
         final var setOperation = redisTemplate.boundSetOps(key);
-        for (final var t : dataSet) {
-            setOperation.add(t);
+        for (final var value : dataSet) {
+            setOperation.add(value);
         }
         return setOperation;
     }

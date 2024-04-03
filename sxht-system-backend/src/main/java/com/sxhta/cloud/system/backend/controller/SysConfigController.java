@@ -9,7 +9,7 @@ import com.sxhta.cloud.common.web.page.TableDataInfo;
 import com.sxhta.cloud.log.annotation.Log;
 import com.sxhta.cloud.log.enums.BusinessType;
 import com.sxhta.cloud.remote.domain.SysUser;
-import com.sxhta.cloud.remote.model.SystemUserCacheVo;
+import com.sxhta.cloud.remote.vo.SystemUserCacheVo;
 import com.sxhta.cloud.security.annotation.RequiresPermissions;
 import com.sxhta.cloud.security.service.TokenService;
 import com.sxhta.cloud.system.backend.domain.SysConfig;

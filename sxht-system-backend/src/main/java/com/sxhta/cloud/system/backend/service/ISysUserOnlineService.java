@@ -1,6 +1,6 @@
 package com.sxhta.cloud.system.backend.service;
 
-import com.sxhta.cloud.remote.model.SystemUserCacheVo;
+import com.sxhta.cloud.remote.vo.SystemUserCacheVo;
 import com.sxhta.cloud.system.backend.domain.SysUserOnline;
 
 /**
