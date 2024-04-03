@@ -42,8 +42,8 @@ public final class Article extends BaseHashEntity implements Serializable {
     private String content;
 
     @Schema(name = "创建者")
-    private Long createBy;
+    private String createBy;
 
     @Schema(name = "修改者")
-    private Long updateBy;
+    private String updateBy;
 }
