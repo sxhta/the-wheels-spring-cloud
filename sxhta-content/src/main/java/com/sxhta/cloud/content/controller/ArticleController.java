@@ -1,16 +1,19 @@
 package com.sxhta.cloud.content.controller;
 
 
+import com.sxhta.cloud.common.web.controller.BaseController;
+import com.sxhta.cloud.common.web.controller.ICommonController;
 import com.sxhta.cloud.common.web.domain.CommonResponse;
+import com.sxhta.cloud.common.web.page.PageRequest;
+import com.sxhta.cloud.common.web.page.TableDataInfo;
+import com.sxhta.cloud.content.request.ArticleRequest;
+import com.sxhta.cloud.content.request.ArticleSearchRequest;
+import com.sxhta.cloud.content.response.ArticleResponse;
 import com.sxhta.cloud.content.service.ArticleService;
-import com.sxhta.cloud.content.service.IArticleTypeService;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.inject.Inject;
-import org.springframework.web.bind.annotation.*;
-
-import static com.sxhta.cloud.common.web.domain.CommonResponse.error;
-import static com.sxhta.cloud.common.web.domain.CommonResponse.success;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 平台文章
@@ -18,128 +21,46 @@ import static com.sxhta.cloud.common.web.domain.CommonResponse.success;
 @RestController
 @RequestMapping("/article")
 @Tag(name = "文章管理", description = "文章管理控制器")
-public class ArticleController {
+public class ArticleController extends BaseController implements ICommonController<ArticleSearchRequest, ArticleRequest, ArticleResponse> {
+
     @Inject
     private ArticleService articleService;
 
-    @Inject
-    private IArticleTypeService articleTypeService;
 
-
-    /**
-     * 平台文章新增
-     *
-     * @param articleDto 平台文章web数据
-     * @return true新增成功 false新增失败
-     */
-    @Operation(summary = "新增文章")
-    @PostMapping("/saveArticle")
-    public CommonResponse<String> saveArticle(@RequestBody ArticleDto articleDto) {
-        //TODO:平台文章web数据，判断必填项数据是否填写，其他数据是否填写正确
-        if (articleService.saveArticle(articleDto)) {
-            return success("新增成功");
-        }
-        return error("新增失败");
+    @Override
+    public TableDataInfo<ArticleResponse> getAdminList(ArticleSearchRequest request, PageRequest pageRequest) {
+        startPage(pageRequest);
+        final var list = articleService.getAdminList(request);
+        return CommonResponse.list(list);
     }
 
-    /**
-     * 平台文章删除
-     *
-     * @param articleCode 当前这一条数据的编号
-     * @return true删除成功 false删除失败
-     */
-    @DeleteMapping("/deleteArticle")
-    public CommonResponse<String> deleteArticle(@RequestParam String articleCode) {
-        //TODO:判断articleCode是否为null
-        if (articleService.deleteArticle(articleCode)) {
-            return success("删除成功");
-        }
-        return error("删除失败");
+    @Override
+    public CommonResponse<ArticleResponse> getInfoByHash(String hash) {
+        final var result = articleService.getInfoByHash(hash);
+        return CommonResponse.success(result);
     }
 
-    /**
-     * 平台文章修改
-     *
-     * @param articleDto 平台文章web数据
-     * @return true修改成功 false修改失败
-     */
-    @PutMapping("/updateArticle")
-    public CommonResponse<String> updateArticle(@RequestBody ArticleDto articleDto) {
-        //TODO:平台文章web数据，判断必填项数据是否填写，其他数据是否填写正确
-        if (articleService.updateArticle(articleDto)) {
-            return success("修改成功");
-        }
-        return error("修改失败");
+    @Override
+    public CommonResponse<Boolean> create(ArticleRequest request) {
+        final var result = articleService.create(request);
+        return CommonResponse.result(result);
     }
 
-    //查询平台文章所有
-    @GetMapping("/articleList")
-    public CommonResponse selectArticleAll() {
-        return success("查询成功", articleService.selectArticleAll());
+    @Override
+    public CommonResponse<Boolean> softDeleteByHash(String hash) {
+        final var result = articleService.softDeleteByHash(hash);
+        return CommonResponse.result(result);
     }
 
-    //查询平台文章详情
-    @GetMapping("/articleInfo")
-    public CommonResponse selectArticleInfo() {
-        return success("查询成功", articleService.selectArticleInfo());
+    @Override
+    public CommonResponse<Boolean> deleteByHash(String hash) {
+        final var result = articleService.deleteByHash(hash);
+        return CommonResponse.result(result);
     }
 
-    /**
-     * 文章类型新增
-     *
-     * @param articleDto 文章类型web数据
-     * @return true新增成功 false新增失败
-     */
-    @PostMapping("/saveType")
-    public CommonResponse<String> saveArticleType(@RequestBody ArticleDto articleDto) {
-        //TODO:平台文章web数据，判断必填项数据是否填写，其他数据是否填写正确
-        if (articleTypeService.saveArticleType(articleDto)) {
-            return success("新增成功");
-        }
-        return error("新增失败");
+    @Override
+    public CommonResponse<Boolean> updateCategory(ArticleRequest request) {
+        final var result = articleService.updateCategory(request);
+        return CommonResponse.result(result);
     }
-
-    /**
-     * 文章类型删除
-     *
-     * @param articleTypeCode 当前这一条文章类型的编号
-     * @return true删除成功 false删除失败
-     */
-    @DeleteMapping("/deleteType")
-    public CommonResponse<String> deleteArticleType(@RequestParam String articleTypeCode) {
-        //TODO:判断articleCode是否为null
-        if (articleTypeService.deleteArticleType(articleTypeCode)) {
-            return success("删除成功");
-        }
-        return error("删除失败");
-    }
-
-    /**
-     * 文章类型修改
-     *
-     * @param articleDto 文章类型web数据
-     * @return true修改成功 false修改失败
-     */
-    @PutMapping("/updateType")
-    public CommonResponse<String> updateArticleType(@RequestBody ArticleDto articleDto) {
-        //TODO:平台文章web数据，判断必填项数据是否填写，其他数据是否填写正确
-        if (articleTypeService.updateArticleType(articleDto)) {
-            return success("修改成功");
-        }
-        return error("修改失败");
-    }
-
-    //查询文章类型所有
-    @GetMapping("/typeList")
-    public CommonResponse selectArticleTypeAll() {
-        return success("查询成功", articleTypeService.selectArticleTypeAll());
-    }
-
-    //查询文章类型详情
-    @GetMapping("/typeInfo")
-    public CommonResponse selectArticleTypeInfo() {
-        return success("查询成功", articleTypeService.selectArticleTypeInfo());
-    }
-
-
 }
