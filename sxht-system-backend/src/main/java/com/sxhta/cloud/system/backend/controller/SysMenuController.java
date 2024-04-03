@@ -51,6 +51,7 @@ public class SysMenuController extends BaseController {
     @RequiresPermissions("system:menu:query")
     @GetMapping(value = "/{menuId}")
     public CommonResponse<SysMenu> getInfo(@PathVariable Long menuId) {
+        System.out.println("菜单的信息");
         return CommonResponse.success(menuService.selectMenuById(menuId));
     }
 

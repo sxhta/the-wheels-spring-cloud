@@ -11,6 +11,10 @@ import com.sxhta.cloud.content.request.ArticleCategoryRequest;
 import com.sxhta.cloud.content.request.ArticleCategorySearchRequest;
 import com.sxhta.cloud.content.response.ArticleCategoryResponse;
 import com.sxhta.cloud.content.service.ArticleCategoryService;
+import com.sxhta.cloud.remote.domain.SysUser;
+import com.sxhta.cloud.remote.model.SystemUserCacheVo;
+import com.sxhta.cloud.security.service.TokenService;
+import jakarta.inject.Inject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +23,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ArticleCategoryServiceImpl extends ServiceImpl<ArticleCategoryMapper, ArticleCategory>
-        implements ArticleCategoryService {
+public class ArticleCategoryServiceImpl extends ServiceImpl<ArticleCategoryMapper, ArticleCategory> implements ArticleCategoryService {
+    @Inject
+    private TokenService<SystemUserCacheVo, SysUser> tokenService;
+
     @Override
     public Boolean create(ArticleCategoryRequest request) {
+
         final var entity = new ArticleCategory();
         BeanUtils.copyProperties(request, entity);
+        entity.setCreateBy(tokenService.getLoginUser().getUsername());
         return save(entity);
     }
 
@@ -85,6 +93,18 @@ public class ArticleCategoryServiceImpl extends ServiceImpl<ArticleCategoryMappe
             lqw.and(consumer -> consumer.eq(ArticleCategory::getTitle, searchTitle));
         }
         final var entityList = list(lqw);
+        final var responseList = new ArrayList<ArticleCategoryResponse>();
+        entityList.forEach(entity -> {
+            final var response = new ArticleCategoryResponse();
+            BeanUtils.copyProperties(entity, response);
+            responseList.add(response);
+        });
+        return responseList;
+    }
+
+    @Override
+    public List<ArticleCategoryResponse> getArticleCategoryList() {
+        final var entityList = list();
         final var responseList = new ArrayList<ArticleCategoryResponse>();
         entityList.forEach(entity -> {
             final var response = new ArticleCategoryResponse();

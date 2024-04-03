@@ -24,6 +24,9 @@ public final class ArticleResponse extends BaseHashEntity implements Serializabl
     @Schema(name = "文章标题")
     private String title;
 
+    @Schema(name = "文章分类")
+    private String categoryHash;
+
     @Schema(name = "文章描述")
     private String description;
 

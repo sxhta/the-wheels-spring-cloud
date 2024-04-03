@@ -12,8 +12,7 @@ import com.sxhta.cloud.content.response.ArticleResponse;
 import com.sxhta.cloud.content.service.ArticleService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.inject.Inject;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 平台文章
@@ -28,6 +27,7 @@ public class ArticleController extends BaseController implements ICommonControll
 
 
     @Override
+    @GetMapping("/list")
     public TableDataInfo<ArticleResponse> getAdminList(ArticleSearchRequest request, PageRequest pageRequest) {
         startPage(pageRequest);
         final var list = articleService.getAdminList(request);
@@ -35,31 +35,35 @@ public class ArticleController extends BaseController implements ICommonControll
     }
 
     @Override
-    public CommonResponse<ArticleResponse> getInfoByHash(String hash) {
+    @GetMapping("/info")
+    public CommonResponse<ArticleResponse> getInfoByHash(@RequestParam("hash") String hash) {
         final var result = articleService.getInfoByHash(hash);
         return CommonResponse.success(result);
     }
 
     @Override
-    public CommonResponse<Boolean> create(ArticleRequest request) {
+    @PostMapping("/save")
+    public CommonResponse<Boolean> create(@RequestBody ArticleRequest request) {
         final var result = articleService.create(request);
         return CommonResponse.result(result);
     }
 
     @Override
-    public CommonResponse<Boolean> softDeleteByHash(String hash) {
+    public CommonResponse<Boolean> softDeleteByHash(@RequestParam String hash) {
         final var result = articleService.softDeleteByHash(hash);
         return CommonResponse.result(result);
     }
 
     @Override
-    public CommonResponse<Boolean> deleteByHash(String hash) {
+    @DeleteMapping("/delete")
+    public CommonResponse<Boolean> deleteByHash(@RequestParam String hash) {
         final var result = articleService.deleteByHash(hash);
         return CommonResponse.result(result);
     }
 
     @Override
-    public CommonResponse<Boolean> updateCategory(ArticleRequest request) {
+    @PutMapping("/update")
+    public CommonResponse<Boolean> updateCategory(@RequestBody ArticleRequest request) {
         final var result = articleService.updateCategory(request);
         return CommonResponse.result(result);
     }

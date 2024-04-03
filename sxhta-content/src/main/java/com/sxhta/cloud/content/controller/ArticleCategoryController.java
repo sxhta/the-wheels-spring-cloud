@@ -36,8 +36,15 @@ public class ArticleCategoryController extends BaseController
         return CommonResponse.list(list);
     }
 
+    @GetMapping("/all")
+    @Operation(summary = "查询文章分类列表")
+    public TableDataInfo<ArticleCategoryResponse> getArticleCategoryList() {
+        final var list = articleCategoryService.getArticleCategoryList();
+        return CommonResponse.list(list);
+    }
+
     @Override
-    public CommonResponse<ArticleCategoryResponse> getInfoByHash(String hash) {
+    public CommonResponse<ArticleCategoryResponse> getInfoByHash(@RequestParam String hash) {
         final var result = articleCategoryService.getInfoByHash(hash);
         return CommonResponse.success(result);
     }
@@ -45,7 +52,7 @@ public class ArticleCategoryController extends BaseController
     @PostMapping("/create")
     @Operation(summary = "新增分类")
     @Override
-    public CommonResponse<Boolean> create(ArticleCategoryRequest request) {
+    public CommonResponse<Boolean> create(@RequestBody ArticleCategoryRequest request) {
         final var result = articleCategoryService.create(request);
         return CommonResponse.result(result);
     }
@@ -59,7 +66,8 @@ public class ArticleCategoryController extends BaseController
     }
 
     @Override
-    public CommonResponse<Boolean> updateCategory(ArticleCategoryRequest request) {
+    @PutMapping("/update")
+    public CommonResponse<Boolean> updateCategory(@RequestBody ArticleCategoryRequest request) {
         final var result = articleCategoryService.updateCategory(request);
         return CommonResponse.result(result);
     }

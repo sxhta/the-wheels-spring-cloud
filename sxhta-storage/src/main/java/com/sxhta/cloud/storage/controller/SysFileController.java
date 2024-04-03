@@ -8,6 +8,7 @@ import jakarta.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,7 +28,7 @@ public class SysFileController {
      * 文件上传请求
      */
     @PostMapping("upload")
-    public CommonResponse<SysFile> upload(MultipartFile file) {
+    public CommonResponse<SysFile> upload(@RequestParam("file") MultipartFile file) {
         try {
             // 上传并返回访问地址
             final var url = sysFileService.uploadFile(file);

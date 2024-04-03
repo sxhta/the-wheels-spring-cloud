@@ -1,5 +1,7 @@
 package com.sxhta.cloud.common.service;
 
+import com.alibaba.fastjson2.JSON;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -16,4 +18,8 @@ public interface ICommonService<Search extends Serializable, Request extends Ser
     Boolean updateCategory(Request request);
 
     List<Response> getAdminList(Search request);
+
+    default String listToJsonString(List<String> list) {
+        return JSON.toJSONString(list);
+    }
 }
