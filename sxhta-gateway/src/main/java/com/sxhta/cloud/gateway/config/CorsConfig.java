@@ -21,7 +21,7 @@ import java.io.Serializable;
  * 跨域配置
  */
 @Configuration
-public class CorsConfig  implements Serializable {
+public class CorsConfig implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -33,12 +33,10 @@ public class CorsConfig  implements Serializable {
     private static final String MAX_AGE = "18000L";
 
     @Bean
-    public WebFilter webCorsFilter()
-    {
+    public WebFilter webCorsFilter() {
         return (ServerWebExchange ctx, WebFilterChain chain) -> {
             final var request = ctx.getRequest();
-            if (CorsUtils.isCorsRequest(request))
-            {
+            if (CorsUtils.isCorsRequest(request)) {
                 final var response = ctx.getResponse();
                 final var headers = response.getHeaders();
                 headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, ALLOWED_HEADERS);
@@ -47,8 +45,7 @@ public class CorsConfig  implements Serializable {
                 headers.add(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, ALLOWED_EXPOSE);
                 headers.add(HttpHeaders.ACCESS_CONTROL_MAX_AGE, MAX_AGE);
                 headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true");
-                if (request.getMethod() == HttpMethod.OPTIONS)
-                {
+                if (request.getMethod() == HttpMethod.OPTIONS) {
                     response.setStatusCode(HttpStatus.OK);
                     return Mono.empty();
                 }
