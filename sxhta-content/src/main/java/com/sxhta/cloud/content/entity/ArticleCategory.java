@@ -36,14 +36,14 @@ public final class ArticleCategory extends BaseHashEntity implements Serializabl
     private String thumb;
 
     @Schema(name = "父级分类ID")
-    private Long parentCategoryId;
+    private String parentHash;
 
     @Schema(name = "当前第几级")
     private Integer level = 0;
 
     @Schema(name = "创建者")
-    private Long createBy;
+    private String createBy;
 
     @Schema(name = "修改者")
-    private Long updateBy;
+    private String updateBy;
 }
