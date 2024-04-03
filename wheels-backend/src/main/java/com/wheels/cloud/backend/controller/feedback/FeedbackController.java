@@ -1,8 +1,8 @@
 package com.wheels.cloud.backend.controller.feedback;
 
 import com.sxhta.cloud.common.web.domain.CommonResponse;
-import com.wheels.cloud.backend.response.FeedbackDto;
-import com.wheels.cloud.backend.response.FeedbackTypeDto;
+import com.wheels.cloud.backend.request.FeedbackDto;
+import com.wheels.cloud.backend.request.FeedbackTypeDto;
 import com.wheels.cloud.backend.service.IFeedbackInformationService;
 import com.wheels.cloud.backend.service.IFeedbackTypeService;
 import jakarta.inject.Inject;

@@ -1,6 +1,6 @@
 package com.wheels.cloud.backend.service;
 
-import com.wheels.cloud.backend.response.FeedbackDto;
+import com.wheels.cloud.backend.request.FeedbackDto;
 
 public interface IFeedbackInformationService {
     Boolean saveFeedback(FeedbackDto feedbackDto);

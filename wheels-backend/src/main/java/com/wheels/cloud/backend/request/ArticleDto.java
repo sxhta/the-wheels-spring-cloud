@@ -1,10 +1,9 @@
-package com.wheels.cloud.backend.entity;
+package com.wheels.cloud.backend.request;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.wheels.cloud.backend.entity.BaseEntity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -12,17 +11,14 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serial;
-import java.time.LocalDateTime;
-
 
 /**
- * 平台文章实体类
+ * 平台文章web数据
  */
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-@TableName("wheels_platform_article")
-public class Article extends BaseEntity {
+public class ArticleDto extends BaseEntity {
     @Serial
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
@@ -44,28 +40,18 @@ public class Article extends BaseEntity {
     private String articleTypeCode;
 
     /**
-     * 文章类别编号
+     * 文章标题
      */
     @NotBlank(message = "文章标题不能为空")
     @Size(max = 50, message = "文章标题不能超过50个字符")
     private String platformTitle;
 
     /**
-     * 文章类别编号
+     * 文章内容
      */
     @NotBlank(message = "文章内容不能为空")
-    @Size(max = 2000, message = "文章内容不能超过2000个字符")
+    @Size(min = 0, max = 2000, message = "文章内容不能超过2000个字符")
     private String platformContent;
 
-    /**
-     * 发布人
-     */
-    private Long publisher;
-
-    /**
-     * 发布时间
-     */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime publishTime;
 
 }

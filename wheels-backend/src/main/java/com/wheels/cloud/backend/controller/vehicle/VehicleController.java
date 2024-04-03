@@ -1,7 +1,7 @@
 package com.wheels.cloud.backend.controller.vehicle;
 
 import com.sxhta.cloud.common.web.domain.CommonResponse;
-import com.wheels.cloud.backend.response.VehicleDto;
+import com.wheels.cloud.backend.request.VehicleDto;
 import com.wheels.cloud.backend.service.IVehicleService;
 import jakarta.inject.Inject;
 import org.springframework.web.bind.annotation.*;

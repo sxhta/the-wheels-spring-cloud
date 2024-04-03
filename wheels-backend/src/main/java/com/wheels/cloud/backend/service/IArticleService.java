@@ -1,18 +1,23 @@
 package com.wheels.cloud.backend.service;
 
-import com.wheels.cloud.backend.response.ArticleDto;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.wheels.cloud.backend.entity.Article;
+import com.wheels.cloud.backend.request.ArticleListDto;
+import com.wheels.cloud.backend.vo.ArticleVo;
+
+import java.util.List;
 
 /**
  * 平台文章服务
  */
-public interface IArticleService {
-    Boolean saveArticle(ArticleDto articleDto);
+public interface IArticleService extends IService<Article> {
+    Boolean saveArticle(Article article);
 
     Boolean deleteArticle(String articleCode);
 
-    Boolean updateArticle(ArticleDto articleDto);
+    Boolean updateArticle(Article article);
 
-    Object selectArticleAll();
+    List<ArticleVo> selectArticleAll(ArticleListDto articleListDto);
 
-    Object selectArticleInfo();
+    ArticleVo selectArticleInfo(String articleCode);
 }

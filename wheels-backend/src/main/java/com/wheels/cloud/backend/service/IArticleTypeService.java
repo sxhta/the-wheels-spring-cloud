@@ -1,15 +1,18 @@
 package com.wheels.cloud.backend.service;
 
-import com.wheels.cloud.backend.response.ArticleDto;
+import com.wheels.cloud.backend.entity.ArticleType;
+import com.wheels.cloud.backend.vo.ArticleTypeVo;
+
+import java.util.List;
 
 public interface IArticleTypeService {
-    Boolean saveArticleType(ArticleDto articleDto);
+    Boolean saveArticleType(ArticleType articleType);
 
     Boolean deleteArticleType(String articleTypeCode);
 
-    Boolean updateArticleType(ArticleDto articleDto);
+    Boolean updateArticleType(ArticleType articleType);
 
-    Object selectArticleTypeAll();
+    List<ArticleTypeVo> selectArticleTypeAll();
 
-    Object selectArticleTypeInfo();
+    ArticleTypeVo selectArticleTypeInfo(String articleTypeCode);
 }

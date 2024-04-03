@@ -1,6 +1,6 @@
 package com.wheels.cloud.backend.service.impl;
 
-import com.wheels.cloud.backend.response.FeedbackDto;
+import com.wheels.cloud.backend.request.FeedbackDto;
 import com.wheels.cloud.backend.service.IFeedbackInformationService;
 
 public class FeedbackInformationServiceImpl implements IFeedbackInformationService {

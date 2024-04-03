@@ -1,6 +1,6 @@
 package com.wheels.cloud.backend.service.impl;
 
-import com.wheels.cloud.backend.response.FinanceRecordDto;
+import com.wheels.cloud.backend.request.FinanceRecordDto;
 import com.wheels.cloud.backend.service.IFinanceRecordService;
 
 public class FinanceRecordServiceImpl implements IFinanceRecordService {

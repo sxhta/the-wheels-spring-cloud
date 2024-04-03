@@ -1,6 +1,6 @@
 package com.wheels.cloud.backend.service;
 
-import com.wheels.cloud.backend.response.FinanceRecordDto;
+import com.wheels.cloud.backend.request.FinanceRecordDto;
 
 public interface IFinanceRecordService {
     Boolean saveFinanceRecord(FinanceRecordDto financeRecordDto);
