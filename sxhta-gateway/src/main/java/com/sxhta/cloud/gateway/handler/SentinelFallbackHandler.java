@@ -5,6 +5,7 @@ import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.sxhta.cloud.common.component.ServletComponent;
 import jakarta.annotation.Nonnull;
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import org.springframework.web.server.ServerWebExchange;
@@ -17,8 +18,9 @@ import java.io.Serializable;
 /**
  * 自定义限流异常处理
  */
+@Singleton
 @Component
-public class SentinelFallbackHandler implements WebExceptionHandler, Serializable {
+public final class SentinelFallbackHandler implements WebExceptionHandler, Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

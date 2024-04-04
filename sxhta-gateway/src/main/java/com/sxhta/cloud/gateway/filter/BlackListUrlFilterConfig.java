@@ -1,6 +1,8 @@
 package com.sxhta.cloud.gateway.filter;
 
+import jakarta.inject.Singleton;
 import lombok.Getter;
+import org.springframework.stereotype.Component;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -8,7 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class BlackListUrlFilterConfig implements Serializable {
+@Singleton
+@Component
+public final class BlackListUrlFilterConfig implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

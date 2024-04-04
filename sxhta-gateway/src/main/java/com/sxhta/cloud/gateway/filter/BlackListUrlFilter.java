@@ -2,6 +2,7 @@ package com.sxhta.cloud.gateway.filter;
 
 import com.sxhta.cloud.common.component.ServletComponent;
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.stereotype.Component;
@@ -12,8 +13,9 @@ import java.io.Serializable;
 /**
  * 黑名单过滤器
  */
+@Singleton
 @Component
-public class BlackListUrlFilter extends AbstractGatewayFilterFactory<BlackListUrlFilterConfig> implements Serializable {
+public final class BlackListUrlFilter extends AbstractGatewayFilterFactory<BlackListUrlFilterConfig> implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

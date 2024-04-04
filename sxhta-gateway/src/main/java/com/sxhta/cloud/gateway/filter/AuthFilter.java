@@ -2,7 +2,6 @@ package com.sxhta.cloud.gateway.filter;
 
 
 import cn.hutool.core.util.ObjectUtil;
-import com.sxhta.cloud.cache.redis.service.RedisService;
 import com.sxhta.cloud.common.component.JwtComponent;
 import com.sxhta.cloud.common.component.ServletComponent;
 import com.sxhta.cloud.common.constant.CacheConstants;
@@ -10,7 +9,9 @@ import com.sxhta.cloud.common.constant.SecurityConstants;
 import com.sxhta.cloud.common.constant.TokenConstants;
 import com.sxhta.cloud.common.utils.CommonStringUtil;
 import com.sxhta.cloud.gateway.config.properties.IgnoreWhiteProperties;
+import com.sxhta.cloud.gateway.service.GatewayRedisService;
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +30,7 @@ import java.io.Serializable;
 /**
  * 网关鉴权
  */
+@Singleton
 @Component
 public class AuthFilter implements GlobalFilter, Ordered, Serializable {
 
@@ -42,7 +44,7 @@ public class AuthFilter implements GlobalFilter, Ordered, Serializable {
     private IgnoreWhiteProperties ignoreWhite;
 
     @Inject
-    private RedisService<String, ?> redisService;
+    private GatewayRedisService<String, ?> redisService;
 
     @Inject
     private ServletComponent servletComponent;

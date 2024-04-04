@@ -5,6 +5,7 @@ import com.sxhta.cloud.common.component.ServletComponent;
 import com.sxhta.cloud.gateway.config.properties.CaptchaProperties;
 import com.sxhta.cloud.gateway.service.ValidateCodeService;
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
@@ -20,8 +21,9 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * 验证码过滤器
  */
+@Singleton
 @Component
-public class ValidateCodeFilter extends AbstractGatewayFilterFactory<Object> implements Serializable {
+public final class ValidateCodeFilter extends AbstractGatewayFilterFactory<Object> implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

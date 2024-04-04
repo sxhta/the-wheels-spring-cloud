@@ -3,6 +3,7 @@ package com.sxhta.cloud.gateway.handler;
 import com.sxhta.cloud.common.component.ServletComponent;
 import jakarta.annotation.Nonnull;
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
@@ -20,6 +21,7 @@ import java.io.Serializable;
  * 网关统一异常处理
  */
 @Order(-1)
+@Singleton
 @Configuration
 public class GatewayExceptionHandler implements ErrorWebExceptionHandler, Serializable {
 

@@ -6,7 +6,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 @Data
-public class CacheRequestFilterConfig implements Serializable {
+public final class CacheRequestFilterConfig implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

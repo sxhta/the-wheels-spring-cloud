@@ -28,7 +28,6 @@ ext {
     set('springShellVersion', '3.2.3')
     set('fastJsonVersion', '2.0.48')
     set('pageHelperVersion', '2.1.0')
-    set('kaptchaVersion', '2.3.3')
     set('threadLocalVersion', '2.14.5')
 }
 

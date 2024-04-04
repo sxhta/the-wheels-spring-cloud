@@ -2,6 +2,7 @@ package com.sxhta.cloud.gateway.service;
 
 import com.sxhta.cloud.common.exception.CaptchaException;
 import com.sxhta.cloud.common.web.domain.CommonResponse;
+import com.sxhta.cloud.gateway.response.CaptchaResponse;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -14,7 +15,7 @@ public interface ValidateCodeService extends Serializable {
     /**
      * 生成验证码
      */
-    CommonResponse createCaptcha() throws IOException, CaptchaException;
+    CommonResponse<CaptchaResponse> createCaptcha() throws IOException, CaptchaException;
 
     /**
      * 校验验证码

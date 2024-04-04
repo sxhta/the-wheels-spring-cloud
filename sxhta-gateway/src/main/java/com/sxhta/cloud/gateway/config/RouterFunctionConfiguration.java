@@ -2,6 +2,7 @@ package com.sxhta.cloud.gateway.config;
 
 import com.sxhta.cloud.gateway.handler.ValidateCodeHandler;
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -16,6 +17,7 @@ import java.io.Serializable;
 /**
  * 路由配置信息
  */
+@Singleton
 @Configuration
 public class RouterFunctionConfiguration implements Serializable {
 

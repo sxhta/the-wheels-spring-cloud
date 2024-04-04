@@ -1,6 +1,8 @@
 package com.sxhta.cloud.gateway.config;
 
 import com.google.code.kaptcha.text.impl.DefaultTextCreator;
+import jakarta.inject.Singleton;
+import org.springframework.context.annotation.Configuration;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -9,6 +11,8 @@ import java.util.Random;
 /**
  * 验证码文本生成器
  */
+@Singleton
+@Configuration
 public class KaptchaTextCreator extends DefaultTextCreator implements Serializable {
 
     @Serial
@@ -20,10 +24,10 @@ public class KaptchaTextCreator extends DefaultTextCreator implements Serializab
     public String getText() {
         Integer result;
         final var random = new Random();
-        Integer x = random.nextInt(10);
-        Integer y = random.nextInt(10);
+        final var x = random.nextInt(10);
+        final var y = random.nextInt(10);
         final var suChinese = new StringBuilder();
-        Integer randomoperands = random.nextInt(3);
+        final var randomoperands = random.nextInt(3);
         if (randomoperands == 0) {
             result = x * y;
             suChinese.append(NUMBERS[x]);

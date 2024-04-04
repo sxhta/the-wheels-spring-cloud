@@ -2,6 +2,7 @@ package com.sxhta.cloud.gateway.config;
 
 import com.sxhta.cloud.gateway.handler.SentinelFallbackHandler;
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -13,6 +14,7 @@ import java.io.Serializable;
 /**
  * 网关限流配置
  */
+@Singleton
 @Configuration
 public class GatewayConfig implements Serializable {
 

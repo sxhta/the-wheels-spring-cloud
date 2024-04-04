@@ -6,6 +6,7 @@ import com.sxhta.cloud.gateway.config.properties.XssProperties;
 import io.netty.buffer.ByteBufAllocator;
 import jakarta.annotation.Nonnull;
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -31,9 +32,10 @@ import java.nio.charset.StandardCharsets;
 /**
  * 跨站脚本过滤器
  */
+@Singleton
 @Component
 @ConditionalOnProperty(value = "security.xss.enabled", havingValue = "true")
-public class XssFilter implements GlobalFilter, Ordered, Serializable {
+public final class XssFilter implements GlobalFilter, Ordered, Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

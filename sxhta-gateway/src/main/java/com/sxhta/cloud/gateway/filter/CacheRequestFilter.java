@@ -1,5 +1,6 @@
 package com.sxhta.cloud.gateway.filter;
 
+import jakarta.inject.Singleton;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.OrderedGatewayFilter;
@@ -18,8 +19,9 @@ import java.util.List;
 /**
  * 获取body请求数据（解决流不能重复读取问题）
  */
+@Singleton
 @Component
-public class CacheRequestFilter extends AbstractGatewayFilterFactory<CacheRequestFilterConfig> implements Serializable {
+public final class CacheRequestFilter extends AbstractGatewayFilterFactory<CacheRequestFilterConfig> implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

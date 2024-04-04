@@ -1,5 +1,6 @@
 package com.sxhta.cloud.gateway.config.properties;
 
+import jakarta.inject.Singleton;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -14,6 +15,7 @@ import java.util.List;
  * XSS跨站脚本配置
  */
 @Data
+@Singleton
 @Configuration
 @RefreshScope
 @ConfigurationProperties(prefix = "security.xss")

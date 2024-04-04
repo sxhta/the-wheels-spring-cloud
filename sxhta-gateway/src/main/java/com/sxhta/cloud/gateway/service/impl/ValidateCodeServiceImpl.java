@@ -1,19 +1,19 @@
 package com.sxhta.cloud.gateway.service.impl;
 
-import com.google.code.kaptcha.Producer;
-import com.sxhta.cloud.cache.redis.service.RedisService;
 import com.sxhta.cloud.common.constant.CacheConstants;
 import com.sxhta.cloud.common.constant.Constants;
 import com.sxhta.cloud.common.exception.CaptchaException;
 import com.sxhta.cloud.common.utils.sign.Base64;
 import com.sxhta.cloud.common.utils.uuid.IdUtils;
 import com.sxhta.cloud.common.web.domain.CommonResponse;
+import com.sxhta.cloud.gateway.captcha.ICaptcha;
 import com.sxhta.cloud.gateway.config.properties.CaptchaProperties;
 import com.sxhta.cloud.gateway.response.CaptchaResponse;
+import com.sxhta.cloud.gateway.service.GatewayRedisService;
 import com.sxhta.cloud.gateway.service.ValidateCodeService;
-import jakarta.annotation.Resource;
 import jakarta.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FastByteArrayOutputStream;
 
@@ -35,14 +35,16 @@ public class ValidateCodeServiceImpl implements ValidateCodeService {
     /**
      * 这里根据 Name获取，必须用 @Resource
      */
-    @Resource(name = "captchaProducer")
-    private Producer captchaProducer;
-
-    @Resource(name = "captchaProducerMath")
-    private Producer captchaProducerMath;
+    @Inject
+    @Qualifier(value = "captchaProducerChar")
+    private ICaptcha captchaProducerChar;
 
     @Inject
-    private RedisService<String, String> redisService;
+    @Qualifier(value = "captchaProducerMath")
+    private ICaptcha captchaProducerMath;
+
+    @Inject
+    private GatewayRedisService<String, String> redisService;
 
     @Inject
     private CaptchaProperties captchaProperties;
@@ -51,7 +53,7 @@ public class ValidateCodeServiceImpl implements ValidateCodeService {
      * 生成验证码
      */
     @Override
-    public CommonResponse createCaptcha() throws CaptchaException {
+    public CommonResponse<CaptchaResponse> createCaptcha() throws CaptchaException {
         final var captchaEnabled = captchaProperties.getEnabled();
         final var response = new CaptchaResponse();
         response.setCaptchaEnabled(captchaEnabled);
@@ -69,13 +71,15 @@ public class ValidateCodeServiceImpl implements ValidateCodeService {
         final var captchaType = captchaProperties.getType();
         // 生成验证码
         if ("math".equals(captchaType)) {
-            final var capText = captchaProducerMath.createText();
+            final var producerMath = captchaProducerMath.getCaptcha();
+            final var capText = producerMath.createText();
             capStr = capText.substring(0, capText.lastIndexOf("@"));
             code = capText.substring(capText.lastIndexOf("@") + 1);
-            image = captchaProducerMath.createImage(capStr);
+            image = producerMath.createImage(capStr);
         } else if ("char".equals(captchaType)) {
-            capStr = code = captchaProducer.createText();
-            image = captchaProducer.createImage(capStr);
+            final var producerChar = captchaProducerChar.getCaptcha();
+            capStr = code = producerChar.createText();
+            image = producerChar.createImage(capStr);
         }
 
         redisService.setCacheObject(verifyKey, code, Constants.CAPTCHA_EXPIRATION, TimeUnit.MINUTES);

@@ -3,6 +3,7 @@ package com.sxhta.cloud.gateway.handler;
 import com.sxhta.cloud.gateway.service.ValidateCodeService;
 import jakarta.annotation.Nonnull;
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -18,8 +19,9 @@ import java.io.Serializable;
 /**
  * 验证码获取
  */
+@Singleton
 @Component
-public class ValidateCodeHandler implements HandlerFunction<ServerResponse>, Serializable {
+public final class ValidateCodeHandler implements HandlerFunction<ServerResponse>, Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
