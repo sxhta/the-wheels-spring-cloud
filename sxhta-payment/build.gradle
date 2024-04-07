@@ -1,0 +1,22 @@
+plugins {
+    id 'java-library'
+}
+
+group = 'com.sxhta.cloud.payment'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.2')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation project(':sxhta-common')
+    implementation 'com.alipay.sdk:alipay-sdk-java:4.39.27.ALL'
+    implementation 'com.github.wechatpay-apiv3:wechatpay-apache-httpclient:0.4.9'
+}
+
+test {
+    useJUnitPlatform()
+}
