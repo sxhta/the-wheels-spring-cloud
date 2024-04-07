@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sxhta.cloud.wheels.remote.domain.user.WheelsFrontUser;
 import com.sxhta.cloud.wheels.remote.request.RegisterRequest;
+import com.sxhta.cloud.wheels.remote.vo.FrontUserCacheVo;
 import com.wheels.cloud.frontend.mapper.user.FrontUserMapper;
 import com.wheels.cloud.frontend.service.user.FrontUserService;
 import org.springframework.stereotype.Service;
@@ -26,12 +27,12 @@ public class FrontUserServiceImpl extends ServiceImpl<FrontUserMapper, WheelsFro
     }
 
     @Override
-    public Boolean register(RegisterRequest request) {
+    public FrontUserCacheVo register(RegisterRequest request) {
         final var account = request.getAccount();
         final var wheelsFrontUser = new WheelsFrontUser();
         //通过手机号注册的用户名默认和account 相同
         wheelsFrontUser.setAccount(account)
                 .setUserName(account);
-        return true;
+        return new FrontUserCacheVo();
     }
 }
