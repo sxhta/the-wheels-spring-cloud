@@ -154,7 +154,6 @@ public class FileComponentImpl implements FileComponent {
             // 以分隔符结尾的去掉结尾分隔符
             len--;
         }
-
         var begin = 0;
         char c;
         for (var i = len - 1; i > -1; i--) {
@@ -165,7 +164,6 @@ public class FileComponentImpl implements FileComponent {
                 break;
             }
         }
-
         return filePath.substring(begin, len);
     }
 
