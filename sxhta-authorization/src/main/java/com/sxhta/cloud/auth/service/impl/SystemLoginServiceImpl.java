@@ -16,8 +16,7 @@ import com.sxhta.cloud.common.exception.ServiceException;
 import com.sxhta.cloud.common.text.Convert;
 import com.sxhta.cloud.remote.RemoteUserOpenFeign;
 import com.sxhta.cloud.remote.domain.SysUser;
-import com.sxhta.cloud.common.domain.AbstractUserCacheVo;
-import com.sxhta.cloud.common.domain.AbstractUserEntity;
+import com.sxhta.cloud.remote.vo.SystemUserCacheVo;
 import com.sxhta.cloud.security.service.SecurityService;
 import jakarta.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -28,8 +27,8 @@ import org.springframework.stereotype.Service;
  * 登录校验方法
  */
 @Service
-public class SystemLoginServiceImpl<Cache extends AbstractUserCacheVo<Entity>, Entity extends AbstractUserEntity>
-        implements SystemLoginService<Cache, Entity> {
+public class SystemLoginServiceImpl
+        implements SystemLoginService<SystemUserCacheVo, SysUser> {
 
     @Inject
     private RemoteUserOpenFeign remoteUserService;
@@ -52,9 +51,8 @@ public class SystemLoginServiceImpl<Cache extends AbstractUserCacheVo<Entity>, E
     /**
      * 登录
      */
-    @SuppressWarnings("unchecked")
     @Override
-    public <T extends Cache> T login(String username, String password) {
+    public SystemUserCacheVo login(String username, String password) {
         // 用户名或密码为空 错误
         if (StringUtils.isAnyBlank(username, password)) {
             recordLogService.recordLoginInfo(username, Constants.LOGIN_FAIL, "用户/密码必须填写");
@@ -103,7 +101,7 @@ public class SystemLoginServiceImpl<Cache extends AbstractUserCacheVo<Entity>, E
         }
         passwordService.validate(user, password);
         recordLogService.recordLoginInfo(username, Constants.LOGIN_SUCCESS, "登录成功");
-        return (T) userInfo;
+        return userInfo;
     }
 
     @Override

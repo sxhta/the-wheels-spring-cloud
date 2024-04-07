@@ -6,7 +6,7 @@ server:
 spring:
   application:
     # 应用名称
-    name: sxhta-authorization
+    name: wheels-authorization
   profiles:
     # 环境配置
     active: dev
@@ -15,6 +15,7 @@ spring:
       discovery:
         # 服务注册地址 本地
         server-addr: localhost:8848
+        namespace: the-wheels-cloud
       config:
         # 配置中心地址 本地
         server-addr: localhost:8848

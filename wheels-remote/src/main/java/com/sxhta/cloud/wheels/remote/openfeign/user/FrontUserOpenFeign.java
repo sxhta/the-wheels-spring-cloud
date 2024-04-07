@@ -32,5 +32,5 @@ public interface FrontUserOpenFeign {
      * @return 结果
      */
     @PostMapping("/user/register")
-    CommonResponse<Boolean> registerUserInfo(@RequestBody WheelsFrontUser sysUser, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+    CommonResponse<FrontUserCacheVo> registerUserInfo(@RequestBody WheelsFrontUser sysUser, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
 }

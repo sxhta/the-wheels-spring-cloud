@@ -7,6 +7,7 @@ import com.sxhta.cloud.common.domain.BaseHashEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -19,6 +20,8 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 @TableName(value = "wheels_real_name_owner")
 public class RealNameOwner extends BaseHashEntity implements Serializable {
+
+    @Serial
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 

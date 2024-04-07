@@ -5,7 +5,7 @@ import com.sxhta.cloud.common.domain.AbstractUserEntity;
 
 public interface SystemLoginService<Cache extends AbstractUserCacheVo<Entity>, Entity extends AbstractUserEntity> {
 
-    <T extends Cache> T login(String username, String password);
+    Cache login(String username, String password);
 
     void logout(String loginName);
 

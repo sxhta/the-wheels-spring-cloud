@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public interface RedisService<K, V> {
+
     void setCacheObject(final K key, final V value);
 
     void setCacheObject(final K key, final V value, final Long timeout, final TimeUnit timeUnit);

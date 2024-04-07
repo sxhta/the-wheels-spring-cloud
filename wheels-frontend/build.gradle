@@ -17,8 +17,8 @@ dependencies {
     implementation project(':sxhta-security')
     implementation project(':sxhta-log')
     implementation project(':sxhta-cache')
+    implementation project(':wheels-remote')
     compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery'
     implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config'
     implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-sentinel'

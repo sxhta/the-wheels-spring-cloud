@@ -6,6 +6,7 @@ import com.sxhta.cloud.common.annotation.Excels;
 import com.sxhta.cloud.common.xss.Xss;
 import com.sxhta.cloud.common.domain.AbstractUserEntity;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,6 +27,14 @@ public class SysUser extends AbstractUserEntity {
     @Excel(name = "部门编号", type = Excel.Type.IMPORT)
     private Long deptId;
 
+    /**
+     * 用户账号
+     */
+    @Excel(name = "登录名称")
+    @Xss(message = "用户账号不能包含脚本字符")
+    @NotBlank(message = "用户账号不能为空")
+    @Size(max = 30, message = "用户账号长度不能超过30个字符")
+    private String userName;
 
     /**
      * 用户昵称

@@ -26,7 +26,7 @@ public class FrontUserFallbackFactory implements FallbackFactory<FrontUserOpenFe
             }
 
             @Override
-            public CommonResponse<Boolean> registerUserInfo(WheelsFrontUser sysUser, String source) {
+            public CommonResponse<FrontUserCacheVo> registerUserInfo(WheelsFrontUser sysUser, String source) {
                 return CommonResponse.error("注册用户失败:" + throwable.getMessage());
             }
         };

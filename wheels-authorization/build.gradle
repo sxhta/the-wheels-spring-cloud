@@ -2,7 +2,7 @@ plugins {
     id 'java'
 }
 
-group = 'com.sxhta.cloud.auth'
+group = 'com.sxhta.cloud.wheels.auth'
 version = '1.0.0'
 
 repositories {

@@ -15,7 +15,7 @@ import java.io.Serializable;
  */
 @EnableCustomConfig
 @EnableCustomFeignClients
-@EnableFeignClients(basePackages = "com.wheels.cloud")
+@EnableFeignClients(basePackages = "com.sxhta.cloud")
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 public class WheelsAuthorizationApplication implements Serializable {
 

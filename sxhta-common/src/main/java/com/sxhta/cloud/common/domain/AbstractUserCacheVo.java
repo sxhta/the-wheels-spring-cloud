@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public abstract class AbstractUserCacheVo<Entity> implements Serializable {
+public abstract class AbstractUserCacheVo<Entity extends AbstractUserEntity> implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
