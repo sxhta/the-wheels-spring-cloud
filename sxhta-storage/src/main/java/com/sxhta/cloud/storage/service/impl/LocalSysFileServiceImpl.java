@@ -3,6 +3,7 @@ package com.sxhta.cloud.storage.service.impl;
 import com.sxhta.cloud.storage.component.FileUploadComponent;
 import com.sxhta.cloud.storage.config.LocalFileConfig;
 import com.sxhta.cloud.storage.service.ISysFileService;
+import jakarta.annotation.Nonnull;
 import jakarta.inject.Inject;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ public class LocalSysFileServiceImpl implements ISysFileService {
      * @return 访问地址
      */
     @Override
-    public String uploadFile(@RequestParam(value = "file") MultipartFile file) throws Exception {
+    public String uploadFile(@RequestParam(value = "file") @Nonnull MultipartFile file) throws Exception {
         final var localFilePath = localFileConfig.getPath();
         final var domain = localFileConfig.getDomain();
         final var localFilePrefix = localFileConfig.getPrefix();
