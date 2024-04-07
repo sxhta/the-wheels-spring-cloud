@@ -51,6 +51,7 @@ public class SystemTokenController {
             final var isDelete = tokenService.deleteLoginUser(token);
             if (!isDelete) {
                 throw new CommonException("用户缓存删除失败");
+//                throw new ServiceException("当前登录用户已失效，请重新登录", 401);
             }
             // 记录用户退出日志
             loginService.logout(username);
