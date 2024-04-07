@@ -7,7 +7,6 @@ import com.sxhta.cloud.common.web.controller.BaseController;
 import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.sxhta.cloud.common.web.page.PageRequest;
 import com.sxhta.cloud.common.web.page.TableDataInfo;
-import com.sxhta.cloud.configuration.service.SysConfigService;
 import com.sxhta.cloud.log.annotation.Log;
 import com.sxhta.cloud.log.enums.BusinessType;
 import com.sxhta.cloud.remote.domain.SysDept;

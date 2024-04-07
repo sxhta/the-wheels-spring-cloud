@@ -4,8 +4,8 @@ import com.sxhta.cloud.common.exception.file.FileException;
 import com.sxhta.cloud.common.exception.file.FileNameLengthLimitExceededException;
 import com.sxhta.cloud.common.exception.file.FileSizeLimitExceededException;
 import com.sxhta.cloud.common.exception.file.InvalidExtensionException;
-import com.sxhta.cloud.common.utils.CommonDateUtil;
 import com.sxhta.cloud.common.utils.CommonStringUtil;
+import com.sxhta.cloud.common.utils.CommonDateUtil;
 import com.sxhta.cloud.common.utils.file.FileTypeUtils;
 import com.sxhta.cloud.common.utils.file.MimeTypeUtils;
 import com.sxhta.cloud.common.utils.uuid.Seq;
@@ -17,8 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.Serial;
-import java.io.Serializable;
 import java.nio.file.Paths;
 import java.util.Objects;
 
@@ -27,20 +25,16 @@ import java.util.Objects;
  */
 @Singleton
 @Component
-public class FileUploadComponentImpl implements FileUploadComponent, Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
-
+public final class FileUploadComponentImpl implements FileUploadComponent {
     /**
      * 默认大小 50M
      */
-    private static final Long DEFAULT_MAX_SIZE = 10 * 1024 * 1024L;
+    public static final long DEFAULT_MAX_SIZE = 10 * 1024 * 1024;
 
     /**
      * 默认的文件名最大长度 100
      */
-    private static final Integer DEFAULT_FILE_NAME_LENGTH = 100;
+    public static final int DEFAULT_FILE_NAME_LENGTH = 100;
 
     /**
      * 根据文件路径上传
@@ -162,7 +156,7 @@ public class FileUploadComponentImpl implements FileUploadComponent, Serializabl
      * @return true/false
      */
     @Override
-    public Boolean isAllowedExtension(String extension, String[] allowedExtension) {
+    public boolean isAllowedExtension(String extension, String[] allowedExtension) {
         for (final var str : allowedExtension) {
             if (str.equalsIgnoreCase(extension)) {
                 return true;

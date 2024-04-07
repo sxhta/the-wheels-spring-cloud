@@ -1,6 +1,6 @@
-package com.sxhta.cloud.configuration.mapper;
+package com.sxhta.cloud.system.backend.mapper;
 
-import com.sxhta.cloud.configuration.domain.SysConfig;
+import com.sxhta.cloud.system.backend.domain.SysConfig;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

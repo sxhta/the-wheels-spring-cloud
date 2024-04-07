@@ -1,4 +1,4 @@
-package com.sxhta.cloud.configuration.service.impl;
+package com.sxhta.cloud.system.backend.service.impl;
 
 
 import cn.hutool.core.util.ObjectUtil;
@@ -8,10 +8,10 @@ import com.sxhta.cloud.common.constant.CacheConstants;
 import com.sxhta.cloud.common.constant.UserConstants;
 import com.sxhta.cloud.common.exception.ServiceException;
 import com.sxhta.cloud.common.text.Convert;
-import com.sxhta.cloud.configuration.config.ConfigKeys;
-import com.sxhta.cloud.configuration.domain.SysConfig;
-import com.sxhta.cloud.configuration.mapper.SysConfigMapper;
-import com.sxhta.cloud.configuration.service.SysConfigService;
+import com.sxhta.cloud.system.backend.config.ConfigKeys;
+import com.sxhta.cloud.system.backend.domain.SysConfig;
+import com.sxhta.cloud.system.backend.mapper.SysConfigMapper;
+import com.sxhta.cloud.system.backend.service.SysConfigService;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import org.apache.commons.lang3.StringUtils;

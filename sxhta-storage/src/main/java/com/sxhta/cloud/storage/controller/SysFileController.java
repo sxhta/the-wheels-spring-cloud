@@ -1,7 +1,6 @@
 package com.sxhta.cloud.storage.controller;
 
 import com.sxhta.cloud.common.component.FileComponent;
-import com.sxhta.cloud.common.component.impl.FileComponentImpl;
 import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.sxhta.cloud.remote.domain.SysFile;
 import com.sxhta.cloud.storage.service.ISysFileService;
@@ -9,22 +8,16 @@ import jakarta.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.Serial;
-import java.io.Serializable;
-
 /**
  * 文件请求处理
+ *
+ * @author ruoyi
  */
 @RestController
-public class SysFileController implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
-
+public class SysFileController {
     private static final Logger log = LoggerFactory.getLogger(SysFileController.class);
 
     @Inject
@@ -37,7 +30,7 @@ public class SysFileController implements Serializable {
      * 文件上传请求
      */
     @PostMapping("upload")
-    public CommonResponse<SysFile> upload(@RequestParam("file") MultipartFile file) {
+    public CommonResponse<SysFile> upload(MultipartFile file) {
         try {
             // 上传并返回访问地址
             final var url = sysFileService.uploadFile(file);

@@ -1,4 +1,4 @@
-package com.sxhta.cloud.configuration.config;
+package com.sxhta.cloud.system.backend.config;
 
 import lombok.Getter;
 

@@ -19,6 +19,7 @@ public interface FileUploadComponent {
      */
     String upload(String baseDir, MultipartFile file) throws IOException;
 
+
     /**
      * 文件上传
      *
@@ -61,5 +62,5 @@ public interface FileUploadComponent {
      * @param allowedExtension 允许上传文件类型
      * @return true/false
      */
-    Boolean isAllowedExtension(String extension, String[] allowedExtension);
+    boolean isAllowedExtension(String extension, String[] allowedExtension);
 }

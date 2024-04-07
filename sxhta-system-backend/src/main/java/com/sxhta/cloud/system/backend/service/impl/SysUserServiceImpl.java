@@ -17,7 +17,7 @@ import com.sxhta.cloud.system.backend.domain.SysUserPost;
 import com.sxhta.cloud.system.backend.domain.SysUserRole;
 import com.sxhta.cloud.system.backend.mapper.*;
 import com.sxhta.cloud.system.backend.service.ISysUserService;
-import com.sxhta.cloud.configuration.service.SysConfigService;
+import com.sxhta.cloud.system.backend.service.SysConfigService;
 import jakarta.inject.Inject;
 import jakarta.validation.Validator;
 import org.apache.commons.lang3.StringUtils;

@@ -3,23 +3,17 @@ package com.sxhta.cloud.storage.service.impl;
 import com.sxhta.cloud.storage.component.FileUploadComponent;
 import com.sxhta.cloud.storage.service.ISysFileService;
 import jakarta.inject.Inject;
-import jakarta.inject.Singleton;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.Serial;
-import java.io.Serializable;
 
 /**
  * 本地文件存储
  */
-@Singleton
+@Primary
 @Service
-public class LocalSysFileServiceImpl implements ISysFileService, Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class LocalSysFileServiceImpl implements ISysFileService {
 
     @Inject
     private FileUploadComponent fileUploadComponent;
