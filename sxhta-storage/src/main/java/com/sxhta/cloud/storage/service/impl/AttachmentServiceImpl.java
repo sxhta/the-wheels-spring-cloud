@@ -21,8 +21,10 @@ public class AttachmentServiceImpl extends ServiceImpl<AttachmentMapper, SystemA
     @Override
     public String prefixImage(String path) {
         final var host = sysConfigService.selectConfigByKey(ConfigKeys.FILE_HOST);
-
-        return "";
+        if (!path.contains(host)) {
+            return host + path;
+        }
+        return path;
     }
 
     @Override
@@ -32,6 +34,10 @@ public class AttachmentServiceImpl extends ServiceImpl<AttachmentMapper, SystemA
 
     @Override
     public String clearPrefix(String path) {
-        return "";
+        final var host = sysConfigService.selectConfigByKey(ConfigKeys.FILE_HOST);
+        if (path.contains(host)) {
+            return path.replace(host + "/", "");
+        }
+        return path;
     }
 }

@@ -27,13 +27,13 @@ public class KaptchaTextCreator extends DefaultTextCreator implements Serializab
         final var x = random.nextInt(10);
         final var y = random.nextInt(10);
         final var suChinese = new StringBuilder();
-        final var randomoperands = random.nextInt(3);
-        if (randomoperands == 0) {
+        final var randomOperands = random.nextInt(3);
+        if (randomOperands == 0) {
             result = x * y;
             suChinese.append(NUMBERS[x]);
             suChinese.append("*");
             suChinese.append(NUMBERS[y]);
-        } else if (randomoperands == 1) {
+        } else if (randomOperands == 1) {
             if ((x != 0) && y % x == 0) {
                 result = y / x;
                 suChinese.append(NUMBERS[y]);

@@ -1,5 +1,6 @@
 package com.sxhta.cloud.gateway.service.impl;
 
+import com.sxhta.cloud.cache.redis.service.RedisService;
 import com.sxhta.cloud.common.constant.CacheConstants;
 import com.sxhta.cloud.common.constant.Constants;
 import com.sxhta.cloud.common.exception.CaptchaException;
@@ -9,7 +10,6 @@ import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.sxhta.cloud.gateway.captcha.ICaptcha;
 import com.sxhta.cloud.gateway.config.properties.CaptchaProperties;
 import com.sxhta.cloud.gateway.response.CaptchaResponse;
-import com.sxhta.cloud.gateway.service.GatewayRedisService;
 import com.sxhta.cloud.gateway.service.ValidateCodeService;
 import jakarta.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -44,7 +44,7 @@ public class ValidateCodeServiceImpl implements ValidateCodeService {
     private ICaptcha captchaProducerMath;
 
     @Inject
-    private GatewayRedisService<String, String> redisService;
+    private RedisService<String, String> redisService;
 
     @Inject
     private CaptchaProperties captchaProperties;

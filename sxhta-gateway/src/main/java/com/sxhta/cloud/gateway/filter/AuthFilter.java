@@ -2,6 +2,7 @@ package com.sxhta.cloud.gateway.filter;
 
 
 import cn.hutool.core.util.ObjectUtil;
+import com.sxhta.cloud.cache.redis.service.RedisService;
 import com.sxhta.cloud.common.component.JwtComponent;
 import com.sxhta.cloud.common.component.ServletComponent;
 import com.sxhta.cloud.common.constant.CacheConstants;
@@ -9,7 +10,6 @@ import com.sxhta.cloud.common.constant.SecurityConstants;
 import com.sxhta.cloud.common.constant.TokenConstants;
 import com.sxhta.cloud.common.utils.CommonStringUtil;
 import com.sxhta.cloud.gateway.config.properties.IgnoreWhiteProperties;
-import com.sxhta.cloud.gateway.service.GatewayRedisService;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.apache.commons.lang3.StringUtils;
@@ -44,7 +44,7 @@ public class AuthFilter implements GlobalFilter, Ordered, Serializable {
     private IgnoreWhiteProperties ignoreWhite;
 
     @Inject
-    private GatewayRedisService<String, ?> redisService;
+    private RedisService<String, ?> redisService;
 
     @Inject
     private ServletComponent servletComponent;
@@ -71,7 +71,7 @@ public class AuthFilter implements GlobalFilter, Ordered, Serializable {
             return unauthorizedResponse(exchange, "令牌已过期或验证不正确");
         }
         final var userKey = jwtComponent.getUserKey(claims);
-        Boolean isLogin = redisService.hasKey(getTokenKey(userKey));
+        final var isLogin = redisService.hasKey(getTokenKey(userKey));
         if (!isLogin) {
             return unauthorizedResponse(exchange, "登录状态已过期");
         }

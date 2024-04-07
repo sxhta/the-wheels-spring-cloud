@@ -11,6 +11,7 @@ repositories {
 
 dependencies {
     implementation project(':sxhta-common')
+    implementation project(':sxhta-cache')
     testImplementation platform('org.junit:junit-bom:5.10.2')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
