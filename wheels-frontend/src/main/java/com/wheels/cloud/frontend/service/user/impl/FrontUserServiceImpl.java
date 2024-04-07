@@ -1,7 +1,9 @@
 package com.wheels.cloud.frontend.service.user.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.sxhta.cloud.common.exception.CommonNullException;
 import com.sxhta.cloud.wheels.remote.domain.user.WheelsFrontUser;
 import com.wheels.cloud.frontend.mapper.user.FrontUserMapper;
 import com.wheels.cloud.frontend.request.auth.RegisterRequest;
@@ -20,8 +22,12 @@ public class FrontUserServiceImpl extends ServiceImpl<FrontUserMapper, WheelsFro
     @Override
     public WheelsFrontUser getUserByAccount(String account) {
         final var lqw = new LambdaQueryWrapper<WheelsFrontUser>();
-        lqw.eq(WheelsFrontUser::getA)
-        return null;
+        lqw.eq(WheelsFrontUser::getUserName,account);
+        final var user = getOne(lqw);
+        if(ObjectUtil.isNull(user)){
+            throw new CommonNullException("该用户不存在");
+        }
+        return user;
     }
 
     @Override
