@@ -9,7 +9,7 @@ import com.sxhta.cloud.common.constant.UserConstants;
 import com.sxhta.cloud.common.exception.ServiceException;
 import com.sxhta.cloud.common.text.Convert;
 import com.sxhta.cloud.system.backend.config.ConfigKeys;
-import com.sxhta.cloud.system.backend.domain.SysConfig;
+import com.sxhta.cloud.remote.domain.SysConfig;
 import com.sxhta.cloud.system.backend.mapper.SysConfigMapper;
 import com.sxhta.cloud.system.backend.service.SysConfigService;
 import jakarta.annotation.PostConstruct;

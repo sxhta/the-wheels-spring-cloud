@@ -20,7 +20,7 @@ public class FileTypeUtils {
     }
 
     public static String getFileType(String fileName) {
-        Integer separatorIndex = fileName.lastIndexOf(".");
+        final var separatorIndex = fileName.lastIndexOf(".");
         if (separatorIndex < 0) {
             return "";
         }

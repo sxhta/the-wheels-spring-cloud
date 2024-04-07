@@ -33,4 +33,10 @@ public interface RemoteUserOpenFeign {
      */
     @PostMapping("/user/register")
     CommonResponse<Boolean> registerUserInfo(@RequestBody SysUser sysUser, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+
+    /**
+     * 根据参数键名查询参数值
+     */
+    @GetMapping(value = "/config/configKey/{configKey}")
+    CommonResponse<String> getConfigByKey(@PathVariable String configKey);
 }

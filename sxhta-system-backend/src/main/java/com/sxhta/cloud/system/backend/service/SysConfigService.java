@@ -1,7 +1,7 @@
 package com.sxhta.cloud.system.backend.service;
 
 import com.sxhta.cloud.system.backend.config.ConfigKeys;
-import com.sxhta.cloud.system.backend.domain.SysConfig;
+import com.sxhta.cloud.remote.domain.SysConfig;
 
 import java.util.List;
 

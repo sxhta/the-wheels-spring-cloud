@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sxhta.cloud.system.backend.mapper.SysConfigMapper">
 
-    <resultMap type="com.sxhta.cloud.system.backend.domain.SysConfig" id="SysConfigResult">
+    <resultMap type="com.sxhta.cloud.remote.domain.SysConfig" id="SysConfigResult">
         <id property="configId" column="config_id"/>
         <result property="configName" column="config_name"/>
         <result property="configKey" column="config_key"/>
@@ -42,13 +42,13 @@
         </where>
     </sql>
 
-    <select id="selectConfig" parameterType="com.sxhta.cloud.system.backend.domain.SysConfig"
+    <select id="selectConfig" parameterType="com.sxhta.cloud.remote.domain.SysConfig"
             resultMap="SysConfigResult">
         <include refid="selectConfigVo"/>
         <include refid="sqlwhereSearch"/>
     </select>
 
-    <select id="selectConfigList" parameterType="com.sxhta.cloud.system.backend.domain.SysConfig"
+    <select id="selectConfigList" parameterType="com.sxhta.cloud.remote.domain.SysConfig"
             resultMap="SysConfigResult">
         <include refid="selectConfigVo"/>
         <where>
@@ -80,7 +80,7 @@
         where config_key = #{configKey} limit 1
     </select>
 
-    <insert id="insertConfig" parameterType="com.sxhta.cloud.system.backend.domain.SysConfig">
+    <insert id="insertConfig" parameterType="com.sxhta.cloud.remote.domain.SysConfig">
         insert into sys_config (
         <if test="configName != null and configName != '' ">config_name,</if>
         <if test="configKey != null and configKey != '' ">config_key,</if>
@@ -100,7 +100,7 @@
         )
     </insert>
 
-    <update id="updateConfig" parameterType="com.sxhta.cloud.system.backend.domain.SysConfig">
+    <update id="updateConfig" parameterType="com.sxhta.cloud.remote.domain.SysConfig">
         update sys_config
         <set>
             <if test="configName != null and configName != ''">config_name = #{configName},</if>

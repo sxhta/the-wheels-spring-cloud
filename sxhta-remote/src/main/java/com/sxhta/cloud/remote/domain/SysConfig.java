@@ -1,4 +1,4 @@
-package com.sxhta.cloud.system.backend.domain;
+package com.sxhta.cloud.remote.domain;
 
 import com.sxhta.cloud.common.annotation.Excel;
 import com.sxhta.cloud.common.web.domain.BaseEntity;

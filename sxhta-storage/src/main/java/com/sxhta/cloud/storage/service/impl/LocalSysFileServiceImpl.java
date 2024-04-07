@@ -1,11 +1,12 @@
 package com.sxhta.cloud.storage.service.impl;
 
 import com.sxhta.cloud.storage.component.FileUploadComponent;
+import com.sxhta.cloud.storage.config.LocalFileConfig;
 import com.sxhta.cloud.storage.service.ISysFileService;
 import jakarta.inject.Inject;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -18,23 +19,8 @@ public class LocalSysFileServiceImpl implements ISysFileService {
     @Inject
     private FileUploadComponent fileUploadComponent;
 
-    /**
-     * 资源映射路径 前缀
-     */
-    @Value("${file.prefix}")
-    public String localFilePrefix;
-
-    /**
-     * 域名或本机访问地址
-     */
-    @Value("${file.domain}")
-    public String domain;
-
-    /**
-     * 上传文件存储在本地的根路径
-     */
-    @Value("${file.path}")
-    private String localFilePath;
+    @Inject
+    private LocalFileConfig localFileConfig;
 
     /**
      * 本地文件上传接口
@@ -43,7 +29,10 @@ public class LocalSysFileServiceImpl implements ISysFileService {
      * @return 访问地址
      */
     @Override
-    public String uploadFile(MultipartFile file) throws Exception {
+    public String uploadFile(@RequestParam(value = "file") MultipartFile file) throws Exception {
+        final var localFilePath = localFileConfig.getPath();
+        final var domain = localFileConfig.getDomain();
+        final var localFilePrefix = localFileConfig.getPrefix();
         final var name = fileUploadComponent.upload(localFilePath, file);
         return domain + localFilePrefix + name;
     }

@@ -12,7 +12,7 @@ import com.sxhta.cloud.remote.domain.SysUser;
 import com.sxhta.cloud.remote.vo.SystemUserCacheVo;
 import com.sxhta.cloud.security.annotation.RequiresPermissions;
 import com.sxhta.cloud.security.service.TokenService;
-import com.sxhta.cloud.system.backend.domain.SysConfig;
+import com.sxhta.cloud.remote.domain.SysConfig;
 import com.sxhta.cloud.system.backend.service.SysConfigService;
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
@@ -64,7 +64,8 @@ public class SysConfigController extends BaseController {
      */
     @GetMapping(value = "/configKey/{configKey}")
     public CommonResponse<String> getConfigKey(@PathVariable String configKey) {
-        return CommonResponse.success(sysConfigService.selectConfigByKey(configKey));
+        final var result = sysConfigService.selectConfigByKey(configKey);
+        return CommonResponse.success("配置获取成功", result);
     }
 
     /**

@@ -24,7 +24,7 @@ public final class ServiceNameConstants implements Serializable {
     /**
      * 文件服务的serviceId
      */
-    public static final String FILE_SERVICE = "sxhta-file";
+    public static final String FILE_SERVICE = "sxhta-storage";
 
     /**
      * 打车前端的serviceId

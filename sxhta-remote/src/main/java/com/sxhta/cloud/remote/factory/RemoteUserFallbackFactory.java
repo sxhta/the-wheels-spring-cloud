@@ -29,6 +29,11 @@ public class RemoteUserFallbackFactory implements FallbackFactory<RemoteUserOpen
             public CommonResponse<Boolean> registerUserInfo(SysUser sysUser, String source) {
                 return CommonResponse.error("注册用户失败:" + throwable.getMessage());
             }
+
+            @Override
+            public CommonResponse<String> getConfigByKey(String configKey) {
+                return null;
+            }
         };
     }
 }

@@ -29,8 +29,8 @@ dependencies {
     implementation 'org.mariadb.jdbc:mariadb-java-client:3.3.3'
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
-
-
+    implementation 'io.minio:minio:8.5.9'
+    implementation 'com.github.tobato:fastdfs-client:1.27.2'
 }
 
 test {
