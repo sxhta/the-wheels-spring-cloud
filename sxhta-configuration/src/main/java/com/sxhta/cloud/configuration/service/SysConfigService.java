@@ -1,5 +1,6 @@
 package com.sxhta.cloud.configuration.service;
 
+import com.sxhta.cloud.configuration.config.ConfigKeys;
 import com.sxhta.cloud.configuration.domain.SysConfig;
 
 import java.util.List;
@@ -23,6 +24,14 @@ public interface SysConfigService {
      * @return 参数键值
      */
     String selectConfigByKey(String configKey);
+
+    /**
+     * 根据键名查询参数配置信息
+     *
+     * @param keyEnum 参数键名
+     * @return 参数键值
+     */
+    String selectConfigByKey(ConfigKeys keyEnum);
 
     /**
      * 查询参数配置列表

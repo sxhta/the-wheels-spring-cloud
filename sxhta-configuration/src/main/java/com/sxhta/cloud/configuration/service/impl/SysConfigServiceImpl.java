@@ -8,6 +8,7 @@ import com.sxhta.cloud.common.constant.CacheConstants;
 import com.sxhta.cloud.common.constant.UserConstants;
 import com.sxhta.cloud.common.exception.ServiceException;
 import com.sxhta.cloud.common.text.Convert;
+import com.sxhta.cloud.configuration.config.ConfigKeys;
 import com.sxhta.cloud.configuration.domain.SysConfig;
 import com.sxhta.cloud.configuration.mapper.SysConfigMapper;
 import com.sxhta.cloud.configuration.service.SysConfigService;
@@ -71,6 +72,12 @@ public class SysConfigServiceImpl implements SysConfigService {
             return retConfig.getConfigValue();
         }
         return StringUtils.EMPTY;
+    }
+
+    @Override
+    public String selectConfigByKey(ConfigKeys keyEnum) {
+        final var value = keyEnum.getValue();
+        return selectConfigByKey(value);
     }
 
     /**
