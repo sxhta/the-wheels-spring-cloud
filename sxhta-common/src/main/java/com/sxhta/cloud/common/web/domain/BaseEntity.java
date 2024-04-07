@@ -1,7 +1,6 @@
 package com.sxhta.cloud.common.web.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,11 +21,11 @@ public abstract class BaseEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 搜索值
-     */
-    @JsonIgnore
-    private String searchValue;
+//    /**
+//     * 搜索值
+//     */
+//    @JsonIgnore
+//    private String searchValue;
 
     /**
      * 创建者

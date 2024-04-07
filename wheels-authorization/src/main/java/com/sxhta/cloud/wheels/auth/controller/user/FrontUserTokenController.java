@@ -6,6 +6,7 @@ import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.sxhta.cloud.security.response.TokenResponse;
 import com.sxhta.cloud.security.service.TokenService;
 import com.sxhta.cloud.wheels.auth.request.CheckCodeRequest;
+import com.sxhta.cloud.wheels.auth.request.SendCodeRequest;
 import com.sxhta.cloud.wheels.auth.service.sms.SmsService;
 import com.sxhta.cloud.wheels.auth.service.user.FrontUserLoginService;
 import com.sxhta.cloud.wheels.remote.domain.user.WheelsFrontUser;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
  * token 控制
  */
 @RestController
-@RequestMapping(value = "/user")
+@RequestMapping(value = "/auth/user")
 public class FrontUserTokenController {
 
     @Inject
@@ -33,8 +34,8 @@ public class FrontUserTokenController {
     private SmsService smsService;
 
     @PostMapping(value = "/code/send")
-    public CommonResponse<Boolean> sendCode(@RequestParam String phone) {
-        if (smsService.sendCode(phone)) {
+    public CommonResponse<Boolean> sendCode(@RequestBody SendCodeRequest request) {
+        if (smsService.sendCode(request)) {
             return CommonResponse.success("发送成功");
         } else {
             return CommonResponse.error("发送失败");

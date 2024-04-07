@@ -7,10 +7,10 @@ import com.sxhta.cloud.common.xss.Xss;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.time.LocalDateTime;
+import lombok.experimental.Accessors;
 
 @Data
+@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 public class WheelsFrontUser extends AbstractUserEntity {
 
@@ -25,23 +25,11 @@ public class WheelsFrontUser extends AbstractUserEntity {
     /**
      * 用户性别
      */
-    @Excel(name = "用户性别", readConverterExp = "0=男,1=女,2=未知")
-    private Integer gender;
+    @Excel(name = "用户性别", readConverterExp = "0=未设置,1=男,2=女,3=未知")
+    private Integer gender = 0;
 
     /**
      * 用户头像
      */
     private String avatar;
-
-    /**
-     * 最后登录IP
-     */
-    @Excel(name = "最后登录IP", type = Excel.Type.EXPORT)
-    private String loginIp;
-
-    /**
-     * 最后登录时间
-     */
-    @Excel(name = "最后登录时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss", type = Excel.Type.EXPORT)
-    private LocalDateTime loginDate;
 }

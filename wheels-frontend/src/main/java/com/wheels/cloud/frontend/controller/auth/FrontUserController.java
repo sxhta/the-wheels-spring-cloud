@@ -4,7 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.sxhta.cloud.security.annotation.InnerAuth;
 import com.sxhta.cloud.wheels.remote.vo.FrontUserCacheVo;
-import com.wheels.cloud.frontend.request.auth.RegisterRequest;
+import com.sxhta.cloud.wheels.remote.request.RegisterRequest;
 import com.wheels.cloud.frontend.service.user.FrontUserService;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -15,8 +15,8 @@ import java.io.Serializable;
 
 @Slf4j
 @RestController
-@RequestMapping("/auth")
-public final class FrontUserController implements Serializable {
+@RequestMapping("/auth/user")
+public class FrontUserController implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -26,7 +26,7 @@ public final class FrontUserController implements Serializable {
 
     @InnerAuth
     @PostMapping("/register")
-    public CommonResponse<Boolean> register(@RequestBody final RegisterRequest request) {
+    public CommonResponse<Boolean> register(@RequestBody RegisterRequest request) {
         final var result = frontUserService.register(request);
         return CommonResponse.success(result);
     }

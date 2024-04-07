@@ -1,12 +1,10 @@
 package com.wheels.cloud.frontend.service.user.impl;
 
-import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.sxhta.cloud.common.exception.CommonNullException;
 import com.sxhta.cloud.wheels.remote.domain.user.WheelsFrontUser;
+import com.sxhta.cloud.wheels.remote.request.RegisterRequest;
 import com.wheels.cloud.frontend.mapper.user.FrontUserMapper;
-import com.wheels.cloud.frontend.request.auth.RegisterRequest;
 import com.wheels.cloud.frontend.service.user.FrontUserService;
 import org.springframework.stereotype.Service;
 
@@ -24,14 +22,16 @@ public class FrontUserServiceImpl extends ServiceImpl<FrontUserMapper, WheelsFro
         final var lqw = new LambdaQueryWrapper<WheelsFrontUser>();
         lqw.eq(WheelsFrontUser::getUserName,account);
         final var user = getOne(lqw);
-        if(ObjectUtil.isNull(user)){
-            throw new CommonNullException("该用户不存在");
-        }
         return user;
     }
 
     @Override
-    public Boolean register(RegisterRequest account) {
-        return null;
+    public Boolean register(RegisterRequest request) {
+        final var account = request.getAccount();
+        final var wheelsFrontUser = new WheelsFrontUser();
+        //通过手机号注册的用户名默认和account 相同
+        wheelsFrontUser.setAccount(account)
+                .setUserName(account);
+        return true;
     }
 }
