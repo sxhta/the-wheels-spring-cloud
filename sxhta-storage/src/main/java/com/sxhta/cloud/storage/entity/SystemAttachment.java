@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("eb_system_attachment")
+@TableName("system_attachment")
 public class SystemAttachment implements Serializable {
 
     @Serial
