@@ -27,7 +27,7 @@ public class ResourcesConfig implements WebMvcConfigurer, Serializable {
         final var localFilePrefix = localFilePath.getPrefix();
         /* 本地文件上传路径 */
         registry.addResourceHandler(localFilePrefix + "/**")
-                .addResourceLocations("file:" + localFilePath + File.separator);
+                .addResourceLocations("file:" + localFilePath.getPath() + File.separator);
     }
 
     /**

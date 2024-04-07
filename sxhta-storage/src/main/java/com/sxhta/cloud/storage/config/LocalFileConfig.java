@@ -17,7 +17,7 @@ public class LocalFileConfig implements Serializable {
 
     private String path;
 
-    public String prefix;
+    private String prefix;
 
-    public String domain;
+    private String domain;
 }
