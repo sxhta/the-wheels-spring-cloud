@@ -71,7 +71,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
     }
 
     @Override
-    public Boolean updateCategory(ArticleRequest request) {
+    public Boolean updateEntity(ArticleRequest request) {
         final var hash = request.getHash();
         final var lqw = new LambdaQueryWrapper<Article>();
         lqw.eq(Article::getHash, hash);

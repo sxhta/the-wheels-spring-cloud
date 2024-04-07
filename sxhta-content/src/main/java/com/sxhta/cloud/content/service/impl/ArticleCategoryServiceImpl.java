@@ -82,7 +82,7 @@ public class ArticleCategoryServiceImpl
     }
 
     @Override
-    public Boolean updateCategory(ArticleCategoryRequest request) {
+    public Boolean updateEntity(ArticleCategoryRequest request) {
         final var hash = request.getHash();
         final var lqw = new LambdaQueryWrapper<ArticleCategory>();
         lqw.eq(ArticleCategory::getHash, hash);

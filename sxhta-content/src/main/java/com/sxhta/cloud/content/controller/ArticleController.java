@@ -72,7 +72,7 @@ public class ArticleController extends BaseController
     @Override
     @PutMapping("/update")
     public CommonResponse<Boolean> updateCategory(@RequestBody ArticleRequest request) {
-        final var result = articleService.updateCategory(request);
+        final var result = articleService.updateEntity(request);
         return CommonResponse.result(result);
     }
 }

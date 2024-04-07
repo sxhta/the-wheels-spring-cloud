@@ -15,7 +15,7 @@ public interface ICommonService<Search extends Serializable, Request extends Ser
 
     Boolean deleteByHash(String hash);
 
-    Boolean updateCategory(Request request);
+    Boolean updateEntity(Request request);
 
     List<Response> getAdminList(Search request);
 
