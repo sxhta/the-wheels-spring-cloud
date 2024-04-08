@@ -12,7 +12,7 @@ public interface RedisService<K, V> {
 
     void setCacheObject(final K key, final V value);
 
-    void setCacheObject(final K key, final V value, final Long timeout, final TimeUnit timeUnit);
+    Boolean setCacheObject(final K key, final V value, final Long timeout, final TimeUnit timeUnit);
 
     Boolean expire(final K key, final Long timeout);
 

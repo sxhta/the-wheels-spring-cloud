@@ -35,7 +35,8 @@ public class FrontUserTokenController {
 
     @PostMapping(value = "/code/send")
     public CommonResponse<Boolean> sendCode(@RequestBody SendCodeRequest request) {
-        if (smsService.sendCode(request)) {
+        final var result = smsService.sendCode(request);
+        if (result) {
             return CommonResponse.success("发送成功");
         } else {
             return CommonResponse.error("发送失败");

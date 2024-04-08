@@ -3,7 +3,7 @@ package com.wheels.cloud.order.controller.auth;
 import cn.hutool.core.util.ObjectUtil;
 import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.sxhta.cloud.security.annotation.InnerAuth;
-import com.sxhta.cloud.wheels.remote.request.RegisterRequest;
+import com.sxhta.cloud.wheels.remote.request.RemoteRegisterRequest;
 import com.sxhta.cloud.wheels.remote.vo.FrontUserCacheVo;
 import com.wheels.cloud.order.service.user.FrontUserService;
 import jakarta.inject.Inject;
@@ -26,7 +26,7 @@ public class FrontUserController implements Serializable {
 
     @InnerAuth
     @PostMapping("/register")
-    public CommonResponse<FrontUserCacheVo> register(@RequestBody RegisterRequest request) {
+    public CommonResponse<FrontUserCacheVo> register(@RequestBody RemoteRegisterRequest request) {
         final var result = frontUserService.register(request);
         return CommonResponse.success(result);
     }

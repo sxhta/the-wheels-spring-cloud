@@ -9,7 +9,7 @@ import com.sxhta.cloud.wheels.auth.service.sms.SmsService;
 import com.sxhta.cloud.wheels.auth.service.user.FrontUserLoginService;
 import com.sxhta.cloud.wheels.remote.domain.user.WheelsFrontUser;
 import com.sxhta.cloud.wheels.remote.openfeign.user.FrontUserOpenFeign;
-import com.sxhta.cloud.wheels.remote.request.RegisterRequest;
+import com.sxhta.cloud.wheels.remote.request.RemoteRegisterRequest;
 import com.sxhta.cloud.wheels.remote.vo.FrontUserCacheVo;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -45,17 +45,19 @@ public class FrontUserLoginServiceImpl
             //用户不存在，注册新用户
             logger.info("用户不存在，注册新用户");
             final var wheelsFrontUser = new WheelsFrontUser();
-            wheelsFrontUser.setAccount(phone)
-                    .setUserName(phone);
-            final var registerRequest = new RegisterRequest();
+            wheelsFrontUser.setAccount(phone);
+
+            wheelsFrontUser.setUserName(phone);
+            final var registerRequest = new RemoteRegisterRequest();
             registerRequest.setAccount(phone);
 
-            final var newCacheResponse = frontUserOpenFeign.register(registerRequest, SecurityConstants.INNER);
-            final var newCache = newCacheResponse.getData();
-            if (ObjectUtil.isNull(newCache)) {
-                throw new CommonNullException("新用户远程调用信息为空");
+            final var registerResponse = frontUserOpenFeign.register(registerRequest, SecurityConstants.INNER);
+            final var isCreate = registerResponse.getData();
+            if (!isCreate) {
+                throw new CommonNullException("新用户创建失败");
             }
-            return newCache;
+            final var newCacheResponse = frontUserOpenFeign.getUserInfo(phone, SecurityConstants.INNER);
+            return newCacheResponse.getData();
         }
         return cache;
     }

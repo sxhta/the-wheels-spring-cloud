@@ -28,8 +28,7 @@ public class SmsServiceImpl implements SmsService {
         //网络请求结束
         final var phone = request.getPhone();
         final var key = SmsConstants.SMS_VALIDATE_PHONE + phone;
-        redisService.setCacheObject(key, code, SmsConstants.SMS_LOCK_TIME, TimeUnit.MINUTES);
-        return true;
+        return redisService.setCacheObject(key, code, SmsConstants.SMS_LOCK_TIME, TimeUnit.MINUTES);
     }
 
     @Override

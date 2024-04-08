@@ -1,6 +1,7 @@
 package com.sxhta.cloud.cache.redis.service.impl;
 
 import com.sxhta.cloud.cache.redis.service.RedisService;
+import com.sxhta.cloud.common.exception.CommonException;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.springframework.data.redis.core.BoundSetOperations;
@@ -42,9 +43,16 @@ public class RedisServiceImpl<K, V> implements RedisService<K, V>, Serializable 
      * @param timeout  时间
      * @param timeUnit 时间颗粒度
      */
+    @SuppressWarnings("CallToPrintStackTrace")
     @Override
-    public void setCacheObject(final K key, final V value, final Long timeout, final TimeUnit timeUnit) {
-        redisTemplate.opsForValue().set(key, value, timeout, timeUnit);
+    public Boolean setCacheObject(final K key, final V value, final Long timeout, final TimeUnit timeUnit) {
+        try {
+            redisTemplate.opsForValue().set(key, value, timeout, timeUnit);
+            return true;
+        } catch (CommonException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     /**

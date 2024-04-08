@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
-public final class RegisterRequest implements Serializable {
+public final class RemoteRegisterRequest implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

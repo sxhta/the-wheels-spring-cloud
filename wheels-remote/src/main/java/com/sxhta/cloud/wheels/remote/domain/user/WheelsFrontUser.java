@@ -1,18 +1,24 @@
 package com.sxhta.cloud.wheels.remote.domain.user;
 
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.sxhta.cloud.common.annotation.Excel;
 import com.sxhta.cloud.common.domain.AbstractUserEntity;
+import com.sxhta.cloud.common.utils.encrypt.EncryptUtil;
+import com.sxhta.cloud.common.utils.uuid.UUID;
 import com.sxhta.cloud.common.xss.Xss;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Data
-@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 public class WheelsFrontUser extends AbstractUserEntity {
+
+    private String hash = EncryptUtil.generateEntityHash(UUID.randomUUID(true).toString());
 
     /**
      * 用户昵称
@@ -32,4 +38,10 @@ public class WheelsFrontUser extends AbstractUserEntity {
      * 用户头像
      */
     private String avatar;
+
+    /**
+     * 请求参数
+     */
+    @TableField(exist = false)
+    private Map<String, Object> params = new HashMap<>();
 }
