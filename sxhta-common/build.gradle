@@ -46,6 +46,15 @@ dependencies {
     api 'com.baomidou:dynamic-datasource-spring-boot-starter:4.1.3'
     api group: 'cn.hutool', name: 'hutool-all', version: '5.8.26'
     api 'com.google.guava:guava:33.1.0-jre'
+
+    api('com.baomidou:mybatis-plus-boot-starter:3.5.5', {
+        exclude(group: 'org.mybatis')
+        exclude(group: 'org.mybatis.spring.boot')
+    })
+    api 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
+    api group: 'com.baomidou', name: 'mybatis-plus-generator', version: '3.5.5'
+    api group: 'org.apache.velocity', name: 'velocity', version: '1.7'
+    api group: 'mysql', name: 'mysql-connector-java', version: '8.0.30'
 }
 
 test {

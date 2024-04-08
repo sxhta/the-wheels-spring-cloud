@@ -1,0 +1,82 @@
+package ${package.Parent}.request;
+
+
+import com.sxhta.cloud.common.domain.BaseHashEntity;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+import java.io.Serial;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import lombok.EqualsAndHashCode;
+
+#foreach($pkg in ${table.importPackages})
+import ${pkg};
+#end
+#if(${entityLombokModel})
+import lombok.Data;
+#if(${chainModel})
+import lombok.experimental.Accessors;
+#end
+#end
+
+/**
+ * $!{table.comment}
+ */
+#if(${entityLombokModel})
+@Data
+#if(${chainModel})
+@Accessors(chain = true)
+#end
+#end
+@EqualsAndHashCode(callSuper = true)
+@Schema(name = "${entity}Request", description = "$!{table.comment}请求体")
+#if(${superEntityClass})
+public class ${entity}Request extends ${superEntityClass}#if(${activeRecord})<${entity}>#end {
+#elseif(${activeRecord})
+public class ${entity}Request extends Model<${entity}> {
+#elseif(${entitySerialVersionUID})
+public class ${entity}Request extends BaseHashEntity implements Serializable{
+#else
+public class ${entity}Request {
+#end
+#if(${entitySerialVersionUID})
+
+@Serial
+private static final long serialVersionUID=1L;
+
+#end
+## ----------  BEGIN 字段循环遍历  ----------
+#foreach($field in ${table.fields})
+#if(${field.keyFlag})
+#set($keyPropertyName=${field.propertyName})
+#end
+#if(${field.keyFlag})
+## 普通字段
+#elseif(${field.fill})
+ #if(${field.convert})
+        @TableField(value = "${field.annotationColumnName}", fill = FieldFill.${field.fill})
+        #else
+        @TableField(fill = FieldFill.${field.fill})
+        #end
+    #elseif(${field.convert})
+    @TableField("${field.annotationColumnName}")
+    #end
+    #if(${field.propertyName} != "hash" &&${field.propertyName} != "createTime" &&${field.propertyName} !=
+        "updateTime" &&${field.propertyName} != "deleteTime")
+        #if("$!field.comment" != "")
+        @Schema(description = "${field.comment}")
+        #end
+        #if(${field.propertyType} == "Byte")
+        private Integer ${field.propertyName};
+
+        #elseif(${field.propertyType} == "Boolean")
+        private Boolean ${field.propertyName};
+
+        #else
+        private ${field.propertyType} ${field.propertyName};
+
+        #end
+    #end
+#end
+}
