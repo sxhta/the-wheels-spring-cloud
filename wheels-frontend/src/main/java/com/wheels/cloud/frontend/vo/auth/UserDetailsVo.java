@@ -1,12 +1,9 @@
 package com.wheels.cloud.frontend.vo.auth;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.wheels.cloud.frontend.domain.user.FrontUser;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serial;
 import java.util.Collection;
