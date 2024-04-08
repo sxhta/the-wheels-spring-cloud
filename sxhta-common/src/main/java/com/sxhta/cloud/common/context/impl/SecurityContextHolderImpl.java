@@ -16,7 +16,8 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Component
 public class SecurityContextHolderImpl implements SecurityContextHolder {
-    private final TransmittableThreadLocal<Map<String, Object>> THREAD_LOCAL = new TransmittableThreadLocal<>();
+
+    private final ThreadLocal<Map<String, Object>> THREAD_LOCAL = new TransmittableThreadLocal<>();
 
     @Override
     public void set(String key, Object value) {
