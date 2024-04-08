@@ -6,6 +6,7 @@ import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.sxhta.cloud.wheels.remote.factory.user.FrontUserFallbackFactory;
 import com.sxhta.cloud.wheels.remote.request.RegisterRequest;
 import com.sxhta.cloud.wheels.remote.vo.FrontUserCacheVo;
+import com.sxhta.cloud.wheels.remote.vo.FrontUserHashVo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,4 +34,8 @@ public interface FrontUserOpenFeign {
      */
     @PostMapping("/auth/user/register")
     CommonResponse<FrontUserCacheVo> register(@RequestBody RegisterRequest request, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+
+    //通过id查询HASH
+    @GetMapping("/auth/user/info/{id}")
+    CommonResponse<FrontUserHashVo> getHashById(@PathVariable("id") Long id);
 }

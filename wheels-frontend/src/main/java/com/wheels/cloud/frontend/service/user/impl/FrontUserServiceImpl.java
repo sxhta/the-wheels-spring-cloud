@@ -1,12 +1,16 @@
 package com.wheels.cloud.frontend.service.user.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.sxhta.cloud.common.exception.CommonException;
 import com.sxhta.cloud.wheels.remote.domain.user.WheelsFrontUser;
 import com.sxhta.cloud.wheels.remote.request.RegisterRequest;
 import com.sxhta.cloud.wheels.remote.vo.FrontUserCacheVo;
+import com.sxhta.cloud.wheels.remote.vo.FrontUserHashVo;
 import com.wheels.cloud.frontend.mapper.user.FrontUserMapper;
 import com.wheels.cloud.frontend.service.user.FrontUserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.io.Serial;
@@ -34,5 +38,16 @@ public class FrontUserServiceImpl extends ServiceImpl<FrontUserMapper, WheelsFro
         wheelsFrontUser.setAccount(account)
                 .setUserName(account);
         return new FrontUserCacheVo();
+    }
+
+    @Override
+    public FrontUserHashVo getHashById(Long id) {
+        final var frontUser = getById(id);
+        if (ObjectUtil.isNull(frontUser)) {
+            throw new CommonException("该用户不存在！");
+        }
+        final var response = new FrontUserHashVo();
+        BeanUtils.copyProperties(frontUser,response);
+        return response;
     }
 }

@@ -5,6 +5,7 @@ import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.sxhta.cloud.security.annotation.InnerAuth;
 import com.sxhta.cloud.wheels.remote.vo.FrontUserCacheVo;
 import com.sxhta.cloud.wheels.remote.request.RegisterRequest;
+import com.sxhta.cloud.wheels.remote.vo.FrontUserHashVo;
 import com.wheels.cloud.frontend.service.user.FrontUserService;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -45,4 +46,12 @@ public class FrontUserController implements Serializable {
         frontUserCacheVo.setUserEntity(sysUser);
         return CommonResponse.success(frontUserCacheVo);
     }
+
+    @InnerAuth
+    @GetMapping("/info/{id}")
+    public CommonResponse<FrontUserHashVo> getHashById(@PathVariable("id") Long id) {
+        return CommonResponse.success(frontUserService.getHashById(id));
+    }
+
+
 }
