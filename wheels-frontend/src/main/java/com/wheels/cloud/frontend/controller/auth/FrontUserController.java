@@ -49,7 +49,7 @@ public class FrontUserController implements Serializable {
     }
 
     @InnerAuth
-    @GetMapping("/info/{id}")
+    @GetMapping("/info/id/{id}")
     public CommonResponse<FrontUserHashVo> getHashById(@PathVariable("id") Long id) {
         return CommonResponse.success(frontUserService.getHashById(id));
     }

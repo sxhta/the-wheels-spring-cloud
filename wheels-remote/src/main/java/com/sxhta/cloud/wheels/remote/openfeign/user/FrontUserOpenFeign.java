@@ -39,6 +39,6 @@ public interface FrontUserOpenFeign extends Serializable {
     CommonResponse<Boolean> register(@RequestBody RemoteRegisterRequest request, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
 
     //通过id查询HASH
-    @GetMapping("/auth/user/info/{id}")
+    @GetMapping("/auth/user/info/id/{id}")
     CommonResponse<FrontUserHashVo> getHashById(@PathVariable("id") Long id);
 }
