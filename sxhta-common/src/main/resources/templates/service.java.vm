@@ -1,0 +1,18 @@
+package ${package.Service};
+
+import com.sxhta.cloud.common.service.ICommonService;
+import ${package.Entity}.${entity};
+import ${superServiceClassPackage};
+import ${package.Parent}.request.${entity}Request;
+import ${package.Parent}.response.${entity}Response;
+import ${package.Parent}.request.${entity}SearchRequest;
+/**
+ * $!{table.comment} 服务类
+ */
+#if(${kotlin})
+interface ${table.serviceName} : ${superServiceClass}<${entity}>
+#else
+public interface ${table.serviceName} extends ICommonService<${entity}SearchRequest, ${entity}Request,${entity}Response> {
+
+}
+#end

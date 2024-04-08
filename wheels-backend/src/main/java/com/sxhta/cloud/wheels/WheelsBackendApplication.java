@@ -4,7 +4,6 @@ import com.sxhta.cloud.security.annotation.EnableCustomConfig;
 import com.sxhta.cloud.security.annotation.EnableCustomFeignClients;
 import com.sxhta.cloud.security.config.ApplicationConfiguration;
 import com.sxhta.cloud.security.feign.FeignAutoConfiguration;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;

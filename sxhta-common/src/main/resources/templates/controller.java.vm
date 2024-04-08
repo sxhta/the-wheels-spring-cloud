@@ -1,0 +1,98 @@
+package ${package.Controller};
+
+import com.sxhta.cloud.common.web.controller.BaseController;
+import com.sxhta.cloud.common.web.controller.ICommonController;
+import org.springframework.web.bind.annotation.*;
+import jakarta.inject.Inject;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import com.sxhta.cloud.common.web.domain.CommonResponse;
+import com.sxhta.cloud.common.web.page.TableDataInfo;
+
+import java.io.Serializable;
+import java.io.Serial;
+import com.sxhta.cloud.common.web.page.PageRequest;
+import ${package.Parent}.request.${entity}Request;
+import ${package.Parent}.response.${entity}Response;
+import ${package.Parent}.request.${entity}SearchRequest;
+import ${package.Service}.${table.serviceName};
+
+#if(${restControllerStyle})
+import org.springframework.web.bind.annotation.RestController;
+#else
+import org.springframework.stereotype.Controller;
+#end
+#if(${superControllerClassPackage})
+import ${superControllerClassPackage};
+#end
+
+/**
+ * $!{table.comment} 前端控制器
+ */
+#if(${restControllerStyle})
+@Tag(name = "$!{table.comment}", description = "$!{table.comment}"+"控制器")
+@RestController
+#else
+@Controller
+#end
+@RequestMapping("#if(${package.ModuleName})/${package.ModuleName}#end/#if(${controllerMappingHyphenStyle})${controllerMappingHyphen}#else${table.entityPath}#end")
+#if(${kotlin})
+class ${table.controllerName}#if(${superControllerClass}) : ${superControllerClass}()#end
+
+#else
+#if(${superControllerClass})
+public class ${table.controllerName} extends ${superControllerClass} {
+#else
+public class ${table.controllerName} extends BaseController implements ICommonController<${entity}SearchRequest,${entity}Request,${entity}Response> ,Serializable {
+#end
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    @Inject
+    private ${table.serviceName} ${table.entityPath}Service;
+
+    @Override
+    @PostMapping("/create")
+    @Operation(summary = "新增")
+    public CommonResponse<Boolean> create(@RequestBody ${entity}Request request) {
+        return CommonResponse.result(${table.entityPath}Service.create(request));
+    }
+
+    @Override
+    @DeleteMapping("/delete")
+    @Operation(summary = "删除")
+    public CommonResponse<Boolean> deleteByHash(@RequestParam(value = "hash") String hash) {
+        return CommonResponse.result(${table.entityPath}Service.deleteByHash(hash));
+    }
+
+    @Override
+    @DeleteMapping("/soft")
+    @Operation(summary = "软删除")
+    public CommonResponse<Boolean> softDeleteByHash(String hash) {
+        return null;
+    }
+
+
+    @Override
+    @PutMapping("/update")
+    @Operation(summary = "修改")
+    public CommonResponse<Boolean> updateCategory(@RequestBody ${entity}Request request) {
+        return CommonResponse.result(${table.entityPath}Service.updateEntity(request));
+    }
+
+    @Override
+    @GetMapping("/info")
+    @Operation(summary = "详情")
+    public CommonResponse<${entity}Response> getInfoByHash(@RequestParam("hash") String hash) {
+        return CommonResponse.success(${table.entityPath}Service.getInfoByHash(hash));
+    }
+
+    @Override
+    @GetMapping("/list")
+    @Operation(summary = "列表")
+    public TableDataInfo<${entity}Response> getAdminList(${entity}SearchRequest request,PageRequest pageRequest) {
+        startPage(pageRequest);
+        return CommonResponse.list(${table.entityPath}Service.getAdminList(request));
+    }
+}
+#end
