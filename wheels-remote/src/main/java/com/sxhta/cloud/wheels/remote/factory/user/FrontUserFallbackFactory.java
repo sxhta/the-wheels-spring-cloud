@@ -4,6 +4,7 @@ import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.sxhta.cloud.wheels.remote.openfeign.user.FrontUserOpenFeign;
 import com.sxhta.cloud.wheels.remote.request.RemoteRegisterRequest;
 import com.sxhta.cloud.wheels.remote.vo.FrontUserCacheVo;
+import com.sxhta.cloud.wheels.remote.vo.FrontUserHashVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.openfeign.FallbackFactory;
@@ -35,6 +36,11 @@ public class FrontUserFallbackFactory implements FallbackFactory<FrontUserOpenFe
             @Override
             public CommonResponse<Boolean> register(RemoteRegisterRequest sysUser, String source) {
                 return CommonResponse.error("注册用户失败:" + throwable.getMessage());
+            }
+
+            @Override
+            public CommonResponse<FrontUserHashVo> getHashById(Long id) {
+                return CommonResponse.error("获取用户失败:" + throwable.getMessage());
             }
         };
     }

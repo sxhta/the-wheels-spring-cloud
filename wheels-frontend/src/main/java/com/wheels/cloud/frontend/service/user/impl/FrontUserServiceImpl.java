@@ -6,8 +6,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sxhta.cloud.common.exception.CommonException;
 import com.sxhta.cloud.wheels.remote.domain.user.WheelsFrontUser;
 import com.sxhta.cloud.wheels.remote.request.RemoteRegisterRequest;
-import com.sxhta.cloud.wheels.remote.request.RegisterRequest;
-import com.sxhta.cloud.wheels.remote.vo.FrontUserCacheVo;
 import com.sxhta.cloud.wheels.remote.vo.FrontUserHashVo;
 import com.wheels.cloud.frontend.mapper.user.FrontUserMapper;
 import com.wheels.cloud.frontend.service.user.FrontUserService;
