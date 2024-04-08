@@ -10,10 +10,15 @@ import com.sxhta.cloud.wheels.auth.service.sms.SmsService;
 import jakarta.inject.Inject;
 import org.springframework.stereotype.Service;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
 @Service
-public class SmsServiceImpl implements SmsService {
+public class SmsServiceImpl implements SmsService, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Inject
     private RedisService<String, Integer> redisService;

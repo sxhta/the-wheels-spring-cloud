@@ -5,7 +5,6 @@ import cn.hutool.core.util.ObjectUtil;
 import com.sxhta.cloud.common.constant.SecurityConstants;
 import com.sxhta.cloud.common.exception.CommonNullException;
 import com.sxhta.cloud.wheels.auth.request.CheckCodeRequest;
-import com.sxhta.cloud.wheels.auth.service.sms.SmsService;
 import com.sxhta.cloud.wheels.auth.service.user.FrontUserLoginService;
 import com.sxhta.cloud.wheels.remote.domain.user.WheelsFrontUser;
 import com.sxhta.cloud.wheels.remote.openfeign.user.FrontUserOpenFeign;
@@ -17,18 +16,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * 登录校验方法
  */
 @Slf4j
 @Service
 public class FrontUserLoginServiceImpl
-        implements FrontUserLoginService<FrontUserCacheVo, WheelsFrontUser> {
+        implements FrontUserLoginService<FrontUserCacheVo, WheelsFrontUser>, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private final Logger logger = LoggerFactory.getLogger(FrontUserLoginServiceImpl.class);
-
-    @Inject
-    private SmsService smsService;
 
     @Inject
     private FrontUserOpenFeign frontUserOpenFeign;

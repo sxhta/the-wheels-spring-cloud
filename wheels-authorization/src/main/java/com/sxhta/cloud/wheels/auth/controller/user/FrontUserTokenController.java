@@ -16,13 +16,19 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 
 /**
  * token 控制
  */
 @RestController
 @RequestMapping(value = "/auth/user")
-public class FrontUserTokenController {
+public class FrontUserTokenController implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Inject
     private TokenService<FrontUserCacheVo, WheelsFrontUser> frontUserTokenService;

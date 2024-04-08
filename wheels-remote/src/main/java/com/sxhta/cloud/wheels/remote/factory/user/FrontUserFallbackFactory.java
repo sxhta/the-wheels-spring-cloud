@@ -9,11 +9,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * 用户服务降级处理
  */
 @Component
-public class FrontUserFallbackFactory implements FallbackFactory<FrontUserOpenFeign> {
+public class FrontUserFallbackFactory implements FallbackFactory<FrontUserOpenFeign>, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     private final Logger logger = LoggerFactory.getLogger(FrontUserFallbackFactory.class);
 
     @Override

@@ -9,16 +9,19 @@ import com.sxhta.cloud.wheels.remote.vo.FrontUserCacheVo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Serializable;
+
 /**
  * 用户服务
  */
 @FeignClient(contextId = "frontUserOpenFeign", value = ServiceNameConstants.WHEELS_FRONTEND, fallbackFactory = FrontUserFallbackFactory.class)
-public interface FrontUserOpenFeign {
+public interface FrontUserOpenFeign extends Serializable {
+
     /**
      * 通过用户名查询用户信息
      *
      * @param account 用户名
-     * @param source   请求来源
+     * @param source  请求来源
      * @return 结果
      */
     @GetMapping("/auth/user/info/{account}")
