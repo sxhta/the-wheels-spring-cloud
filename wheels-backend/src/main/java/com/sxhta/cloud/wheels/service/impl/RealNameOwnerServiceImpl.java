@@ -67,12 +67,13 @@ public class RealNameOwnerServiceImpl extends ServiceImpl<RealNameOwnerMapper, R
     }
 
     @Override
-    public Boolean updateCategory(RealNameOwnerRequest realNameOwnerRequest) {
+    public Boolean updateEntity(RealNameOwnerRequest realNameOwnerRequest) {
         final var realNameOwner = new RealNameOwner();
         BeanUtils.copyProperties(realNameOwnerRequest, realNameOwner);
         realNameOwner.setCreateBy(tokenService.getLoginUser().getUsername());
         return updateById(realNameOwner);
     }
+
 
     @Override
     public List<RealNameOwnerResponse> getAdminList(RealNameOwnerSearchRequest request) {
@@ -85,6 +86,11 @@ public class RealNameOwnerServiceImpl extends ServiceImpl<RealNameOwnerMapper, R
             realNameOwnerResponseList.add(realNameOwnerResponse);
         });
         return realNameOwnerResponseList;
+    }
+
+    @Override
+    public String listToJsonString(List<String> list) {
+        return RealNameOwnerService.super.listToJsonString(list);
     }
 }
 
