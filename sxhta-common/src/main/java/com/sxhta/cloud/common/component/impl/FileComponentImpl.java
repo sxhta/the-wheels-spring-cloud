@@ -19,7 +19,10 @@ import java.nio.charset.StandardCharsets;
  */
 @Singleton
 @Component
-public class FileComponentImpl implements FileComponent {
+public class FileComponentImpl implements FileComponent, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
 
     /**

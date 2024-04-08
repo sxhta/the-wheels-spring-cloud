@@ -51,7 +51,7 @@ public class ReflectUtils implements Serializable {
     public static <E> void invokeSetter(Object obj, String propertyName, E value) {
         Object object = obj;
         String[] names = StringUtils.split(propertyName, ".");
-        for (Integer i = 0; i < names.length; i++) {
+        for (int i = 0; i < names.length; i++) {
             if (i < names.length - 1) {
                 String getterMethodName = GETTER_PREFIX + StringUtils.capitalize(names[i]);
                 object = invokeMethod(object, getterMethodName, new Class[]{}, new Object[]{});
@@ -138,7 +138,7 @@ public class ReflectUtils implements Serializable {
         try {
             // 类型转换（将参数数据类型转换为目标方法参数类型）
             Class<?>[] cs = method.getParameterTypes();
-            for (Integer i = 0; i < cs.length; i++) {
+            for (int i = 0; i < cs.length; i++) {
                 if (args[i] != null && !args[i].getClass().equals(cs[i])) {
                     if (cs[i] == String.class) {
                         args[i] = Convert.toStr(args[i]);

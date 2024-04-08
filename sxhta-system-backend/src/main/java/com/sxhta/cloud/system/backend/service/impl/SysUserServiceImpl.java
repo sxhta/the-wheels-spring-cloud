@@ -3,10 +3,10 @@ package com.sxhta.cloud.system.backend.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import com.sxhta.cloud.common.component.BeanValidatorComponent;
 import com.sxhta.cloud.common.constant.UserConstants;
 import com.sxhta.cloud.common.exception.ServiceException;
 import com.sxhta.cloud.common.utils.CommonStringUtil;
-import com.sxhta.cloud.common.utils.bean.BeanValidators;
 import com.sxhta.cloud.remote.domain.SysRole;
 import com.sxhta.cloud.remote.domain.SysUser;
 import com.sxhta.cloud.remote.util.AdminChecker;
@@ -62,6 +62,9 @@ public class SysUserServiceImpl implements ISysUserService {
 
     @Inject
     private SecurityService securityService;
+
+    @Inject
+    private BeanValidatorComponent beanValidatorComponent;
 
     /**
      * 根据条件分页查询用户列表
@@ -456,14 +459,14 @@ public class SysUserServiceImpl implements ISysUserService {
                 // 验证是否存在这个用户
                 final var u = userMapper.selectUserByUserName(user.getUserName());
                 if (ObjectUtil.isNull(u)) {
-                    BeanValidators.validateWithException(validator, user);
+                    beanValidatorComponent.validateWithException(validator, user);
                     user.setPassword(securityService.encryptPassword(password));
                     user.setCreateBy(operName);
                     userMapper.insertUser(user);
                     successNum++;
                     successMsg.append("<br/>").append(successNum).append("、账号 ").append(user.getUserName()).append(" 导入成功");
                 } else if (isUpdateSupport) {
-                    BeanValidators.validateWithException(validator, user);
+                    beanValidatorComponent.validateWithException(validator, user);
                     checkUserAllowed(u);
                     checkUserDataScope(u.getUserId());
                     user.setUserId(u.getUserId());

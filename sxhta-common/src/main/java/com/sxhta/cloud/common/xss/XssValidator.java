@@ -5,12 +5,18 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.regex.Pattern;
 
 /**
  * 自定义xss校验注解实现
  */
-public class XssValidator implements ConstraintValidator<Xss, String> {
+public class XssValidator implements ConstraintValidator<Xss, String>, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     private static final String HTML_PATTERN = "<(\\S*?)[^>]*>.*?|<.*? />";
 
     @Override

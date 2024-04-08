@@ -7,6 +7,8 @@ import com.sxhta.cloud.common.text.Convert;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -15,7 +17,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * 注意：必须在网关通过请求头的方法传入，同时在HeaderInterceptor拦截器设置值。 否则这里无法获取
  */
 @Component
-public class SecurityContextHolderImpl implements SecurityContextHolder {
+public class SecurityContextHolderImpl implements SecurityContextHolder, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private final ThreadLocal<Map<String, Object>> THREAD_LOCAL = new TransmittableThreadLocal<>();
 
