@@ -1,5 +1,7 @@
 package com.sxhta.cloud.wheels.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sxhta.cloud.remote.domain.SysUser;
 import com.sxhta.cloud.remote.vo.SystemUserCacheVo;
@@ -11,8 +13,10 @@ import com.sxhta.cloud.wheels.request.complain.ComplainInformationSearchRequest;
 import com.sxhta.cloud.wheels.response.complain.ComplainInformationResponse;
 import com.sxhta.cloud.wheels.service.ComplainInformationService;
 import jakarta.inject.Inject;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,12 +28,20 @@ public class ComplainInformationServiceImpl extends ServiceImpl<ComplainInformat
 
     @Override
     public Boolean create(ComplainInformationRequest complainInformationRequest) {
-        return null;
+        final var complainInformation = new ComplainInformation();
+        BeanUtils.copyProperties(complainInformationRequest, complainInformation);
+        complainInformation.setCreateBy(tokenService.getUsername());
+        return save(complainInformation);
     }
 
     @Override
     public ComplainInformationResponse getInfoByHash(String hash) {
-        return null;
+        final var complainInformationLqw = new LambdaQueryWrapper<ComplainInformation>();
+        complainInformationLqw.eq(ComplainInformation::getHash, hash);
+        final var complainInformation = getOne(complainInformationLqw);
+        final var complainInformationResponse = new ComplainInformationResponse();
+        BeanUtils.copyProperties(complainInformation, complainInformationResponse);
+        return complainInformationResponse;
     }
 
     @Override
@@ -49,7 +61,19 @@ public class ComplainInformationServiceImpl extends ServiceImpl<ComplainInformat
 
     @Override
     public List<ComplainInformationResponse> getAdminList(ComplainInformationSearchRequest request) {
-        return null;
+        final var complainInformationResponseList = new ArrayList<ComplainInformationResponse>();
+        final var complainInformationLqw = new LambdaQueryWrapper<ComplainInformation>();
+        //TODO:投诉信息查询参数
+        final var complainInformationList = list(complainInformationLqw);
+        if (CollUtil.isNotEmpty(complainInformationList)) {
+            complainInformationList.forEach(complainInformation -> {
+                final var complainInformationResponse = new ComplainInformationResponse();
+                BeanUtils.copyProperties(complainInformation, complainInformationResponse);
+                complainInformationResponseList.add(complainInformationResponse);
+            });
+
+        }
+        return complainInformationResponseList;
     }
 }
 

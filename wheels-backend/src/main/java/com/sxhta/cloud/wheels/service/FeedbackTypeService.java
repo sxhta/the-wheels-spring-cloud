@@ -9,4 +9,5 @@ import com.sxhta.cloud.wheels.response.feedback.FeedbackTypeResponse;
 
 public interface FeedbackTypeService extends ICommonService<FeedbackTypeSearchRequest, FeedbackTypeRequest, FeedbackTypeResponse>, IService<FeedbackType> {
 
+    Boolean updateStatus(String hash);
 }

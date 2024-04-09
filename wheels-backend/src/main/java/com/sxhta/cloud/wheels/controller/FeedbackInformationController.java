@@ -73,5 +73,9 @@ public class FeedbackInformationController extends BaseController implements ICo
         return null;
     }
 
+    @GetMapping("/")
+    public TableDataInfo<FeedbackInformationResponse> getMyFeedbackList() {
+        return null;
+    }
 
 }

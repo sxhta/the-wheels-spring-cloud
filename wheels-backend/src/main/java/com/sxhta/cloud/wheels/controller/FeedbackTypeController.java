@@ -11,6 +11,7 @@ import com.sxhta.cloud.wheels.response.feedback.FeedbackTypeResponse;
 import com.sxhta.cloud.wheels.service.FeedbackTypeService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.inject.Inject;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,8 +28,9 @@ public class FeedbackTypeController extends BaseController implements ICommonCon
 
     @Override
     public TableDataInfo<FeedbackTypeResponse> getAdminList(FeedbackTypeSearchRequest request, PageRequest pageRequest) {
-        feedbackTypeService.getAdminList(request);
-        return null;
+        startPage(pageRequest);
+        final var list = feedbackTypeService.getAdminList(request);
+        return CommonResponse.list(list);
     }
 
     @Override
@@ -62,6 +64,11 @@ public class FeedbackTypeController extends BaseController implements ICommonCon
     }
 
     //TODO:修改状态
+    @PutMapping("/status")
+    public CommonResponse<Boolean> updateStatus(String hash) {
+        feedbackTypeService.updateStatus(hash);
+        return null;
+    }
 
 
 }
