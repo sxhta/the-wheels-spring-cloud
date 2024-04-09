@@ -51,7 +51,7 @@ public class Order extends BaseHashEntity implements Serializable {
     @Schema(description = "航班号")
     private String flightNumber;
 
-    @Schema(description = "订单状态，1待出行，2司机已接单，3进行中，4已完成，5取消订单")
+    @Schema(description = "订单状态，1未接单，2已接单，3进行中，4已完成，5取消订单")
     private Integer orderStatus;
 
     @Schema(description = "支付类型，1支付宝，2微信，3余额，4现金支付，5其他")

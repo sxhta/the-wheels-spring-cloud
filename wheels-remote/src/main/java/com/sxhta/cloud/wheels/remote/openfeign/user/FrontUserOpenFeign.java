@@ -40,5 +40,5 @@ public interface FrontUserOpenFeign extends Serializable {
 
     //通过id查询HASH
     @GetMapping("/auth/user/info/id/{id}")
-    CommonResponse<FrontUserHashVo> getHashById(@PathVariable("id") Long id);
+    CommonResponse<FrontUserHashVo> getHashById(@PathVariable("id") Long id,@RequestHeader(SecurityConstants.FROM_SOURCE) String source);
 }

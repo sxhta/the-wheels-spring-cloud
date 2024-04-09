@@ -30,4 +30,6 @@ public final class ServiceNameConstants implements Serializable {
      * 打车前端的serviceId
      */
     public static final String WHEELS_FRONTEND = "wheels-frontend";
+
+    public static final String WHEELS_ORDER = "wheels-order";
 }

@@ -2,6 +2,7 @@ package com.sxhta.cloud.wheels.remote.domain.user;
 
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.sxhta.cloud.common.annotation.Excel;
 import com.sxhta.cloud.common.domain.AbstractUserEntity;
 import com.sxhta.cloud.common.utils.encrypt.EncryptUtil;
@@ -16,6 +17,7 @@ import java.util.Map;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
+@TableName("wheels_front_user")
 public class WheelsFrontUser extends AbstractUserEntity {
 
     private String hash = EncryptUtil.generateEntityHash(UUID.randomUUID(true).toString());

@@ -8,7 +8,6 @@ import com.sxhta.cloud.common.exception.CommonNullException;
 import com.sxhta.cloud.security.service.TokenService;
 import com.sxhta.cloud.wheels.remote.domain.order.Order;
 import com.sxhta.cloud.wheels.remote.domain.user.WheelsFrontUser;
-import com.sxhta.cloud.wheels.remote.openfeign.user.FrontUserOpenFeign;
 import com.sxhta.cloud.wheels.remote.response.OrderResponse;
 import com.sxhta.cloud.wheels.remote.vo.FrontUserCacheVo;
 import com.wheels.cloud.order.mapper.OrderMapper;
@@ -36,9 +35,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     @Inject
     private TokenService<FrontUserCacheVo, WheelsFrontUser> tokenService;
-
-    @Inject
-    private FrontUserOpenFeign frontUserOpenFeign;
 
     @Inject
     private OrderInfoService orderInfoService;
@@ -119,11 +115,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     }
 
     @Override
-    public List<OrderResponse> getFrontList(Integer type) {//1已完成，2已取消
+    public List<OrderResponse> getFrontList(String userHash,Integer type) {//1已完成，2已取消
         final var lqw = new LambdaQueryWrapper<Order>();
-        final var frontUserHash = frontUserOpenFeign.getHashById(tokenService.getLoginUser().getUserid());
         lqw.and(i -> i.isNull(Order::getDeleteTime))
-            .and(i->i.eq(Order::getUserHash,frontUserHash.getData().getHash()));
+            .and(i->i.eq(Order::getUserHash,userHash));
         if (ObjectUtil.isNotNull(type)) {
             if (type ==1){
                 lqw.and(i -> i.eq(Order::getOrderStatus,4));
