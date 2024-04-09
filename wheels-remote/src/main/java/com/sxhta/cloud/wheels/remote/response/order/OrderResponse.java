@@ -1,4 +1,4 @@
-package com.sxhta.cloud.wheels.remote.response;
+package com.sxhta.cloud.wheels.remote.response.order;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,6 +23,9 @@ public class OrderResponse implements Serializable {
 
     @Schema(description = "订单HASH")
     private String hash;
+
+    @Schema(description = "订单状态，1未接单，2已接单，3进行中，4已完成，5取消订单，6待确认")
+    private Integer orderStatus;
 
     @Schema(description = "预约类型，1即时订单，2预约订单")
     private Boolean orderType;

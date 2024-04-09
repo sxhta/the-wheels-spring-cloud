@@ -6,7 +6,7 @@ import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.sxhta.cloud.common.web.page.PageRequest;
 import com.sxhta.cloud.common.web.page.TableDataInfo;
 import com.sxhta.cloud.wheels.remote.factory.order.OrderFallbackFactory;
-import com.sxhta.cloud.wheels.remote.response.OrderResponse;
+import com.sxhta.cloud.wheels.remote.response.order.OrderResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
