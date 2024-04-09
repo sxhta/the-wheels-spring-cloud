@@ -16,7 +16,7 @@ public class CodeGenerator {
         generate();
     }
 
-    private static final String PARENT_PATH = "com.sxhta.cloud.wheels";
+    private static final String PARENT_PATH = "com.wheels.cloud.order";//订单模块
 
     private static void generate() {
         //
@@ -24,7 +24,7 @@ public class CodeGenerator {
                 .globalConfig(builder -> {
                     builder.author("") // 设置作者
                             .enableSwagger() // 开启 swagger 模式
-                            .outputDir("D:\\xiangmu\\the-wheels-spring-cloud\\wheels-backend\\src\\main\\java\\"); // 后管
+                            .outputDir("D:\\xiangmu\\the-wheels-spring-cloud\\wheels-order\\src\\main\\java\\"); // 后管
                 })
                 .packageConfig(builder -> {
                     builder.parent(PARENT_PATH) // 设置父包名
@@ -34,7 +34,7 @@ public class CodeGenerator {
 //                            .serviceImpl("service.impl")
 //                            .controller("controller")
 //                            .mapper("mapper")
-                            .pathInfo(Collections.singletonMap(OutputFile.xml, "D:\\xiangmu\\the-wheels-spring-cloud\\wheels-backend\\src\\main\\resources\\mapper\\")); // 后管
+                            .pathInfo(Collections.singletonMap(OutputFile.xml, "D:\\xiangmu\\the-wheels-spring-cloud\\wheels-order\\src\\main\\resources\\mapper\\")); // 后管
                 })
                 .strategyConfig(builder -> {
                     builder.serviceBuilder().formatServiceFileName("%sService").formatServiceImplFileName("%sServiceImpl");
@@ -42,7 +42,7 @@ public class CodeGenerator {
 //                    builder.mapperBuilder().enableMapperAnnotation().build();
                     builder.controllerBuilder().enableHyphenStyle()  // 开启驼峰转连字符
                             .enableRestStyle();  // 开启生成@RestController 控制器
-                    builder.addInclude("wheels_order") // 设置需要生成的表名
+                    builder.addInclude("wheels_order_info") // 设置需要生成的表名
                             .addTablePrefix("item_", "sys_","unify_","wheels_"); // 设置过滤表前缀
                 })
                 .injectionConfig(consumer->{
@@ -51,7 +51,6 @@ public class CodeGenerator {
                     customMap.put("request", PARENT_PATH + ".request");
 
                     consumer.customMap(customMap);
-
                     // DTO
                     List<CustomFile> customFiles = new ArrayList<>();
                     customFiles.add(new CustomFile.Builder().packageName("response").fileName("Response.java")
