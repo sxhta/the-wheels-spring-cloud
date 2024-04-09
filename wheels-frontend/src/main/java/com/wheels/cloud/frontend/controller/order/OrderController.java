@@ -27,11 +27,11 @@ public class OrderController implements Serializable {
     @Inject
     private OrderService orderService;
 
-    @InnerAuth
     @GetMapping("/list")
     @Operation(summary = "客户端列表")
     public TableDataInfo<OrderResponse> getFrontList(@RequestParam(value = "type",defaultValue = "") Integer type,//1已完成，2已取消
                                                                      PageRequest pageRequest) {
+        System.out.println("111111111111");
         return orderService.getFrontList(type,pageRequest);
     }
 }

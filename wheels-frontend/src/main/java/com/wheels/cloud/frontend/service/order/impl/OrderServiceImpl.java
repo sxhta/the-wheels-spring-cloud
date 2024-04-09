@@ -10,6 +10,7 @@ import com.sxhta.cloud.wheels.remote.openfeign.user.FrontUserOpenFeign;
 import com.sxhta.cloud.wheels.remote.response.OrderResponse;
 import com.sxhta.cloud.wheels.remote.vo.FrontUserCacheVo;
 import com.wheels.cloud.frontend.service.order.OrderService;
+import com.wheels.cloud.frontend.service.user.FrontUserService;
 import jakarta.inject.Inject;
 import org.springframework.stereotype.Service;
 
@@ -28,13 +29,17 @@ public class OrderServiceImpl implements OrderService, Serializable {
     @Inject
     private OrderOpenfeign orderOpenfeign;
 
+//    @Inject
+//    private FrontUserOpenFeign frontUserOpenFeign;
+
     @Inject
-    private FrontUserOpenFeign frontUserOpenFeign;
+    private FrontUserService frontUserService;
 
     @Override
     public TableDataInfo<OrderResponse> getFrontList(Integer type, PageRequest pageRequest) {
-        final var frontUserHash = frontUserOpenFeign.getHashById(tokenService.getLoginUser().getUserid());
-        final var orderOpenfeignFrontList = orderOpenfeign.getFrontList(frontUserHash.getData().getHash(), type, pageRequest, SecurityConstants.INNER);
+//        final var frontUserHash = frontUserService.getHashById(tokenService.getLoginUser().getUserid());
+        //TODO:获取用户HASH
+        final var orderOpenfeignFrontList = orderOpenfeign.getFrontList("6007f67fd63df554b919991d89c6a07f5ca57044d3e97a9e108fd2e567989021", type, pageRequest, SecurityConstants.INNER);
         return orderOpenfeignFrontList.getData();
     }
 }

@@ -1,5 +1,6 @@
 package com.sxhta.cloud.wheels.remote.factory.user;
 
+import com.sxhta.cloud.common.constant.SecurityConstants;
 import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.sxhta.cloud.wheels.remote.openfeign.user.FrontUserOpenFeign;
 import com.sxhta.cloud.wheels.remote.request.RemoteRegisterRequest;
@@ -39,7 +40,7 @@ public class FrontUserFallbackFactory implements FallbackFactory<FrontUserOpenFe
             }
 
             @Override
-            public CommonResponse<FrontUserHashVo> getHashById(Long id) {
+            public CommonResponse<FrontUserHashVo> getHashById(Long id, String source) {
                 return CommonResponse.error("获取用户失败:" + throwable.getMessage());
             }
         };
