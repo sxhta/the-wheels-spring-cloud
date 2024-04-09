@@ -5,6 +5,7 @@ import com.sxhta.cloud.common.web.controller.ICommonController;
 import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.sxhta.cloud.common.web.page.PageRequest;
 import com.sxhta.cloud.common.web.page.TableDataInfo;
+import com.sxhta.cloud.security.annotation.InnerAuth;
 import com.sxhta.cloud.wheels.remote.response.OrderResponse;
 import com.wheels.cloud.order.request.OrderRequest;
 import com.wheels.cloud.order.request.OrderSearchRequest;
@@ -74,11 +75,12 @@ public class OrderController extends BaseController implements ICommonController
         return CommonResponse.success(orderService.getInfoByHash(hash));
     }
 
+    @InnerAuth
     @GetMapping("/front/list")
     @Operation(summary = "客户端列表")
-    public TableDataInfo<OrderResponse> getAdminList(@RequestParam(value = "type",defaultValue = "") Integer type,//1已完成，2已取消
+    public CommonResponse<TableDataInfo<OrderResponse>> getFrontList(@RequestParam(value = "userHash") String userHash,@RequestParam(value = "type",defaultValue = "") Integer type,//1已完成，2已取消
                                                      PageRequest pageRequest) {
         startPage(pageRequest);
-        return CommonResponse.list(orderService.getFrontList(type));
+        return CommonResponse.success(CommonResponse.list(orderService.getFrontList(userHash,type)));
     }
 }

@@ -12,5 +12,5 @@ import java.util.List;
  */
 public interface OrderService extends ICommonService<OrderSearchRequest, OrderRequest, OrderResponse> {
 
-    List<OrderResponse> getFrontList(Integer type);
+    List<OrderResponse> getFrontList(String userHash,Integer type);
 }
