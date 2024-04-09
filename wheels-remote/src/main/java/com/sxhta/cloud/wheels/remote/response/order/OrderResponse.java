@@ -28,10 +28,10 @@ public class OrderResponse implements Serializable {
     private Integer orderStatus;
 
     @Schema(description = "预约类型，1即时订单，2预约订单")
-    private Boolean orderType;
+    private Integer orderType;
 
     @Schema(description = "是否加急，1是，2否")
-    private Boolean isUrgent;
+    private Integer isUrgent;
 
     @Schema(description = "出发地")
     private String departure;

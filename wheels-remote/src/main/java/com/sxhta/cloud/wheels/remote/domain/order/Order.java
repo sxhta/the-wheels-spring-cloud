@@ -73,7 +73,7 @@ public class Order extends BaseHashEntity implements Serializable {
     private Boolean isPaid;
 
     @Schema(description = "预约类型，1即时订单，2预约订单")
-    private Boolean orderType;
+    private Integer orderType;
 
     @Schema(description = "预约时间")
     private LocalDateTime appointmentTime;
@@ -85,7 +85,7 @@ public class Order extends BaseHashEntity implements Serializable {
     private BigDecimal originAmount;
 
     @Schema(description = "是否加急，1是，2否")
-    private Boolean isUrgent;
+    private Integer isUrgent;
 
     @Schema(description = "加急金额")
     private BigDecimal urgentAmount;

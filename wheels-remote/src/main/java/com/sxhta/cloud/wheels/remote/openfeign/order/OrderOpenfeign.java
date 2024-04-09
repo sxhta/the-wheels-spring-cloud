@@ -6,6 +6,7 @@ import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.sxhta.cloud.common.web.page.PageRequest;
 import com.sxhta.cloud.common.web.page.TableDataInfo;
 import com.sxhta.cloud.wheels.remote.factory.order.OrderFallbackFactory;
+import com.sxhta.cloud.wheels.remote.response.order.OrderInfoResponse;
 import com.sxhta.cloud.wheels.remote.response.order.OrderResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -23,4 +24,7 @@ public interface OrderOpenfeign {
     @GetMapping("/orders/user/front/list")
     CommonResponse<TableDataInfo<OrderResponse>> getFrontList(@RequestParam(value = "userHash") String userHash, @RequestParam(value = "type", defaultValue = "") Integer type,//1已完成，2已取消
                                                               @RequestParam PageRequest pageRequest, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+    @Operation(summary = "客户端详情")
+    @GetMapping("/orders/user/front/info")
+    CommonResponse<OrderInfoResponse> getFrontInfo(@RequestParam(value = "orderHash") String orderHash, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
 }

@@ -1,7 +1,9 @@
 package com.wheels.cloud.frontend.controller.order;
 
+import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.sxhta.cloud.common.web.page.PageRequest;
 import com.sxhta.cloud.common.web.page.TableDataInfo;
+import com.sxhta.cloud.wheels.remote.response.order.OrderInfoResponse;
 import com.sxhta.cloud.wheels.remote.response.order.OrderResponse;
 import com.wheels.cloud.frontend.service.order.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,7 +32,12 @@ public class OrderController implements Serializable {
     @Operation(summary = "客户端列表")
     public TableDataInfo<OrderResponse> getFrontList(@RequestParam(value = "type",defaultValue = "") Integer type,//1已完成，2已取消
                                                                      PageRequest pageRequest) {
-        System.out.println("111111111111");
         return orderService.getFrontList(type,pageRequest);
+    }
+
+    @GetMapping("/info")
+    @Operation(summary = "客户端详情")
+    public CommonResponse<OrderInfoResponse> getFrontInfo(@RequestParam(value = "orderHash") String orderHash) {
+        return CommonResponse.success(orderService.getFrontInfo(orderHash));
     }
 }
