@@ -1,32 +1,28 @@
-package com.sxhta.cloud.wheels.entity;
+package com.sxhta.cloud.wheels.request.feedback;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.sxhta.cloud.common.domain.BaseHashEntity;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Date;
-
-/**
- * 车主实名认证
- */
-
+import java.time.LocalDateTime;
 
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-@TableName(value = "wheels_real_name_owner")
-public class RealNameOwner extends BaseHashEntity implements Serializable {
+@TableName(value = "wheels_feedback_information")
+@Schema(name = "反馈信息", description = "反馈信息实体类")
+public class FeedbackInformationSearchRequest extends BaseHashEntity implements Serializable {
 
     @Serial
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
-
     /**
      * id
      */
@@ -34,59 +30,56 @@ public class RealNameOwner extends BaseHashEntity implements Serializable {
     private Long id;
 
     /**
-     * 认证人
+     * 反馈类型
      */
-    private String ownerHash;
+    private String feedbackTypeHash;
 
     /**
-     * 性别(1 男 2女)
+     * 反馈内容
      */
-    private Integer gender;
+    private String feedbackContent;
 
     /**
-     * 真实姓名
+     * 反馈人
      */
-    private String realName;
+    private String feedbackUser;
 
     /**
-     * 身份证正面
+     * 反馈时间
      */
-    private String identityCardFrontUrl;
+    private LocalDateTime feedbackTime;
 
     /**
-     * 生份证反面
+     * 是否处理(0-未处理 1-已处理)
      */
-    private String identityCardBackUrl;
+    private Boolean isHandle = false;
 
     /**
-     * 审核状态(1 待审核 2 审核通过 3 审核驳回)
+     * 处理人
      */
-    private Integer status;
+    private String handleBy;
 
     /**
-     * 审核时间
+     * 处理时间
      */
-    private Date auditTime;
+    private LocalDateTime handleTime;
+
 
     /**
-     * 审核人
+     * 处理备注
      */
-    private String auditBy;
+    private String handleRemark;
 
-    /**
-     * 审核次数
-     */
-    private Integer auditCount;
 
     /**
      * 创建者
      */
     private String createBy;
 
+
     /**
      * 修改人
      */
     private String updateBy;
-
 
 }

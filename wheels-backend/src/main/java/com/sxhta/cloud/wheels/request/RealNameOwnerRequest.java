@@ -17,35 +17,43 @@ public class RealNameOwnerRequest extends BaseHashEntity implements Serializable
 
     @Serial
     private static final long serialVersionUID = 1L;
-    /**
-     * 审核状态(1 待审核 2 审核通过 3 审核驳回)
-     */
-    private final Integer status = 1;
+
     /**
      * id
      */
     @TableId
     private Long id;
+
+    /**
+     * 审核状态(1 待审核 2 审核通过 3 审核驳回)
+     */
+    private final Integer status = 1;
+
     /**
      * 认证人
      */
     private String ownerHash;
+
     /**
      * 性别(1 男 2女)
      */
     private Integer gender;
+
     /**
      * 真实姓名
      */
     private String realName;
+
     /**
      * 身份证正面
      */
     private String identityCardFrontUrl;
+
     /**
      * 生份证反面
      */
     private String identityCardBackUrl;
+
     @Schema(name = "创建者")
     private String createBy;
 

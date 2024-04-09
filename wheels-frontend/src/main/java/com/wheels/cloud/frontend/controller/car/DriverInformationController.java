@@ -24,13 +24,11 @@ import java.io.Serializable;
 @RequestMapping("/driver/information")
 @Tag(name = "司机资料", description = "司机资料控制器")
 public class DriverInformationController extends BaseController implements ICommonController<DriverInformationSearchRequest, DriverInformationRequest, DriverInformationResponse>, Serializable {
-
     @Serial
     private static final long serialVersionUID = 1L;
 
     @Inject
     private DriverInformationService driverInformationService;
-
 
     @Override
     @GetMapping("/list")
