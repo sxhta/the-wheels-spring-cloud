@@ -21,6 +21,7 @@ dependencies {
     implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-sentinel'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    implementation 'com.aliyun:alibabacloud-dysmsapi20170525:2.0.24'
 }
 
 test {
