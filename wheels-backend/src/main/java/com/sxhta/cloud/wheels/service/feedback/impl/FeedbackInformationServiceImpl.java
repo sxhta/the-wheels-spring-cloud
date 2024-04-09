@@ -1,4 +1,4 @@
-package com.sxhta.cloud.wheels.service.impl;
+package com.sxhta.cloud.wheels.service.feedback.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -9,11 +9,11 @@ import com.sxhta.cloud.remote.domain.SysUser;
 import com.sxhta.cloud.remote.vo.SystemUserCacheVo;
 import com.sxhta.cloud.security.service.TokenService;
 import com.sxhta.cloud.wheels.entity.feedback.FeedbackInformation;
-import com.sxhta.cloud.wheels.mapper.FeedbackInformationMapper;
+import com.sxhta.cloud.wheels.mapper.feedback.FeedbackInformationMapper;
 import com.sxhta.cloud.wheels.request.feedback.FeedbackInformationRequest;
 import com.sxhta.cloud.wheels.request.feedback.FeedbackInformationSearchRequest;
 import com.sxhta.cloud.wheels.response.feedback.FeedbackInformationResponse;
-import com.sxhta.cloud.wheels.service.FeedbackInformationService;
+import com.sxhta.cloud.wheels.service.feedback.FeedbackInformationService;
 import jakarta.inject.Inject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;

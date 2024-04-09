@@ -1,4 +1,4 @@
-package com.sxhta.cloud.wheels.service.impl;
+package com.sxhta.cloud.wheels.service.complain.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -7,11 +7,11 @@ import com.sxhta.cloud.remote.domain.SysUser;
 import com.sxhta.cloud.remote.vo.SystemUserCacheVo;
 import com.sxhta.cloud.security.service.TokenService;
 import com.sxhta.cloud.wheels.entity.complain.ComplainInformation;
-import com.sxhta.cloud.wheels.mapper.ComplainInformationMapper;
+import com.sxhta.cloud.wheels.mapper.complain.ComplainInformationMapper;
 import com.sxhta.cloud.wheels.request.complain.ComplainInformationRequest;
 import com.sxhta.cloud.wheels.request.complain.ComplainInformationSearchRequest;
 import com.sxhta.cloud.wheels.response.complain.ComplainInformationResponse;
-import com.sxhta.cloud.wheels.service.ComplainInformationService;
+import com.sxhta.cloud.wheels.service.complain.ComplainInformationService;
 import jakarta.inject.Inject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;

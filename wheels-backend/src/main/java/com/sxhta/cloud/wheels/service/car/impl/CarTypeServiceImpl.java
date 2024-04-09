@@ -1,4 +1,4 @@
-package com.sxhta.cloud.wheels.service.impl;
+package com.sxhta.cloud.wheels.service.car.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -10,11 +10,11 @@ import com.sxhta.cloud.remote.domain.SysUser;
 import com.sxhta.cloud.remote.vo.SystemUserCacheVo;
 import com.sxhta.cloud.security.service.TokenService;
 import com.sxhta.cloud.wheels.entity.car.CarType;
-import com.sxhta.cloud.wheels.mapper.CarTypeMapper;
-import com.sxhta.cloud.wheels.request.CarTypeRequest;
-import com.sxhta.cloud.wheels.request.CarTypeSearchRequest;
+import com.sxhta.cloud.wheels.mapper.car.CarTypeMapper;
+import com.sxhta.cloud.wheels.request.car.CarTypeRequest;
+import com.sxhta.cloud.wheels.request.car.CarTypeSearchRequest;
 import com.sxhta.cloud.wheels.response.CarTypeResponse;
-import com.sxhta.cloud.wheels.service.CarTypeService;
+import com.sxhta.cloud.wheels.service.car.CarTypeService;
 import jakarta.inject.Inject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;

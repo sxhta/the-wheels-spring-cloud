@@ -1,4 +1,4 @@
-package com.sxhta.cloud.wheels.service.impl;
+package com.sxhta.cloud.wheels.service.feedback.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -7,11 +7,11 @@ import com.sxhta.cloud.remote.domain.SysUser;
 import com.sxhta.cloud.remote.vo.SystemUserCacheVo;
 import com.sxhta.cloud.security.service.TokenService;
 import com.sxhta.cloud.wheels.entity.feedback.FeedbackType;
-import com.sxhta.cloud.wheels.mapper.FeedbackTypeMapper;
+import com.sxhta.cloud.wheels.mapper.feedback.FeedbackTypeMapper;
 import com.sxhta.cloud.wheels.request.feedback.FeedbackTypeRequest;
 import com.sxhta.cloud.wheels.request.feedback.FeedbackTypeSearchRequest;
 import com.sxhta.cloud.wheels.response.feedback.FeedbackTypeResponse;
-import com.sxhta.cloud.wheels.service.FeedbackTypeService;
+import com.sxhta.cloud.wheels.service.feedback.FeedbackTypeService;
 import jakarta.inject.Inject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;

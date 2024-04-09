@@ -1,4 +1,4 @@
-package com.sxhta.cloud.wheels.controller;
+package com.sxhta.cloud.wheels.controller.complain;
 
 import com.sxhta.cloud.common.web.controller.BaseController;
 import com.sxhta.cloud.common.web.controller.ICommonController;
@@ -8,7 +8,7 @@ import com.sxhta.cloud.common.web.page.TableDataInfo;
 import com.sxhta.cloud.wheels.request.complain.ComplainInformationRequest;
 import com.sxhta.cloud.wheels.request.complain.ComplainInformationSearchRequest;
 import com.sxhta.cloud.wheels.response.complain.ComplainInformationResponse;
-import com.sxhta.cloud.wheels.service.ComplainInformationService;
+import com.sxhta.cloud.wheels.service.complain.ComplainInformationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.inject.Inject;
 import org.springframework.web.bind.annotation.RequestMapping;

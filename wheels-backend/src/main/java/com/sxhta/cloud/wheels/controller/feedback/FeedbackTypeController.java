@@ -1,4 +1,4 @@
-package com.sxhta.cloud.wheels.controller;
+package com.sxhta.cloud.wheels.controller.feedback;
 
 import com.sxhta.cloud.common.web.controller.BaseController;
 import com.sxhta.cloud.common.web.controller.ICommonController;
@@ -8,7 +8,7 @@ import com.sxhta.cloud.common.web.page.TableDataInfo;
 import com.sxhta.cloud.wheels.request.feedback.FeedbackTypeRequest;
 import com.sxhta.cloud.wheels.request.feedback.FeedbackTypeSearchRequest;
 import com.sxhta.cloud.wheels.response.feedback.FeedbackTypeResponse;
-import com.sxhta.cloud.wheels.service.FeedbackTypeService;
+import com.sxhta.cloud.wheels.service.feedback.FeedbackTypeService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.inject.Inject;
 import org.springframework.web.bind.annotation.PutMapping;

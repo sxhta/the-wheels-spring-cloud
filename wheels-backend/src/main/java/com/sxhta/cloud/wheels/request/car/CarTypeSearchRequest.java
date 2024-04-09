@@ -1,4 +1,4 @@
-package com.sxhta.cloud.wheels.request;
+package com.sxhta.cloud.wheels.request.car;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.sxhta.cloud.common.domain.BaseHashEntity;
@@ -12,17 +12,11 @@ import java.io.Serializable;
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-public class CarTypeRequest extends BaseHashEntity implements Serializable {
-
+public class CarTypeSearchRequest extends BaseHashEntity implements Serializable {
 
     @Serial
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
-
-    /**
-     * id
-     */
-    private Long id;
 
     /**
      * 类型名称

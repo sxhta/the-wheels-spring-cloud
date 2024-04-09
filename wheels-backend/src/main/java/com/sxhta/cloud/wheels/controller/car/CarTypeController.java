@@ -1,4 +1,4 @@
-package com.sxhta.cloud.wheels.controller;
+package com.sxhta.cloud.wheels.controller.car;
 
 import com.sxhta.cloud.common.web.controller.BaseController;
 import com.sxhta.cloud.common.web.controller.ICommonController;
@@ -6,10 +6,10 @@ import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.sxhta.cloud.common.web.page.PageRequest;
 import com.sxhta.cloud.common.web.page.TableDataInfo;
 import com.sxhta.cloud.wheels.entity.car.CarType;
-import com.sxhta.cloud.wheels.request.CarTypeRequest;
-import com.sxhta.cloud.wheels.request.CarTypeSearchRequest;
+import com.sxhta.cloud.wheels.request.car.CarTypeRequest;
+import com.sxhta.cloud.wheels.request.car.CarTypeSearchRequest;
 import com.sxhta.cloud.wheels.response.CarTypeResponse;
-import com.sxhta.cloud.wheels.service.CarTypeService;
+import com.sxhta.cloud.wheels.service.car.CarTypeService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.inject.Inject;
 import org.springframework.web.bind.annotation.*;

@@ -1,10 +1,10 @@
-package com.sxhta.cloud.wheels.service;
+package com.sxhta.cloud.wheels.service.car;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.sxhta.cloud.common.service.ICommonService;
 import com.sxhta.cloud.wheels.entity.car.CarType;
-import com.sxhta.cloud.wheels.request.CarTypeRequest;
-import com.sxhta.cloud.wheels.request.CarTypeSearchRequest;
+import com.sxhta.cloud.wheels.request.car.CarTypeRequest;
+import com.sxhta.cloud.wheels.request.car.CarTypeSearchRequest;
 import com.sxhta.cloud.wheels.response.CarTypeResponse;
 
 import java.util.List;
