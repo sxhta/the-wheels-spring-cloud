@@ -1,5 +1,7 @@
 package com.sxhta.cloud.security.aspect;
 
+import com.sxhta.cloud.remote.domain.SysUser;
+import com.sxhta.cloud.remote.vo.SystemUserCacheVo;
 import com.sxhta.cloud.security.annotation.RequiresLogin;
 import com.sxhta.cloud.security.annotation.RequiresPermissions;
 import com.sxhta.cloud.security.annotation.RequiresRoles;
@@ -33,7 +35,7 @@ public class PreAuthorizeAspect implements Serializable {
     private SystemAuthService authService;
 
     @Inject
-    private TokenService tokenService;
+    private TokenService<SystemUserCacheVo, SysUser> tokenService;
 
     /**
      * 构建
@@ -63,6 +65,7 @@ public class PreAuthorizeAspect implements Serializable {
      * @return 底层方法执行后的返回值
      * @throws Throwable 底层方法抛出的异常
      */
+    @SuppressWarnings("CallToPrintStackTrace")
     @Around("pointcut()")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
         // 注解鉴权
@@ -72,6 +75,7 @@ public class PreAuthorizeAspect implements Serializable {
             // 执行原有逻辑
             return joinPoint.proceed();
         } catch (Throwable e) {
+            e.printStackTrace();
             throw e;
         }
     }

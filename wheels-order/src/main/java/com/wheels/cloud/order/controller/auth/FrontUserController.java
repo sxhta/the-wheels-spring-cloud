@@ -26,7 +26,7 @@ public class FrontUserController implements Serializable {
 
     @InnerAuth
     @PostMapping("/register")
-    public CommonResponse<FrontUserCacheVo> register(@RequestBody RemoteRegisterRequest request) {
+    public CommonResponse<Boolean> register(@RequestBody RemoteRegisterRequest request) {
         final var result = frontUserService.register(request);
         return CommonResponse.success(result);
     }

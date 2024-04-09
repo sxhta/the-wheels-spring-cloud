@@ -5,7 +5,8 @@ import cn.hutool.core.util.ObjectUtil;
 import com.sxhta.cloud.common.component.ServletComponent;
 import com.sxhta.cloud.common.constant.SecurityConstants;
 import com.sxhta.cloud.common.context.SecurityContextHolder;
-import com.sxhta.cloud.security.service.SystemAuthService;
+import com.sxhta.cloud.common.domain.AbstractUserCacheVo;
+import com.sxhta.cloud.common.domain.AbstractUserEntity;
 import com.sxhta.cloud.security.service.TokenService;
 import jakarta.annotation.Nonnull;
 import jakarta.inject.Inject;
@@ -29,10 +30,7 @@ public class HeaderInterceptor implements AsyncHandlerInterceptor, Serializable 
     private static final long serialVersionUID = 1L;
 
     @Inject
-    private SystemAuthService authService;
-
-    @Inject
-    private TokenService tokenService;
+    private TokenService<AbstractUserCacheVo<AbstractUserEntity>, AbstractUserEntity> tokenService;
 
     @Inject
     private SecurityContextHolder securityContextHolder;

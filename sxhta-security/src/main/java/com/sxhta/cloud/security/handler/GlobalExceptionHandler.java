@@ -38,7 +38,7 @@ public class GlobalExceptionHandler implements Serializable {
      * 权限码异常
      */
     @ExceptionHandler(NotPermissionException.class)
-    public CommonResponse handleNotPermissionException(NotPermissionException e, HttpServletRequest request) {
+    public CommonResponse<Boolean> handleNotPermissionException(NotPermissionException e, HttpServletRequest request) {
         final var requestURI = request.getRequestURI();
         log.error("请求地址'{}',权限码校验失败'{}'", requestURI, e.getMessage());
         return CommonResponse.error(HttpStatus.FORBIDDEN.value(), "没有访问权限，请联系管理员授权");
@@ -48,7 +48,7 @@ public class GlobalExceptionHandler implements Serializable {
      * 角色权限异常
      */
     @ExceptionHandler(NotRoleException.class)
-    public CommonResponse handleNotRoleException(NotRoleException e, HttpServletRequest request) {
+    public CommonResponse<Boolean> handleNotRoleException(NotRoleException e, HttpServletRequest request) {
         final var requestURI = request.getRequestURI();
         log.error("请求地址'{}',角色权限校验失败'{}'", requestURI, e.getMessage());
         return CommonResponse.error(HttpStatus.FORBIDDEN.value(), "没有访问权限，请联系管理员授权");
