@@ -6,7 +6,7 @@ import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.sxhta.cloud.common.web.page.PageRequest;
 import com.sxhta.cloud.common.web.page.TableDataInfo;
 import com.sxhta.cloud.security.annotation.InnerAuth;
-import com.sxhta.cloud.wheels.remote.response.OrderResponse;
+import com.sxhta.cloud.wheels.remote.response.order.OrderResponse;
 import com.wheels.cloud.order.request.OrderRequest;
 import com.wheels.cloud.order.request.OrderSearchRequest;
 import com.wheels.cloud.order.service.OrderService;

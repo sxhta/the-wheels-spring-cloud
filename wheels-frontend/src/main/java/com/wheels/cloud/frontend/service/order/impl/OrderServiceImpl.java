@@ -6,8 +6,7 @@ import com.sxhta.cloud.common.web.page.TableDataInfo;
 import com.sxhta.cloud.security.service.TokenService;
 import com.sxhta.cloud.wheels.remote.domain.user.WheelsFrontUser;
 import com.sxhta.cloud.wheels.remote.openfeign.order.OrderOpenfeign;
-import com.sxhta.cloud.wheels.remote.openfeign.user.FrontUserOpenFeign;
-import com.sxhta.cloud.wheels.remote.response.OrderResponse;
+import com.sxhta.cloud.wheels.remote.response.order.OrderResponse;
 import com.sxhta.cloud.wheels.remote.vo.FrontUserCacheVo;
 import com.wheels.cloud.frontend.service.order.OrderService;
 import com.wheels.cloud.frontend.service.user.FrontUserService;
@@ -28,9 +27,6 @@ public class OrderServiceImpl implements OrderService, Serializable {
 
     @Inject
     private OrderOpenfeign orderOpenfeign;
-
-//    @Inject
-//    private FrontUserOpenFeign frontUserOpenFeign;
 
     @Inject
     private FrontUserService frontUserService;
