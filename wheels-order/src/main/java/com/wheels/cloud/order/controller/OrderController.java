@@ -23,7 +23,7 @@ import java.io.Serializable;
  */
 @Tag(name = "订单管理", description = "订单管理"+"控制器")
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/orders")
 public class OrderController extends BaseController implements ICommonController<OrderSearchRequest,OrderRequest, OrderResponse> ,Serializable {
 
     @Serial
@@ -75,9 +75,9 @@ public class OrderController extends BaseController implements ICommonController
         return CommonResponse.success(orderService.getInfoByHash(hash));
     }
 
-    @InnerAuth
-    @GetMapping("/front/list")
     @Operation(summary = "客户端列表")
+    @InnerAuth
+    @GetMapping("/user/front/list")
     public CommonResponse<TableDataInfo<OrderResponse>> getFrontList(@RequestParam(value = "userHash") String userHash,@RequestParam(value = "type",defaultValue = "") Integer type,//1已完成，2已取消
                                                      PageRequest pageRequest) {
         startPage(pageRequest);

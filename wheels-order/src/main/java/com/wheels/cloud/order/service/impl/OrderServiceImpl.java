@@ -127,7 +127,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
                 lqw.and(i -> i.eq(Order::getOrderStatus,5));
             }
         }
-        lqw.and(i -> i.orderByDesc(Order::getCreateTime));
+        lqw.orderByDesc(Order::getCreateTime);
         final var orderList = list(lqw);
         final var responseList = new ArrayList<OrderResponse>();
         if (CollUtil.isEmpty(orderList)) {

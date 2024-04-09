@@ -16,8 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(contextId = "orderOpenFeign", value = ServiceNameConstants.WHEELS_ORDER, fallbackFactory = OrderFallbackFactory.class)
 public interface OrderOpenfeign {
 
-    @GetMapping("/order/front/list")
+    /**
+     * 对象参数在FeignClient里，必须用 @SpringQueryMap 或 @RequestParam标记
+     */
     @Operation(summary = "客户端列表")
-    CommonResponse<TableDataInfo<OrderResponse>> getFrontList(@RequestParam(value = "userHash") String userHash, @RequestParam(value = "type",defaultValue = "") Integer type,//1已完成，2已取消
-                                                                     PageRequest pageRequest ,@RequestHeader(SecurityConstants.FROM_SOURCE) String source) ;
+    @GetMapping("/orders/user/front/list")
+    CommonResponse<TableDataInfo<OrderResponse>> getFrontList(@RequestParam(value = "userHash") String userHash, @RequestParam(value = "type", defaultValue = "") Integer type,//1已完成，2已取消
+                                                              @RequestParam PageRequest pageRequest, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
 }
