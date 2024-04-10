@@ -47,8 +47,6 @@ dependencies {
     api group: 'cn.hutool', name: 'hutool-all', version: '5.8.26'
     api 'com.google.guava:guava:33.1.0-jre'
 
-    implementation group: 'com.alibaba', name: 'easyexcel', version: '3.3.2'
-
     api('com.baomidou:mybatis-plus-boot-starter:3.5.5', {
         exclude(group: 'org.mybatis')
         exclude(group: 'org.mybatis.spring.boot')

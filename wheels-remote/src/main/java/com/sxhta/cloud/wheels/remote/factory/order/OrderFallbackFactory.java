@@ -3,6 +3,7 @@ package com.sxhta.cloud.wheels.remote.factory.order;
 import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.sxhta.cloud.common.web.page.PageRequest;
 import com.sxhta.cloud.common.web.page.TableDataInfo;
+import com.sxhta.cloud.wheels.remote.domain.SysFile;
 import com.sxhta.cloud.wheels.remote.openfeign.order.OrderOpenfeign;
 import com.sxhta.cloud.wheels.remote.request.order.OrderSearchRequest;
 import com.sxhta.cloud.wheels.remote.response.order.*;
@@ -58,6 +59,11 @@ public class OrderFallbackFactory implements FallbackFactory<OrderOpenfeign>, Se
             @Override
             public CommonResponse<OrderAdminInfoResponse> getBackstageInfo(String orderHash, String source) {
                 return CommonResponse.error("订单详情获取失败:" + throwable.getMessage());
+            }
+
+            @Override
+            public CommonResponse<SysFile> getBackstageExport(OrderSearchRequest request, String source) {
+                return CommonResponse.error("订单导出失败:" + throwable.getMessage());
             }
         };
     }

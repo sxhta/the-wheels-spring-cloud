@@ -5,6 +5,7 @@ import com.sxhta.cloud.common.constant.ServiceNameConstants;
 import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.sxhta.cloud.common.web.page.PageRequest;
 import com.sxhta.cloud.common.web.page.TableDataInfo;
+import com.sxhta.cloud.wheels.remote.domain.SysFile;
 import com.sxhta.cloud.wheels.remote.factory.order.OrderFallbackFactory;
 import com.sxhta.cloud.wheels.remote.request.order.OrderSearchRequest;
 import com.sxhta.cloud.wheels.remote.response.order.*;
@@ -47,4 +48,8 @@ public interface OrderOpenfeign {
     @Operation(summary = "后管订单详情")
     @GetMapping("/orders/admin/info/{orderHash}")
     CommonResponse<OrderAdminInfoResponse> getBackstageInfo(@PathVariable(value = "orderHash") String orderHash, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+
+    @Operation(summary = "后管订单导出")
+    @GetMapping("/orders/admin/export")
+    CommonResponse<SysFile> getBackstageExport(@SpringQueryMap OrderSearchRequest request, @RequestHeader(SecurityConstants.FROM_SOURCE) String source) throws ParseException;
 }

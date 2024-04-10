@@ -128,7 +128,7 @@ public class OrderController extends BaseController implements ICommonController
     @Operation(summary = "后管订单导出")
     @InnerAuth
     @GetMapping("/admin/export")
-    public CommonResponse<SysFile> getBackstageExport(@SpringQueryMap OrderSearchRequest request){
+    public CommonResponse<SysFile> getBackstageExport(@SpringQueryMap OrderSearchRequest request) throws ParseException {
         return CommonResponse.success(orderService.getBackstageExport(request));
     }
 }

@@ -4,6 +4,7 @@ import com.sxhta.cloud.common.constant.SecurityConstants;
 import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.sxhta.cloud.common.web.page.PageRequest;
 import com.sxhta.cloud.common.web.page.TableDataInfo;
+import com.sxhta.cloud.wheels.remote.domain.SysFile;
 import com.sxhta.cloud.wheels.remote.openfeign.order.OrderOpenfeign;
 import com.sxhta.cloud.wheels.remote.request.order.OrderSearchRequest;
 import com.sxhta.cloud.wheels.remote.response.order.OrderAdminInfoResponse;
@@ -34,6 +35,12 @@ public class OrderServiceImpl implements OrderService , Serializable {
     @Override
     public OrderAdminInfoResponse getBackstageInfo(String orderHash) {
         final var resData = orderOpenfeign.getBackstageInfo(orderHash, SecurityConstants.INNER);
+        return resData.getData();
+    }
+
+    @Override
+    public SysFile getBackstageExport(OrderSearchRequest request) throws ParseException {
+        final var resData = orderOpenfeign.getBackstageExport(request, SecurityConstants.INNER);
         return resData.getData();
     }
 }

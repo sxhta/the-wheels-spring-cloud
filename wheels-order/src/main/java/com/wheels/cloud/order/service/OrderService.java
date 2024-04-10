@@ -26,5 +26,5 @@ public interface OrderService extends ICommonService<OrderSearchRequest, OrderRe
 
     OrderAdminInfoResponse getBackstageInfo(String orderHash);
 
-    SysFile getBackstageExport(OrderSearchRequest request);
+    SysFile getBackstageExport(OrderSearchRequest request) throws ParseException;
 }
