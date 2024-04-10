@@ -5,17 +5,16 @@ import com.sxhta.cloud.common.web.controller.ICommonController;
 import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.sxhta.cloud.common.web.page.PageRequest;
 import com.sxhta.cloud.common.web.page.TableDataInfo;
+import com.sxhta.cloud.remote.domain.SysFile;
 import com.sxhta.cloud.security.annotation.InnerAuth;
-import com.sxhta.cloud.wheels.remote.response.order.OrderAdminResponse;
-import com.sxhta.cloud.wheels.remote.response.order.OrderExpectationResponse;
-import com.sxhta.cloud.wheels.remote.response.order.OrderInfoResponse;
-import com.sxhta.cloud.wheels.remote.response.order.OrderResponse;
+import com.sxhta.cloud.wheels.remote.response.order.*;
 import com.wheels.cloud.order.request.OrderRequest;
 import com.sxhta.cloud.wheels.remote.request.order.OrderSearchRequest;
 import com.wheels.cloud.order.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.inject.Inject;
+import org.springframework.cloud.openfeign.SpringQueryMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serial;
@@ -114,8 +113,22 @@ public class OrderController extends BaseController implements ICommonController
     @Operation(summary = "后管订单列表")
     @InnerAuth
     @GetMapping("/admin/list")
-    public CommonResponse<TableDataInfo<OrderAdminResponse>> getBackstageList(@ModelAttribute("OrderSearchRequest") OrderSearchRequest request, PageRequest pageRequest) throws ParseException {
+    public CommonResponse<TableDataInfo<OrderAdminResponse>> getBackstageList(@SpringQueryMap OrderSearchRequest request, PageRequest pageRequest) throws ParseException {
         startPage(pageRequest);
         return CommonResponse.success(CommonResponse.list(orderService.getBackstageList(request)));
+    }
+
+    @Operation(summary = "后管订单详情")
+    @InnerAuth
+    @GetMapping("/admin/info/{orderHash}")
+    public CommonResponse<OrderAdminInfoResponse> getBackstageInfo(@PathVariable(value = "orderHash") String orderHash){
+        return CommonResponse.success(orderService.getBackstageInfo(orderHash));
+    }
+
+    @Operation(summary = "后管订单导出")
+    @InnerAuth
+    @GetMapping("/admin/export")
+    public CommonResponse<SysFile> getBackstageExport(@SpringQueryMap OrderSearchRequest request){
+        return CommonResponse.success(orderService.getBackstageExport(request));
     }
 }

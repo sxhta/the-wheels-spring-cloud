@@ -93,7 +93,7 @@ public class Order extends BaseHashEntity implements Serializable {
     @Schema(description = "其他费用")
     private BigDecimal otherFee;
 
-    @Schema(description = "是否使用优惠卷，1是，2否")
+    @Schema(description = "是否使用优惠卷，0否，1是")
     private Boolean isUseCoupon;
 
     @Schema(description = "优惠卷CODE")

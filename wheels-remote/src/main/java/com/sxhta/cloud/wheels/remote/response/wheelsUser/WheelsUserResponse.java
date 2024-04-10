@@ -20,4 +20,6 @@ public class WheelsUserResponse implements Serializable {
     private String userName;
 
     private String account;
+
+    private Integer gender;
 }

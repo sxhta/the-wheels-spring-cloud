@@ -7,12 +7,10 @@ import com.sxhta.cloud.common.web.page.PageRequest;
 import com.sxhta.cloud.common.web.page.TableDataInfo;
 import com.sxhta.cloud.wheels.remote.factory.order.OrderFallbackFactory;
 import com.sxhta.cloud.wheels.remote.request.order.OrderSearchRequest;
-import com.sxhta.cloud.wheels.remote.response.order.OrderAdminResponse;
-import com.sxhta.cloud.wheels.remote.response.order.OrderExpectationResponse;
-import com.sxhta.cloud.wheels.remote.response.order.OrderInfoResponse;
-import com.sxhta.cloud.wheels.remote.response.order.OrderResponse;
+import com.sxhta.cloud.wheels.remote.response.order.*;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.cloud.openfeign.SpringQueryMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -44,5 +42,9 @@ public interface OrderOpenfeign {
 
     @Operation(summary = "后管订单列表")
     @GetMapping("/orders/admin/list")
-    CommonResponse<TableDataInfo<OrderAdminResponse>> getBackstageList(@RequestPart("request")  OrderSearchRequest request, @RequestParam PageRequest pageRequest, @RequestHeader(SecurityConstants.FROM_SOURCE) String source) throws ParseException;
+    CommonResponse<TableDataInfo<OrderAdminResponse>> getBackstageList(@SpringQueryMap OrderSearchRequest request, @RequestParam PageRequest pageRequest, @RequestHeader(SecurityConstants.FROM_SOURCE) String source) throws ParseException;
+
+    @Operation(summary = "后管订单详情")
+    @GetMapping("/orders/admin/info/{orderHash}")
+    CommonResponse<OrderAdminInfoResponse> getBackstageInfo(@PathVariable(value = "orderHash") String orderHash, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
 }

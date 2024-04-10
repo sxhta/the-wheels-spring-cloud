@@ -22,6 +22,9 @@ public class OrderAdminResponse implements Serializable {
     @Schema(description = "订单HASH")
     private String hash;
 
+    @Schema(description = "订单编号")
+    private String orderNo;
+
     @Schema(description = "订单状态，1未接单，2已接单，3进行中，4已完成，5取消订单，6待确认")
     private Integer orderStatus;
 
@@ -43,7 +46,7 @@ public class OrderAdminResponse implements Serializable {
     @Schema(description = "下单用户点电话")
     private String placeOrderUserPhone;
 
-    @Schema(description = "出发时间")
+    @Schema(description = "预约时间")
     @JsonFormat(pattern = "yyyy年M月d日 HH:mm")
     private LocalDateTime appointmentTime;
 

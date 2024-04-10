@@ -103,6 +103,7 @@ public class FrontUserServiceImpl extends ServiceImpl<FrontUserMapper, WheelsFro
         response.setHash(frontUser.getHash());
         response.setUserName(frontUser.getUserName());
         response.setAccount(frontUser.getAccount());
+        response.setGender(frontUser.getGender());
         return response;
     }
 }
