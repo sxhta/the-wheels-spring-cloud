@@ -6,8 +6,9 @@ import com.sxhta.cloud.wheels.remote.response.order.OrderExpectationResponse;
 import com.sxhta.cloud.wheels.remote.response.order.OrderInfoResponse;
 import com.sxhta.cloud.wheels.remote.response.order.OrderResponse;
 import com.wheels.cloud.order.request.OrderRequest;
-import com.wheels.cloud.order.request.OrderSearchRequest;
+import com.sxhta.cloud.wheels.remote.request.order.OrderSearchRequest;
 
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -23,5 +24,5 @@ public interface OrderService extends ICommonService<OrderSearchRequest, OrderRe
 
     Double getFrontTotalMileage(String userHash);
 
-    List<OrderAdminResponse> getBackstageList(OrderSearchRequest request);
+    List<OrderAdminResponse> getBackstageList(OrderSearchRequest request) throws ParseException;
 }

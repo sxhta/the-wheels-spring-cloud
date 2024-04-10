@@ -1,11 +1,10 @@
-package com.wheels.cloud.order.request;
+package com.sxhta.cloud.wheels.remote.request.order;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 /**
  * 订单管理
@@ -15,9 +14,6 @@ import java.time.LocalDateTime;
 public class OrderSearchRequest implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
-
-    @Schema(description = "ID")
-    private Long id;
 
     @Schema(description = "订单编号")
     private String orderNo;
@@ -38,14 +34,14 @@ public class OrderSearchRequest implements Serializable {
     private Integer isUrgent;
 
     @Schema(description = "预约开始时间")
-    private LocalDateTime reservationStartTime;
+    private String reservationStartTime;
 
     @Schema(description = "预约结束时间")
-    private LocalDateTime reservationEndTime;
+    private String reservationEndTime;
 
     @Schema(description = "订单创建时间")
-    private LocalDateTime createStartTime;
+    private String createStartTime;
 
     @Schema(description = "订单结束时间")
-    private LocalDateTime createEndTime;
+    private String createEndTime;
 }

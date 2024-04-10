@@ -18,7 +18,10 @@ public class OrderInfoResponse extends OrderResponse implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @Schema(description = "性别,1男，2女")
+    @Schema(description = "订单编号")
+    private String orderNo;
+
+    @Schema(description = "0=未设置,1=男,2=女,3=未知")
     private Integer sex;
 
     @Schema(description = "用户名字")

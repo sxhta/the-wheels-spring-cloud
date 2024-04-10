@@ -11,7 +11,7 @@ import com.sxhta.cloud.wheels.remote.response.order.OrderExpectationResponse;
 import com.sxhta.cloud.wheels.remote.response.order.OrderInfoResponse;
 import com.sxhta.cloud.wheels.remote.response.order.OrderResponse;
 import com.wheels.cloud.order.request.OrderRequest;
-import com.wheels.cloud.order.request.OrderSearchRequest;
+import com.sxhta.cloud.wheels.remote.request.order.OrderSearchRequest;
 import com.wheels.cloud.order.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.text.ParseException;
 
 /**
  * 订单管理 前端控制器
@@ -112,8 +113,8 @@ public class OrderController extends BaseController implements ICommonController
 
     @Operation(summary = "后管订单列表")
     @InnerAuth
-    @PutMapping("/admin/list")
-    public CommonResponse<TableDataInfo<OrderAdminResponse>> getBackstageList(OrderSearchRequest request, PageRequest pageRequest) {
+    @GetMapping("/admin/list")
+    public CommonResponse<TableDataInfo<OrderAdminResponse>> getBackstageList(@ModelAttribute("OrderSearchRequest") OrderSearchRequest request, PageRequest pageRequest) throws ParseException {
         startPage(pageRequest);
         return CommonResponse.success(CommonResponse.list(orderService.getBackstageList(request)));
     }

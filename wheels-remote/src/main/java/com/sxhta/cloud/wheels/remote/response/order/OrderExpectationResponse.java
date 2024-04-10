@@ -72,7 +72,7 @@ public class OrderExpectationResponse implements Serializable {
     @Schema(description = "用户名字")
     private String userName;
 
-    @Schema(description = "性别,1男，2女")
+    @Schema(description = "0=未设置,1=男,2=女,3=未知")
     private Integer sex;
 
     @Schema(description = "用户电话")
