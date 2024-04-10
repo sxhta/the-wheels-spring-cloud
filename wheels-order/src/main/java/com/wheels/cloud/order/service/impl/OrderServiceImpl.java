@@ -2,32 +2,49 @@ package com.wheels.cloud.order.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
+import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.sxhta.cloud.common.constant.SecurityConstants;
 import com.sxhta.cloud.common.exception.CommonNullException;
+import com.sxhta.cloud.remote.domain.SysFile;
 import com.sxhta.cloud.security.service.TokenService;
 import com.sxhta.cloud.wheels.remote.domain.order.Order;
 import com.sxhta.cloud.wheels.remote.domain.user.WheelsFrontUser;
-import com.sxhta.cloud.wheels.remote.response.order.OrderAdminResponse;
-import com.sxhta.cloud.wheels.remote.response.order.OrderExpectationResponse;
-import com.sxhta.cloud.wheels.remote.response.order.OrderInfoResponse;
-import com.sxhta.cloud.wheels.remote.response.order.OrderResponse;
+import com.sxhta.cloud.wheels.remote.openfeign.user.FrontUserOpenFeign;
+import com.sxhta.cloud.wheels.remote.request.order.OrderSearchRequest;
+import com.sxhta.cloud.wheels.remote.response.order.*;
 import com.sxhta.cloud.wheels.remote.vo.FrontUserCacheVo;
+import com.sxhta.cloud.wheels.remote.vo.excel.PublicExportData;
+import com.wheels.cloud.order.exportVo.AdminOrderExportVo;
+import com.wheels.cloud.order.exprot.ExcelTitleHandler;
 import com.wheels.cloud.order.mapper.OrderMapper;
 import com.wheels.cloud.order.request.OrderRequest;
-import com.wheels.cloud.order.request.OrderSearchRequest;
 import com.wheels.cloud.order.service.OrderInfoService;
 import com.wheels.cloud.order.service.OrderService;
+import com.wheels.cloud.order.utils.EasyExcelStyleUtils;
+import com.wheels.cloud.order.utils.ExcelFillCellMergeStrategy;
+import com.wheels.cloud.order.utils.TimesUtils;
 import jakarta.inject.Inject;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -39,11 +56,23 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Serial
     private static final long serialVersionUID = 1L;
 
+    @Value("${file.path}")
+    private String localFilePath;
+    //文件地址
+    @Value("${file.domain}")
+    private String storagePath;
+
+    @Value("${file.prefix}")
+    private String prefixPath;
+
     @Inject
     private TokenService<FrontUserCacheVo, WheelsFrontUser> tokenService;
 
     @Inject
     private OrderInfoService orderInfoService;
+
+    @Inject
+    private FrontUserOpenFeign frontUserOpenFeign;
 
     @Override
     public Boolean create(OrderRequest request) {
@@ -120,16 +149,16 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     }
 
     @Override
-    public List<OrderResponse> getFrontList(String userHash,Integer type) {//1已完成，2已取消
+    public List<OrderResponse> getFrontList(String userHash, Integer type) {//1已完成，2已取消
         final var lqw = new LambdaQueryWrapper<Order>();
         lqw.and(i -> i.isNull(Order::getDeleteTime))
-            .and(i->i.eq(Order::getUserHash,userHash));
+                .and(i -> i.eq(Order::getUserHash, userHash));
         if (ObjectUtil.isNotNull(type)) {
-            if (type ==1){
-                lqw.and(i -> i.eq(Order::getOrderStatus,4));
+            if (type == 1) {
+                lqw.and(i -> i.eq(Order::getOrderStatus, 4));
             }
-            if (type ==2){
-                lqw.and(i -> i.eq(Order::getOrderStatus,5));
+            if (type == 2) {
+                lqw.and(i -> i.eq(Order::getOrderStatus, 5));
             }
         }
         lqw.orderByDesc(Order::getCreateTime);
@@ -138,10 +167,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         if (CollUtil.isEmpty(orderList)) {
             return responseList;
         }
-        orderList.forEach(order->{
+        orderList.forEach(order -> {
             final var response = new OrderResponse();
             final var orderInfo = orderInfoService.getInfoByOrderHash(order.getHash());
-            BeanUtils.copyProperties(orderInfo,response);
+            BeanUtils.copyProperties(orderInfo, response);
             response.setId(order.getId());
             response.setHash(order.getHash());
             response.setOrderStatus(order.getOrderStatus());
@@ -158,16 +187,16 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Override
     public OrderInfoResponse getFrontInfo(String orderHash) {
         final var lqw = new LambdaQueryWrapper<Order>();
-        lqw.and(i->i.isNull(Order::getDeleteTime))
-           .and(i->i.eq(Order::getHash,orderHash));
+        lqw.and(i -> i.isNull(Order::getDeleteTime))
+                .and(i -> i.eq(Order::getHash, orderHash));
         final var order = getOne(lqw);
         if (ObjectUtil.isNull(order)) {
             throw new CommonNullException("该订单不存在！");
         }
         final var orderInfo = orderInfoService.getInfoByOrderHash(order.getHash());
         final var response = new OrderInfoResponse();
-        BeanUtils.copyProperties(order,response);
-        BeanUtils.copyProperties(orderInfo,response);
+        BeanUtils.copyProperties(order, response);
+        BeanUtils.copyProperties(orderInfo, response);
         response.setId(order.getId());
         response.setHash(order.getHash());
 
@@ -186,7 +215,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         response.setCouponAmount(new BigDecimal(BigInteger.ZERO));
         //TODO:车辆类型
         response.setCarType("车辆类型");
-        if (orderInfo.getIsHelpCall() == 1){
+        if (orderInfo.getIsHelpCall() == 1) {
             response.setUserName(orderInfo.getHelpName());
             response.setUserPhone(orderInfo.getHelpPhone());
             response.setSex(orderInfo.getHelpSex());
@@ -197,25 +226,25 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Override
     public List<OrderExpectationResponse> getFrontExpectationList(String userHash) {
         final var lqw = new LambdaQueryWrapper<Order>();
-        lqw.and(i->i.isNull(Order::getDeleteTime))
-            .and(i->i.eq(Order::getUserHash,userHash))
-            .and(i->i.in(Order::getOrderStatus,2,3));
+        lqw.and(i -> i.isNull(Order::getDeleteTime))
+                .and(i -> i.eq(Order::getUserHash, userHash))
+                .and(i -> i.in(Order::getOrderStatus, 2, 3));
         lqw.orderByDesc(Order::getOrderStatus);
         lqw.orderByDesc(Order::getAppointmentTime);
         final var orderList = list(lqw);
         final var responseList = new ArrayList<OrderExpectationResponse>();
         if (CollUtil.isEmpty(orderList)) {
-            return  responseList;
+            return responseList;
         }
         orderList.forEach(order -> {
             final var response = new OrderExpectationResponse();
             final var orderInfo = orderInfoService.getInfoByOrderHash(order.getHash());
-            BeanUtils.copyProperties(order,response);
-            BeanUtils.copyProperties(orderInfo,response);
+            BeanUtils.copyProperties(order, response);
+            BeanUtils.copyProperties(orderInfo, response);
             response.setId(order.getId());
             response.setHash(order.getHash());
             response.setAppointmentTime(order.getAppointmentTime());
-            if (orderInfo.getIsHelpCall() == 1){
+            if (orderInfo.getIsHelpCall() == 1) {
                 response.setUserName(orderInfo.getHelpName());
                 response.setUserPhone(orderInfo.getHelpPhone());
                 response.setSex(orderInfo.getHelpSex());
@@ -229,13 +258,13 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Override
     public Double getFrontTotalMileage(String userHash) {
         final var lqw = new LambdaQueryWrapper<Order>();
-        lqw.and(i->i.eq(Order::getUserHash,userHash));
-        lqw.and(i->i.in(Order::getOrderStatus,4));
+        lqw.and(i -> i.eq(Order::getUserHash, userHash));
+        lqw.and(i -> i.in(Order::getOrderStatus, 4));
         final var orderList = list(lqw);
         if (CollUtil.isEmpty(orderList)) {
             return 0.00;
         }
-        final var totalMileage = new AtomicReference<Double>(0.00);
+        final var totalMileage = new AtomicReference<>(0.00);
         orderList.forEach(order -> {
             final var orderInfo = orderInfoService.getInfoByOrderHash(order.getHash());
             totalMileage.updateAndGet(v -> v + Double.parseDouble(orderInfo.getMileage()));
@@ -243,11 +272,186 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         return totalMileage.get();
     }
 
-    @Override
-    public List<OrderAdminResponse> getBackstageList(OrderSearchRequest request) {
-        final var lqw = new LambdaQueryWrapper<Order>();
-        final var responseList = new ArrayList<OrderAdminResponse>();
 
+
+    @Override
+    public List<OrderAdminResponse> getBackstageList(OrderSearchRequest request) throws ParseException {
+        return this.getOrderAdminResponseList(request);
+    }
+
+    @Override
+    public OrderAdminInfoResponse getBackstageInfo(String orderHash) {
+        final var lqw = new LambdaQueryWrapper<Order>();
+        lqw.and((i->i.eq(Order::getHash,orderHash)));
+        final var order = getOne(lqw);
+        if (ObjectUtil.isNull(order)) {
+            throw new CommonNullException("该订单不存在！");
+        }
+        final var response = new OrderAdminInfoResponse();
+        final var orderInfo = orderInfoService.getInfoByOrderHash(order.getHash());
+        response.setDestination(orderInfo.getDestination());
+        response.setDeparture(orderInfo.getDeparture());
+        response.setMileage(orderInfo.getMileage());
+        final var resData = frontUserOpenFeign.getInfoByHash(order.getUserHash(), SecurityConstants.INNER);
+        response.setPlaceOrderUserName(resData.getData().getUserName());
+        response.setPlaceOrderUserPhone(resData.getData().getAccount());
+        if (orderInfo.getIsHelpCall() == 1) {
+            response.setTravelersUserName(orderInfo.getHelpName());
+            response.setTravelersUserPhone(orderInfo.getHelpPhone());
+            response.setTravelersUserSex(orderInfo.getHelpSex());
+        }
+        response.setIsHelpCall(orderInfo.getIsHelpCall());
+        if (orderInfo.getIsHelpCall() == 2) {
+            response.setTravelersUserName(resData.getData().getUserName());
+            response.setTravelersUserPhone(resData.getData().getAccount());
+            response.setTravelersUserSex(resData.getData().getGender());
+        }
+        //TODO 优惠卷
+        if (order.getIsUseCoupon()) {
+            response.setCouponAmount(new BigDecimal("100"));
+        }else {
+            response.setCouponAmount(BigDecimal.ZERO);
+        }
+        //TODO 车主信息
+        response.setOwnerUserName("车主姓名");
+        response.setOwnerUserPhone("车主联系电话");
+        response.setOwnerUserAvatar("车主头像");
+        //TODO 车辆信息
+        response.setCarType("车辆类型");
+        BeanUtils.copyProperties(order,response);
+        return response;
+    }
+
+    @Override
+    public SysFile getBackstageExport(OrderSearchRequest request) throws ParseException {
+        String exportFileName = "订单";
+        int[] mergeColumnIndex = {};
+        return this.getFileInfo(this.getAdminOrderExport(request), exportFileName, mergeColumnIndex, AdminOrderExportVo.class);
+    }
+
+
+
+
+
+    private PublicExportData getAdminOrderExport(OrderSearchRequest request) throws ParseException {
+        final var exportResponseList = new ArrayList<AdminOrderExportVo>();//数据
+        final var groupDataList = new ArrayList<Integer>();
+
+        final var orderAdminResponseList = this.getOrderAdminResponseList(request);
+        if (CollUtil.isEmpty(orderAdminResponseList)) {
+            throw new CommonNullException("没有可导出的数据！");
+        }
+        for (var order : orderAdminResponseList) {
+            final var exportResponse = new AdminOrderExportVo();
+            BeanUtils.copyProperties(order,exportResponse);
+//            exportResponse.setOrderId(storeProductOrderVo.getOrderNo());
+//            switch (storeProductOrderVo.getStatus()) {
+//                case 0 -> exportResponse.setStatus("已下单");
+//                case 1 -> exportResponse.setStatus("已发货");
+//                case 2 -> exportResponse.setStatus("已完成");
+//                case 3 -> exportResponse.setStatus("已退款");
+//                case 4 -> exportResponse.setStatus("拒绝退款");
+//                case 5 -> exportResponse.setStatus("退款中");
+//                case 7 -> exportResponse.setStatus("退款中");
+//                case 8 -> exportResponse.setStatus("退款中");
+//                case 10 -> exportResponse.setStatus("取消订单");
+//            }
+            exportResponseList.add(exportResponse);
+            groupDataList.add(1);
+        }
+        final var publicExportData = new PublicExportData();
+        publicExportData.setDataList(exportResponseList);
+        publicExportData.setGroupDataList(groupDataList);
+        return publicExportData;
+    }
+
+    private List<OrderAdminResponse> getOrderAdminResponseList(OrderSearchRequest request)throws ParseException{
+        final var lqw = new LambdaQueryWrapper<Order>();
+        if (StrUtil.isNotBlank(request.getOrderNo())) {
+            lqw.and(i -> i.like(Order::getOrderNo, request.getOrderNo()));
+        }
+        if (ObjectUtil.isNotNull(request.getOrderStatus())) {
+            lqw.and(i -> i.in(Order::getOrderStatus, request.getOrderStatus()));
+        }
+        if (ObjectUtil.isNotNull(request.getIsUrgent())) {
+            lqw.and(i -> i.in(Order::getIsUrgent, request.getIsUrgent()));
+        }
+        if (ObjectUtil.isNotNull(request.getOrderType())) {
+            lqw.and(i -> i.in(Order::getOrderType, request.getOrderType()));
+        }
+        if (StrUtil.isNotBlank(request.getPlaceOrderUserName())) {
+            final var resData = frontUserOpenFeign.getHashListByUserName(request.getPlaceOrderUserName(), SecurityConstants.INNER);
+            if (CollUtil.isNotEmpty(resData.getData())) {
+                lqw.and(i -> i.in(Order::getUserHash, resData.getData()));
+            }
+        }
+        if (StrUtil.isNotBlank(request.getPlaceOrderUserPhone())) {
+            final var resData = frontUserOpenFeign.getHashListByUserPhone(request.getPlaceOrderUserPhone(), SecurityConstants.INNER);
+            if (CollUtil.isNotEmpty(resData.getData())) {
+                lqw.and(i -> i.in(Order::getUserHash, resData.getData()));
+            }
+        }
+        if (StrUtil.isNotBlank(request.getReservationStartTime()) && StrUtil.isNotBlank(request.getReservationEndTime())) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date dateStart = sdf.parse(request.getReservationStartTime());
+            Date dateEnd = sdf.parse(request.getReservationEndTime());
+            lqw.and(consumer -> consumer.between(Order::getAppointmentTime, dateStart, dateEnd));
+        }
+        if (StrUtil.isNotBlank(request.getCreateStartTime()) && StrUtil.isNotBlank(request.getCreateEndTime())) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date dateStart = sdf.parse(request.getCreateStartTime());
+            Date dateEnd = sdf.parse(request.getCreateEndTime());
+            lqw.and(consumer -> consumer.between(Order::getCreateTime, dateStart, dateEnd));
+        }
+        lqw.orderByDesc(Order::getCreateTime);
+        final var orderList = list(lqw);
+        final var responseList = new ArrayList<OrderAdminResponse>();
+        if (CollUtil.isEmpty(orderList)) {
+            return responseList;
+        }
+        orderList.forEach(order -> {
+            final var response = new OrderAdminResponse();
+            BeanUtils.copyProperties(order,response);
+            final var orderInfo = orderInfoService.getInfoByOrderHash(order.getHash());
+            response.setDeparture(orderInfo.getDeparture());
+            response.setDestination(orderInfo.getDestination());
+            final var resData = frontUserOpenFeign.getInfoByHash(order.getUserHash(), SecurityConstants.INNER);
+            response.setPlaceOrderUserName(resData.getData().getUserName());
+            response.setPlaceOrderUserPhone(resData.getData().getAccount());
+            responseList.add(response);
+        });
         return responseList;
+    }
+
+
+    private <T> SysFile getFileInfo(
+            PublicExportData publicExportData, String exportFileName, int[] mergeColumnIndex, Class<T> dataTypeClass) {
+        final var sysFile = new SysFile();
+        int mergeRowIndex = 2;
+        String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+        String directoryPath = localFilePath.concat("/excel/export/").concat(currentDate);
+        try {
+            Path directory = Paths.get(directoryPath);
+            if (!Files.exists(directory)) {
+                Files.createDirectories(directory);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // 创建一个带有当前时间的字符串作为表头
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentTime = dateFormat.format(new Date());
+        String fileName = exportFileName.concat("导出-").concat(TimesUtils.getCurrentTimeString()).concat(".xlsx");
+        String rootPath = directoryPath.concat("/").concat(fileName);
+        EasyExcel.write(rootPath, dataTypeClass)
+                .autoCloseStream(Boolean.TRUE)
+                .registerWriteHandler(EasyExcelStyleUtils.getStyle())
+                .registerWriteHandler(new ExcelTitleHandler(exportFileName.concat("导出"), "导出时间:".concat(currentTime)))
+                .registerWriteHandler(new ExcelFillCellMergeStrategy(mergeRowIndex, mergeColumnIndex))
+                .sheet(exportFileName).doWrite(publicExportData.getDataList());
+        String url = storagePath.concat(prefixPath).concat("/excel/export/").concat(currentDate).concat("/").concat(fileName);
+        sysFile.setName(exportFileName);
+        sysFile.setUrl(url);
+        return sysFile;
     }
 }

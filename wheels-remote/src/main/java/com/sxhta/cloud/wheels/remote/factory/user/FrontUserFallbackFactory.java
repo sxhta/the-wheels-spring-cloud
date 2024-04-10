@@ -4,6 +4,7 @@ import com.sxhta.cloud.common.constant.SecurityConstants;
 import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.sxhta.cloud.wheels.remote.openfeign.user.FrontUserOpenFeign;
 import com.sxhta.cloud.wheels.remote.request.RemoteRegisterRequest;
+import com.sxhta.cloud.wheels.remote.response.wheelsUser.WheelsUserResponse;
 import com.sxhta.cloud.wheels.remote.vo.FrontUserCacheVo;
 import com.sxhta.cloud.wheels.remote.vo.FrontUserHashVo;
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 用户服务降级处理
@@ -42,6 +44,21 @@ public class FrontUserFallbackFactory implements FallbackFactory<FrontUserOpenFe
             @Override
             public CommonResponse<FrontUserHashVo> getHashById(Long id, String source) {
                 return CommonResponse.error("获取用户失败:" + throwable.getMessage());
+            }
+
+            @Override
+            public CommonResponse<List<String>> getHashListByUserName(String userName, String source) {
+                return CommonResponse.error("获取用户HASH列表失败:" + throwable.getMessage());
+            }
+
+            @Override
+            public CommonResponse<List<String>> getHashListByUserPhone(String userPhone, String source) {
+                return CommonResponse.error("获取用户HASH列表失败:" + throwable.getMessage());
+            }
+
+            @Override
+            public CommonResponse<WheelsUserResponse> getInfoByHash(String userHash, String source) {
+                return CommonResponse.error("获取用户信息失败:" + throwable.getMessage());
             }
         };
     }

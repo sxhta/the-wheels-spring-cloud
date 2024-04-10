@@ -3,10 +3,10 @@ package com.sxhta.cloud.wheels.remote.factory.order;
 import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.sxhta.cloud.common.web.page.PageRequest;
 import com.sxhta.cloud.common.web.page.TableDataInfo;
+import com.sxhta.cloud.wheels.remote.domain.SysFile;
 import com.sxhta.cloud.wheels.remote.openfeign.order.OrderOpenfeign;
-import com.sxhta.cloud.wheels.remote.response.order.OrderExpectationResponse;
-import com.sxhta.cloud.wheels.remote.response.order.OrderInfoResponse;
-import com.sxhta.cloud.wheels.remote.response.order.OrderResponse;
+import com.sxhta.cloud.wheels.remote.request.order.OrderSearchRequest;
+import com.sxhta.cloud.wheels.remote.response.order.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.openfeign.FallbackFactory;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.text.ParseException;
 
 /**
  * 用户服务降级处理
@@ -48,6 +49,21 @@ public class OrderFallbackFactory implements FallbackFactory<OrderOpenfeign>, Se
             @Override
             public CommonResponse<Double> getFrontTotalMileage(String userHash, String source) {
                 return CommonResponse.error("总里程数获取失败:" + throwable.getMessage());
+            }
+
+            @Override
+            public CommonResponse<TableDataInfo<OrderAdminResponse>> getBackstageList(OrderSearchRequest request, PageRequest pageRequest, String source) throws ParseException {
+                return CommonResponse.error("订单列表获取失败:" + throwable.getMessage());
+            }
+
+            @Override
+            public CommonResponse<OrderAdminInfoResponse> getBackstageInfo(String orderHash, String source) {
+                return CommonResponse.error("订单详情获取失败:" + throwable.getMessage());
+            }
+
+            @Override
+            public CommonResponse<SysFile> getBackstageExport(OrderSearchRequest request, String source) {
+                return CommonResponse.error("订单导出失败:" + throwable.getMessage());
             }
         };
     }

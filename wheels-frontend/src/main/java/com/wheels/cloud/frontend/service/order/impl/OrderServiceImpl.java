@@ -2,9 +2,9 @@ package com.wheels.cloud.frontend.service.order.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.sxhta.cloud.common.constant.SecurityConstants;
 import com.sxhta.cloud.common.exception.CommonNullException;
-import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.sxhta.cloud.common.web.page.PageRequest;
 import com.sxhta.cloud.common.web.page.TableDataInfo;
 import com.sxhta.cloud.security.service.TokenService;
@@ -39,65 +39,57 @@ public class OrderServiceImpl implements OrderService, Serializable {
 
     @Override
     public TableDataInfo<OrderResponse> getFrontList(Integer type, PageRequest pageRequest) {
-//        final var frontUserHash = frontUserService.getHashById(tokenService.getLoginUser().getUserid());
-        //TODO:获取用户HASH
-        final var orderOpenfeignFrontList = orderOpenfeign.getFrontList("6007f67fd63df554b919991d89c6a07f5ca57044d3e97a9e108fd2e567989021", type, pageRequest, SecurityConstants.INNER);
+        final var orderOpenfeignFrontList = orderOpenfeign.getFrontList(frontUserService.getHasHById(tokenService.getUserId()), type, pageRequest, SecurityConstants.INNER);
         return orderOpenfeignFrontList.getData();
     }
 
     @Override
     public OrderInfoResponse getFrontInfo(String orderHash) {
-        final var orderInfo = orderOpenfeign.getFrontInfo(orderHash,SecurityConstants.INNER);
-
+        final var orderInfo = orderOpenfeign.getFrontInfo(orderHash, SecurityConstants.INNER);
         if (ObjectUtil.isNull(orderInfo.getData().getSex()) &&
                 StrUtil.isBlank(orderInfo.getData().getUserName()) &&
                 StrUtil.isBlank(orderInfo.getData().getUserPhone())) {
             final var orderInfoResponse = orderInfo.getData();
-            //TODO 用户信息
-//            final var frontUser = frontUserService.getById(tokenService.getUserId());
-//            if (ObjectUtil.isNull(frontUser)) {
-//                throw new CommonNullException("用户不存在！");
-//            }
-            orderInfoResponse.setSex(1);
-            orderInfoResponse.setUserPhone("18000000000");
-            orderInfoResponse.setUserName("测试姓名");
-//            orderInfoResponse.setUserPhone(frontUser.getAccount());
-//            orderInfoResponse.setUserName(frontUser.getUserName());
+            final var userLqw = new LambdaQueryWrapper<WheelsFrontUser>();
+            userLqw.eq(WheelsFrontUser::getUserId,tokenService.getUserId());
+            final var frontUser = frontUserService.getOne(userLqw);
+            if (ObjectUtil.isNull(frontUser)) {
+                throw new CommonNullException("用户不存在！");
+            }
+            orderInfoResponse.setSex(frontUser.getGender());
+            orderInfoResponse.setUserPhone(frontUser.getAccount());
+            orderInfoResponse.setUserName(frontUser.getUserName());
         }
         return orderInfo.getData();
     }
 
     @Override
     public Double getFrontTotalMileage() {
-        //        final var frontUserHash = frontUserService.getHashById(tokenService.getLoginUser().getUserid());
-        //TODO:获取用户HASH
-        final var res = orderOpenfeign.getFrontTotalMileage("6007f67fd63df554b919991d89c6a07f5ca57044d3e97a9e108fd2e567989021", SecurityConstants.INNER);
+        final var res = orderOpenfeign.getFrontTotalMileage(frontUserService.getHasHById(tokenService.getUserId()), SecurityConstants.INNER);
         return res.getData();
     }
 
     @Override
     public TableDataInfo<OrderExpectationResponse> getFrontExpectationList(PageRequest pageRequest) {
-        //        final var frontUserHash = frontUserService.getHashById(tokenService.getLoginUser().getUserid());
-        //TODO:获取用户HASH
-        final var orderFrontExpectationList = orderOpenfeign.getFrontExpectationList("6007f67fd63df554b919991d89c6a07f5ca57044d3e97a9e108fd2e567989021", pageRequest,SecurityConstants.INNER);
-
-        orderFrontExpectationList.getData().getRows().forEach(order->{
+        final var orderFrontExpectationList = orderOpenfeign.getFrontExpectationList(frontUserService.getHasHById(tokenService.getUserId()), pageRequest, SecurityConstants.INNER);
+        orderFrontExpectationList.getData().getRows().forEach(order -> {
             if (ObjectUtil.isNull(order.getSex()) &&
                     StrUtil.isBlank(order.getUserName()) &&
                     StrUtil.isBlank(order.getUserPhone())) {
-                //TODO 用户信息
-//            final var frontUser = frontUserService.getById(tokenService.getUserId());
-//            if (ObjectUtil.isNull(frontUser)) {
-//                throw new CommonNullException("用户不存在！");
-//            }
-                order.setSex(1);
-                order.setUserPhone("18000000000");
-                order.setUserName("测试姓名");
-//            orderInfoResponse.setUserPhone(frontUser.getAccount());
-//            orderInfoResponse.setUserName(frontUser.getUserName());
+                final var frontUserCacheVo = tokenService.getLoginUser();
+                final var frontUserInCache = frontUserCacheVo.getUserEntity();
+                final var frontUserId = frontUserInCache.getUserId();
+                final var userLqw = new LambdaQueryWrapper<WheelsFrontUser>();
+                userLqw.eq(WheelsFrontUser::getUserId,frontUserId);
+                final var frontUser = frontUserService.getOne(userLqw);
+                if (ObjectUtil.isNull(frontUser)) {
+                    throw new CommonNullException("用户不存在！");
+                }
+                order.setSex(frontUser.getGender());
+                order.setUserPhone(frontUser.getAccount());
+                order.setUserName(frontUser.getUserName());
             }
         });
-
         return orderFrontExpectationList.getData();
     }
 }
