@@ -12,6 +12,7 @@ import java.util.List;
 /**
  * 文章分类
  */
-public interface ArticleCategoryService extends IService<ArticleCategory>, ICommonService<ArticleCategorySearchRequest, ArticleCategoryRequest, ArticleCategoryResponse> {
+public interface ArticleCategoryService extends IService<ArticleCategory>,
+        ICommonService<ArticleCategorySearchRequest, ArticleCategoryRequest, ArticleCategoryResponse> {
     List<ArticleCategoryResponse> getArticleCategoryList();
 }

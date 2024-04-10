@@ -60,7 +60,7 @@ public class OrderController extends BaseController implements ICommonController
     @Override
     @PutMapping("/update")
     @Operation(summary = "修改")
-    public CommonResponse<Boolean> updateCategory(@RequestBody OrderRequest request) {
+    public CommonResponse<Boolean> updateEntity(@RequestBody OrderRequest request) {
         return CommonResponse.result(orderService.updateEntity(request));
     }
 
