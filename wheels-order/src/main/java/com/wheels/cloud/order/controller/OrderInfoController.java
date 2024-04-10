@@ -58,7 +58,7 @@ public class OrderInfoController extends BaseController implements ICommonContro
     @Override
     @PutMapping("/update")
     @Operation(summary = "修改")
-    public CommonResponse<Boolean> updateCategory(@RequestBody OrderInfoRequest request) {
+    public CommonResponse<Boolean> updateEntity(@RequestBody OrderInfoRequest request) {
         return CommonResponse.result(orderInfoService.updateEntity(request));
     }
 

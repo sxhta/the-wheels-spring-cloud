@@ -68,7 +68,7 @@ public class DriverInformationController extends BaseController implements IComm
 
     @Override
     @PutMapping("/update")
-    public CommonResponse<Boolean> updateCategory(@RequestBody DriverInformationRequest request) {
+    public CommonResponse<Boolean> updateEntity(@RequestBody DriverInformationRequest request) {
         final var result = driverInformationService.updateEntity(request);
         return CommonResponse.result(result);
     }

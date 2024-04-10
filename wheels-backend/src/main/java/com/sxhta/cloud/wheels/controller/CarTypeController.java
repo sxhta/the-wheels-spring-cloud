@@ -63,7 +63,7 @@ public class CarTypeController extends BaseController implements ICommonControll
 
     @Override
     @PutMapping("/update")
-    public CommonResponse<Boolean> updateCategory(CarTypeRequest carTypeRequest) {
+    public CommonResponse<Boolean> updateEntity(CarTypeRequest carTypeRequest) {
         Boolean result = carTypeService.updateEntity(carTypeRequest);
         return CommonResponse.result(result);
     }

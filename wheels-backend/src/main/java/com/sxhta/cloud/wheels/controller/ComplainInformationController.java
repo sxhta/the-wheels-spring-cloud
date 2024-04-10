@@ -58,7 +58,7 @@ public class ComplainInformationController extends BaseController implements ICo
     }
 
     @Override
-    public CommonResponse<Boolean> updateCategory(ComplainInformationRequest complainInformationRequest) {
+    public CommonResponse<Boolean> updateEntity(ComplainInformationRequest complainInformationRequest) {
         complainInformationService.updateEntity(complainInformationRequest);
         return null;
     }

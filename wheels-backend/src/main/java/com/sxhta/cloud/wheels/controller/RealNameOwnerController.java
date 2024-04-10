@@ -59,7 +59,7 @@ public class RealNameOwnerController extends BaseController implements ICommonCo
 
     @Override
     @PutMapping("/update")
-    public CommonResponse<Boolean> updateCategory(RealNameOwnerRequest realNameOwnerRequest) {
+    public CommonResponse<Boolean> updateEntity(RealNameOwnerRequest realNameOwnerRequest) {
 //        realNameOwnerService.updateCategory(realNameOwnerRequest);
         return null;
     }

@@ -60,7 +60,7 @@ public class FeedbackInformationController extends BaseController implements ICo
 
     @Override
     @PutMapping("/update")
-    public CommonResponse<Boolean> updateCategory(FeedbackInformationRequest feedbackInformationRequest) {
+    public CommonResponse<Boolean> updateEntity(FeedbackInformationRequest feedbackInformationRequest) {
         feedbackInformationService.updateEntity(feedbackInformationRequest);
         return null;
     }

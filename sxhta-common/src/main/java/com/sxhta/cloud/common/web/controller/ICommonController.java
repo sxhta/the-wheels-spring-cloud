@@ -18,6 +18,6 @@ public interface ICommonController<Search extends Serializable, Request extends 
 
     CommonResponse<Boolean> deleteByHash(String hash);
 
-    CommonResponse<Boolean> updateCategory(Request request);
+    CommonResponse<Boolean> updateEntity(Request request);
 
 }

@@ -56,7 +56,7 @@ public class ComplainTypeController extends BaseController implements ICommonCon
     }
 
     @Override
-    public CommonResponse<Boolean> updateCategory(ComplainTypeRequest complainTypeRequest) {
+    public CommonResponse<Boolean> updateEntity(ComplainTypeRequest complainTypeRequest) {
         complainTypeService.updateEntity(complainTypeRequest);
         return null;
     }
