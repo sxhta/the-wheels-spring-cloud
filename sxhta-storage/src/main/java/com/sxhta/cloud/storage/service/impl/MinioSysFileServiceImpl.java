@@ -1,6 +1,7 @@
 package com.sxhta.cloud.storage.service.impl;
 
 import com.alibaba.nacos.common.utils.IoUtils;
+import com.sxhta.cloud.remote.vo.FileMetaVo;
 import com.sxhta.cloud.storage.component.FileUploadComponent;
 import com.sxhta.cloud.storage.config.MinioConfig;
 import com.sxhta.cloud.storage.service.ISysFileService;
@@ -34,7 +35,7 @@ public class MinioSysFileServiceImpl implements ISysFileService {
      * @return 访问地址
      */
     @Override
-    public String uploadFile(MultipartFile file) throws Exception {
+    public String uploadFile(MultipartFile file, String folder) throws Exception {
         final var fileName = fileUploadComponent.extractFilename(file);
         final var inputStream = file.getInputStream();
         final var bucketName = minioConfig.getBucketName();
@@ -47,5 +48,10 @@ public class MinioSysFileServiceImpl implements ISysFileService {
         client.putObject(args);
         IoUtils.closeQuietly(inputStream);
         return minioConfig.getUrl() + "/" + minioConfig.getBucketName() + "/" + fileName;
+    }
+
+    @Override
+    public FileMetaVo getFileMeta() {
+        return null;
     }
 }
