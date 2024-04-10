@@ -1,13 +1,16 @@
 package com.wheels.cloud.frontend.service.order.impl;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.sxhta.cloud.common.constant.SecurityConstants;
 import com.sxhta.cloud.common.exception.CommonNullException;
+import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.sxhta.cloud.common.web.page.PageRequest;
 import com.sxhta.cloud.common.web.page.TableDataInfo;
 import com.sxhta.cloud.security.service.TokenService;
 import com.sxhta.cloud.wheels.remote.domain.user.WheelsFrontUser;
 import com.sxhta.cloud.wheels.remote.openfeign.order.OrderOpenfeign;
+import com.sxhta.cloud.wheels.remote.response.order.OrderExpectationResponse;
 import com.sxhta.cloud.wheels.remote.response.order.OrderInfoResponse;
 import com.sxhta.cloud.wheels.remote.response.order.OrderResponse;
 import com.sxhta.cloud.wheels.remote.vo.FrontUserCacheVo;
@@ -45,17 +48,56 @@ public class OrderServiceImpl implements OrderService, Serializable {
     @Override
     public OrderInfoResponse getFrontInfo(String orderHash) {
         final var orderInfo = orderOpenfeign.getFrontInfo(orderHash,SecurityConstants.INNER);
-        if (orderInfo.getData().getIsUrgent() == 2) {
+
+        if (ObjectUtil.isNull(orderInfo.getData().getSex()) &&
+                StrUtil.isBlank(orderInfo.getData().getUserName()) &&
+                StrUtil.isBlank(orderInfo.getData().getUserPhone())) {
             final var orderInfoResponse = orderInfo.getData();
-            final var frontUser = frontUserService.getById(tokenService.getUserId());
-            if (ObjectUtil.isNull(frontUser)) {
-                throw new CommonNullException("用户不存在！");
-            }
-            //TODO：用户性别
-            orderInfoResponse.setSex("先生");
-            orderInfoResponse.setUserPhone(frontUser.getAccount());
-            orderInfoResponse.setUserName(frontUser.getUserName());
+            //TODO 用户信息
+//            final var frontUser = frontUserService.getById(tokenService.getUserId());
+//            if (ObjectUtil.isNull(frontUser)) {
+//                throw new CommonNullException("用户不存在！");
+//            }
+            orderInfoResponse.setSex(1);
+            orderInfoResponse.setUserPhone("18000000000");
+            orderInfoResponse.setUserName("测试姓名");
+//            orderInfoResponse.setUserPhone(frontUser.getAccount());
+//            orderInfoResponse.setUserName(frontUser.getUserName());
         }
         return orderInfo.getData();
+    }
+
+    @Override
+    public Double getFrontTotalMileage() {
+        //        final var frontUserHash = frontUserService.getHashById(tokenService.getLoginUser().getUserid());
+        //TODO:获取用户HASH
+        final var res = orderOpenfeign.getFrontTotalMileage("6007f67fd63df554b919991d89c6a07f5ca57044d3e97a9e108fd2e567989021", SecurityConstants.INNER);
+        return res.getData();
+    }
+
+    @Override
+    public TableDataInfo<OrderExpectationResponse> getFrontExpectationList(PageRequest pageRequest) {
+        //        final var frontUserHash = frontUserService.getHashById(tokenService.getLoginUser().getUserid());
+        //TODO:获取用户HASH
+        final var orderFrontExpectationList = orderOpenfeign.getFrontExpectationList("6007f67fd63df554b919991d89c6a07f5ca57044d3e97a9e108fd2e567989021", pageRequest,SecurityConstants.INNER);
+
+        orderFrontExpectationList.getData().getRows().forEach(order->{
+            if (ObjectUtil.isNull(order.getSex()) &&
+                    StrUtil.isBlank(order.getUserName()) &&
+                    StrUtil.isBlank(order.getUserPhone())) {
+                //TODO 用户信息
+//            final var frontUser = frontUserService.getById(tokenService.getUserId());
+//            if (ObjectUtil.isNull(frontUser)) {
+//                throw new CommonNullException("用户不存在！");
+//            }
+                order.setSex(1);
+                order.setUserPhone("18000000000");
+                order.setUserName("测试姓名");
+//            orderInfoResponse.setUserPhone(frontUser.getAccount());
+//            orderInfoResponse.setUserName(frontUser.getUserName());
+            }
+        });
+
+        return orderFrontExpectationList.getData();
     }
 }

@@ -14,11 +14,12 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 @Schema(name = "OrderInfoResponse", description = "订单详情管理响应体")
 public class OrderInfoResponse extends OrderResponse implements Serializable {
+
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @Schema(description = "性别")
-    private String sex;
+    @Schema(description = "性别,1男，2女")
+    private Integer sex;
 
     @Schema(description = "用户名字")
     private String userName;
@@ -26,8 +27,8 @@ public class OrderInfoResponse extends OrderResponse implements Serializable {
     @Schema(description = "用户电话")
     private String userPhone;
 
-    @Schema(description = "到达时间")
-    @JsonFormat(pattern = "yyyy/M/d")
+    @Schema(description = "创建时间")
+    @JsonFormat(pattern = "yyyy年M月d日 HH:mm")
     private LocalDateTime orderCreateTime;
 
     @Schema(description = "其他费用")

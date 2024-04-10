@@ -4,6 +4,7 @@ import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.sxhta.cloud.common.web.page.PageRequest;
 import com.sxhta.cloud.common.web.page.TableDataInfo;
 import com.sxhta.cloud.wheels.remote.openfeign.order.OrderOpenfeign;
+import com.sxhta.cloud.wheels.remote.response.order.OrderExpectationResponse;
 import com.sxhta.cloud.wheels.remote.response.order.OrderInfoResponse;
 import com.sxhta.cloud.wheels.remote.response.order.OrderResponse;
 import org.slf4j.Logger;
@@ -37,6 +38,16 @@ public class OrderFallbackFactory implements FallbackFactory<OrderOpenfeign>, Se
             @Override
             public CommonResponse<OrderInfoResponse> getFrontInfo(String orderHash, String source) {
                 return CommonResponse.error("订单详情获取失败:" + throwable.getMessage());
+            }
+
+            @Override
+            public CommonResponse<TableDataInfo<OrderExpectationResponse>> getFrontExpectationList(String userHash, PageRequest pageRequest, String source) {
+                return CommonResponse.error("待出行列表获取失败:" + throwable.getMessage());
+            }
+
+            @Override
+            public CommonResponse<Double> getFrontTotalMileage(String userHash, String source) {
+                return CommonResponse.error("总里程数获取失败:" + throwable.getMessage());
             }
         };
     }
