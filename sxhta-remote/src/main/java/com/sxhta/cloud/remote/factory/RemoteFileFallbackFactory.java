@@ -16,8 +16,8 @@ public class RemoteFileFallbackFactory implements FallbackFactory<RemoteFileOpen
     private final Logger logger = LoggerFactory.getLogger(RemoteFileFallbackFactory.class);
 
     @Override
-    public RemoteFileOpenFeign create(Throwable throwable) {
-        logger.error("文件服务调用失败:{}", throwable.getMessage());
-        return file -> CommonResponse.error("上传文件失败:" + throwable.getMessage());
+    public RemoteFileOpenFeign create(Throwable cause) {
+        logger.error("文件服务调用失败:{}", cause.getMessage());
+        return (file, request) -> CommonResponse.error("上传文件失败:" + cause.getMessage());
     }
 }

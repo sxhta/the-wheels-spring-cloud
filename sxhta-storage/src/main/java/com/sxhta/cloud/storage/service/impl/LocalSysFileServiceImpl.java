@@ -1,14 +1,17 @@
 package com.sxhta.cloud.storage.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.sxhta.cloud.storage.component.FileUploadComponent;
 import com.sxhta.cloud.storage.config.LocalFileConfig;
 import com.sxhta.cloud.storage.service.ISysFileService;
-import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.inject.Inject;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 /**
  * 本地文件存储
@@ -30,8 +33,15 @@ public class LocalSysFileServiceImpl implements ISysFileService {
      * @return 访问地址
      */
     @Override
-    public String uploadFile(@RequestParam(value = "file") @Nonnull MultipartFile file) throws Exception {
-        final var localFilePath = localFileConfig.getPath();
+    public String uploadFile(@RequestPart(value = "file") MultipartFile file, @Nullable String path)
+            throws IOException {
+        var localFilePath = localFileConfig.getPath();
+        if (StrUtil.isNotBlank(path)) {
+            if (path.charAt(0) != '/') {
+                path = "/" + path;
+            }
+            localFilePath = localFilePath + path;
+        }
         final var domain = localFileConfig.getDomain();
         final var localFilePrefix = localFileConfig.getPrefix();
         final var name = fileUploadComponent.upload(localFilePath, file);

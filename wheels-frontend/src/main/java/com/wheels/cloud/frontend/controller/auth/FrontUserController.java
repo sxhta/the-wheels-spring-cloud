@@ -53,6 +53,4 @@ public class FrontUserController implements Serializable {
     public CommonResponse<FrontUserHashVo> getHashById(@PathVariable("id") Long id) {
         return CommonResponse.success(frontUserService.getHashById(id));
     }
-
-
 }

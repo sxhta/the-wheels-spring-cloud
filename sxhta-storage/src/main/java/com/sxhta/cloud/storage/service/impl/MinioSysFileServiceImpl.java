@@ -34,7 +34,7 @@ public class MinioSysFileServiceImpl implements ISysFileService {
      * @return 访问地址
      */
     @Override
-    public String uploadFile(MultipartFile file) throws Exception {
+    public String uploadFile(MultipartFile file, String  path) throws Exception {
         final var fileName = fileUploadComponent.extractFilename(file);
         final var inputStream = file.getInputStream();
         final var bucketName = minioConfig.getBucketName();

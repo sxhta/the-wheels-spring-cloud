@@ -35,7 +35,7 @@ public class SysProfileController extends BaseController {
     private TokenService<SystemUserCacheVo, SysUser> tokenService;
 
     @Inject
-    private RemoteFileOpenFeign remoteFileService;
+    private RemoteFileOpenFeign remoteFileOpenFeign;
 
     @Inject
     private SecurityService securityService;
@@ -111,14 +111,14 @@ public class SysProfileController extends BaseController {
      */
     @Log(title = "用户头像", businessType = BusinessType.UPDATE)
     @PostMapping("/avatar")
-    public CommonResponse<AvatarResponse> avatar(@RequestParam("avatarfile") MultipartFile file) {
+    public CommonResponse<AvatarResponse> avatar(@RequestPart("avatarfile") MultipartFile file) {
         if (!file.isEmpty()) {
             final var loginUser = tokenService.getLoginUser();
             final var extension = FileTypeUtils.getExtension(file);
             if (!StringUtils.equalsAnyIgnoreCase(extension, MimeTypeUtils.IMAGE_EXTENSION)) {
                 return CommonResponse.error("文件格式不正确，请上传" + Arrays.toString(MimeTypeUtils.IMAGE_EXTENSION) + "格式");
             }
-            final var fileResult = remoteFileService.upload(file);
+            final var fileResult = remoteFileOpenFeign.upload(file, "/system/profile");
             if (ObjectUtil.isNull(fileResult) || ObjectUtil.isNull(fileResult.getData())) {
                 return CommonResponse.error("文件服务异常，请联系管理员");
             }

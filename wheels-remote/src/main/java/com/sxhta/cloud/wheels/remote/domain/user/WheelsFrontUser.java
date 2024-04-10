@@ -12,6 +12,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,6 +44,8 @@ public class WheelsFrontUser extends AbstractUserEntity {
     private String avatar;
 
     private LocalDateTime deleteTime;
+
+    private BigDecimal balance;
 
     /**
      * 请求参数
