@@ -11,6 +11,7 @@ import lombok.experimental.Accessors;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Accessors(chain = true)
@@ -25,42 +26,52 @@ public class ComplainInformationRequest extends BaseHashEntity implements Serial
      */
     @TableId
     private Long id;
+
     /**
      * 投诉内容
      */
-    private String complainContent;
+    private String content;
+
     /**
      * 投诉类型
      */
     private String complainTypeHash;
+
     /**
      * 投诉图片
      */
-    private String complainPhotograph;
+    private List<String> complainPhotograph;
+
     /**
      * 投诉人
      */
     private String complainUser;
+
     /**
      * 投诉时间
      */
     private LocalDateTime complainTime;
-    /**
-     * 投诉端(1.用户投诉 2.司机投诉)
-     */
-    private Integer complainant;
+
     /**
      * 是否处理(0-未处理 1-已处理)
      */
     private Boolean isHandle = false;
+
     /**
      * 处理人
      */
     private String handleBy;
+    
     /**
      * 处理时间
      */
     private LocalDateTime handleTime;
+
+    /**
+     * 处理结果
+     */
+    private Integer handleResult;
+
     /**
      * 处理备注
      */

@@ -31,6 +31,7 @@ public class FeedbackTypeSearchRequest extends BaseHashEntity implements Seriali
      * 类型名称
      */
     private String name;
+
     /**
      * 反馈类型状态(0-启用 1-禁用)
      */

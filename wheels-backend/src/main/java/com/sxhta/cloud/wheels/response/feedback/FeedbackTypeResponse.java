@@ -11,7 +11,6 @@ import lombok.experimental.Accessors;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 @Data
 @Accessors(chain = true)
@@ -30,50 +29,14 @@ public class FeedbackTypeResponse extends BaseHashEntity implements Serializable
     private Long id;
 
     /**
-     * 反馈类型
+     * 类型名称
      */
-    private String feedbackTypeHash;
-
+    private String name;
+    
     /**
-     * 反馈内容
+     * 反馈类型状态(0-启用 1-禁用)
      */
-    private String feedbackContent;
-
-    /**
-     * 反馈截图
-     */
-    private String feedbackPhotograph;
-
-    /**
-     * 反馈人
-     */
-    private String feedbackUser;
-
-    /**
-     * 反馈时间
-     */
-    private LocalDateTime feedbackTime;
-
-    /**
-     * 是否处理(0-未处理 1-已处理)
-     */
-    private Boolean isHandle = false;
-
-    /**
-     * 处理人
-     */
-    private String handleBy;
-
-    /**
-     * 处理时间
-     */
-    private LocalDateTime handleTime;
-
-    /**
-     * 处理备注
-     */
-    private String handleRemark;
-
+    private Boolean status = false;
 
     /**
      * 创建者
