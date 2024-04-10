@@ -71,8 +71,8 @@ public final class FileUploadComponentImpl implements FileUploadComponent {
             throws FileSizeLimitExceededException, IOException, FileNameLengthLimitExceededException,
             InvalidExtensionException {
         final var fileNameLength = Objects.requireNonNull(file.getOriginalFilename()).length();
-        if (fileNameLength > FileUploadComponentImpl.DEFAULT_FILE_NAME_LENGTH) {
-            throw new FileNameLengthLimitExceededException(FileUploadComponentImpl.DEFAULT_FILE_NAME_LENGTH);
+        if (fileNameLength > DEFAULT_FILE_NAME_LENGTH) {
+            throw new FileNameLengthLimitExceededException(DEFAULT_FILE_NAME_LENGTH);
         }
 
         assertAllowed(file, allowedExtension);

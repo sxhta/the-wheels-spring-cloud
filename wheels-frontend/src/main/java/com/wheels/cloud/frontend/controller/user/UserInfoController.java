@@ -1,6 +1,7 @@
 package com.wheels.cloud.frontend.controller.user;
 
 import com.sxhta.cloud.common.web.domain.CommonResponse;
+import com.wheels.cloud.frontend.request.user.AvatarUpdateRequest;
 import com.wheels.cloud.frontend.response.user.AvatarResponse;
 import com.wheels.cloud.frontend.response.user.FrontUserInfoResponse;
 import com.wheels.cloud.frontend.service.user.FrontUserInfoService;
@@ -33,5 +34,11 @@ public class UserInfoController implements Serializable {
     public CommonResponse<AvatarResponse> getUserInfo(@RequestPart(value = "file") MultipartFile file) {
         final var response = frontUserInfoService.uploadAvatar(file);
         return CommonResponse.success(response);
+    }
+
+    @PutMapping("/update/avatar")
+    public CommonResponse<Boolean> updateUserAvatar(@RequestBody AvatarUpdateRequest request) {
+        final var response = frontUserInfoService.updateUserAvatar(request);
+        return CommonResponse.result(response);
     }
 }

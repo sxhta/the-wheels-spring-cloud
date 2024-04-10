@@ -12,6 +12,7 @@ import com.sxhta.cloud.security.service.TokenService;
 import com.sxhta.cloud.wheels.remote.domain.user.WheelsFrontUser;
 import com.sxhta.cloud.wheels.remote.vo.FrontUserCacheVo;
 import com.wheels.cloud.frontend.mapper.user.FrontUserMapper;
+import com.wheels.cloud.frontend.request.user.AvatarUpdateRequest;
 import com.wheels.cloud.frontend.response.user.AvatarResponse;
 import com.wheels.cloud.frontend.response.user.FrontUserInfoResponse;
 import com.wheels.cloud.frontend.service.user.FrontUserInfoService;
@@ -45,7 +46,7 @@ public class FrontUserInfoServiceImpl extends ServiceImpl<FrontUserMapper, Wheel
     private RemoteFileOpenFeign remoteFileOpenFeign;
 
     @Override
-    public FrontUserInfoResponse getUserInfoByToken() {
+    public WheelsFrontUser getCurrentUserByToken() {
         final var frontUserCacheVo = tokenService.getLoginUser();
         if (ObjectUtil.isNull(frontUserCacheVo)) {
             logger.error("用户缓存为空");
@@ -59,9 +60,14 @@ public class FrontUserInfoServiceImpl extends ServiceImpl<FrontUserMapper, Wheel
         final var userId = frontUserInCache.getUserId();
         final var lqw = new LambdaQueryWrapper<WheelsFrontUser>();
         lqw.eq(WheelsFrontUser::getUserId, userId);
-        final var frontUser = getOne(lqw);
+        return getOne(lqw);
+    }
+
+    @Override
+    public FrontUserInfoResponse getUserInfoByToken() {
+        final var currentUser = getCurrentUserByToken();
         final var response = new FrontUserInfoResponse();
-        BeanUtils.copyProperties(frontUser, response);
+        BeanUtils.copyProperties(currentUser, response);
         return response;
     }
 
@@ -86,5 +92,13 @@ public class FrontUserInfoServiceImpl extends ServiceImpl<FrontUserMapper, Wheel
         response.setImageUrl(url)
                 .setName(name);
         return response;
+    }
+
+    @Override
+    public Boolean updateUserAvatar(AvatarUpdateRequest request) {
+        final var avatar = request.getAvatar();
+        final var currentUser = getCurrentUserByToken();
+        currentUser.setAvatar(avatar);
+        return updateById(currentUser);
     }
 }

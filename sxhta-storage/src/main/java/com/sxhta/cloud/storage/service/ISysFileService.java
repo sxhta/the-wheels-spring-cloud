@@ -1,5 +1,6 @@
 package com.sxhta.cloud.storage.service;
 
+import com.sxhta.cloud.remote.vo.FileMetaVo;
 import jakarta.annotation.Nullable;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,5 +14,7 @@ public interface ISysFileService {
      * @param file 上传的文件
      * @return 访问地址
      */
-    String uploadFile(MultipartFile file, @Nullable String path) throws Exception;
+    String uploadFile(MultipartFile file, @Nullable String folder) throws Exception;
+
+    FileMetaVo getFileMeta();
 }

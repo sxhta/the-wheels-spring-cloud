@@ -1,6 +1,7 @@
 package com.sxhta.cloud.storage.service.impl;
 
 import cn.hutool.core.util.StrUtil;
+import com.sxhta.cloud.remote.vo.FileMetaVo;
 import com.sxhta.cloud.storage.component.FileUploadComponent;
 import com.sxhta.cloud.storage.config.LocalFileConfig;
 import com.sxhta.cloud.storage.service.ISysFileService;
@@ -33,18 +34,31 @@ public class LocalSysFileServiceImpl implements ISysFileService {
      * @return 访问地址
      */
     @Override
-    public String uploadFile(@RequestPart(value = "file") MultipartFile file, @Nullable String path)
+    public String uploadFile(@RequestPart(value = "file") MultipartFile file, @Nullable String folder)
             throws IOException {
         var localFilePath = localFileConfig.getPath();
-        if (StrUtil.isNotBlank(path)) {
-            if (path.charAt(0) != '/') {
-                path = "/" + path;
+        if (StrUtil.isNotBlank(folder)) {
+            if (folder.charAt(0) != '/') {
+                folder = "/" + folder;
             }
-            localFilePath = localFilePath + path;
+            localFilePath = localFilePath + folder;
         }
-        final var domain = localFileConfig.getDomain();
+        //去掉域名
+        //final var domain = localFileConfig.getDomain();
         final var localFilePrefix = localFileConfig.getPrefix();
         final var name = fileUploadComponent.upload(localFilePath, file);
-        return domain + localFilePrefix + name;
+        return localFilePrefix + folder + name;
+    }
+
+    @Override
+    public FileMetaVo getFileMeta() {
+        final var fileMetaVo = new FileMetaVo();
+        final var domain = localFileConfig.getDomain();
+        final var prefix = localFileConfig.getPrefix();
+        final var path = localFileConfig.getPath();
+        fileMetaVo.setDomain(domain)
+                .setPrefix(prefix)
+                .setPath(path);
+        return fileMetaVo;
     }
 }
