@@ -8,6 +8,7 @@ import com.sxhta.cloud.common.exception.CommonNullException;
 import com.sxhta.cloud.security.service.TokenService;
 import com.sxhta.cloud.wheels.remote.domain.order.Order;
 import com.sxhta.cloud.wheels.remote.domain.user.WheelsFrontUser;
+import com.sxhta.cloud.wheels.remote.response.order.OrderAdminResponse;
 import com.sxhta.cloud.wheels.remote.response.order.OrderExpectationResponse;
 import com.sxhta.cloud.wheels.remote.response.order.OrderInfoResponse;
 import com.sxhta.cloud.wheels.remote.response.order.OrderResponse;
@@ -240,5 +241,13 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             totalMileage.updateAndGet(v -> v + Double.parseDouble(orderInfo.getMileage()));
         });
         return totalMileage.get();
+    }
+
+    @Override
+    public List<OrderAdminResponse> getBackstageList(OrderSearchRequest request) {
+        final var lqw = new LambdaQueryWrapper<Order>();
+        final var responseList = new ArrayList<OrderAdminResponse>();
+
+        return responseList;
     }
 }

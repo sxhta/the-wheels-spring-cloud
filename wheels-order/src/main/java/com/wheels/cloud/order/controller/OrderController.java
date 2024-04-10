@@ -65,15 +65,13 @@ public class OrderController extends BaseController implements ICommonController
     }
 
     @Override
-    @PutMapping("/list")
-    @Operation(summary = "修改")
     public TableDataInfo<OrderResponse> getAdminList(OrderSearchRequest request, PageRequest pageRequest) {
         return null;
     }
 
+    @Operation(summary = "详情")
     @Override
     @GetMapping("/info")
-    @Operation(summary = "详情")
     public CommonResponse<OrderResponse> getInfoByHash(@RequestParam("hash") String hash) {
         return CommonResponse.success(orderService.getInfoByHash(hash));
     }
@@ -106,7 +104,7 @@ public class OrderController extends BaseController implements ICommonController
     }
 
     @Operation(summary = "客户端总里程")
-    @InnerAuth
+
     @GetMapping("/user/front/total/mileage")
     public CommonResponse<Double> getFrontTotalMileage(@RequestParam(value = "userHash") String userHash) {
         return CommonResponse.success(orderService.getFrontTotalMileage(userHash));
@@ -114,15 +112,9 @@ public class OrderController extends BaseController implements ICommonController
 
     @Operation(summary = "后管订单列表")
     @InnerAuth
-    @GetMapping("/user/admin/list")
-    public CommonResponse<TableDataInfo<OrderAdminResponse>> getAdminList(@RequestParam(value = "placeOrderUserName",defaultValue = "") String placeOrderUserName,
-                                                                          @RequestParam(value = "placeOrderUserPhone",defaultValue = "") String placeOrderUserPhone,
-                                                                          @RequestParam(value = "orderStatus",defaultValue = "") Integer orderStatus,
-                                                                          @RequestParam(value = "orderType",defaultValue = "") Integer orderType,
-                                                                          @RequestParam(value = "isUrgent",defaultValue = "") Integer isUrgent,
-                                                                          PageRequest pageRequest) {
+    @PutMapping("/admin/list")
+    public CommonResponse<TableDataInfo<OrderAdminResponse>> getBackstageList(OrderSearchRequest request, PageRequest pageRequest) {
         startPage(pageRequest);
-        return CommonResponse.success(CommonResponse.list(orderService.getAdminList(userHash)));
+        return CommonResponse.success(CommonResponse.list(orderService.getBackstageList(request)));
     }
-
 }
