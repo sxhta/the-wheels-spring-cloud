@@ -1,9 +1,15 @@
 package com.sxhta.cloud.common.constant;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * 通用常量信息
  */
-public class Constants {
+public class Constants implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * UTF-8 字符集

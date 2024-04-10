@@ -1,9 +1,16 @@
 package com.sxhta.cloud.common.constant;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * 返回状态码
  */
-public class HttpStatus {
+public class HttpStatus implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     /**
      * 操作成功
      */

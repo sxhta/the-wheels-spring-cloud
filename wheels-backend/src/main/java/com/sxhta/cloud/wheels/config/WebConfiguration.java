@@ -1,4 +1,4 @@
-package com.wheels.cloud.frontend.config;
+package com.sxhta.cloud.wheels.config;
 
 import com.sxhta.cloud.remote.filter.ResponseFilter;
 import jakarta.annotation.Nonnull;

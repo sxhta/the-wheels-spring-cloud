@@ -60,4 +60,6 @@ public final class CacheConstants implements Serializable {
      * 登录IP黑名单 cache key
      */
     public static final String SYS_LOGIN_BLACKIPLIST = SYS_CONFIG_KEY + "sys.login.blackIPList";
+
+    public static final String LOCAL_FILE_META = "local_file_meta:";
 }

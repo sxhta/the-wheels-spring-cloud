@@ -1,7 +1,12 @@
-package com.sxhta.cloud.common.service;
+package com.sxhta.cloud.remote.service;
 
+
+import com.sxhta.cloud.remote.vo.FileMetaVo;
 
 public interface AttachmentService {
+
+
+    FileMetaVo getFileMetaVo();
 
     /**
      * 给图片加前缀

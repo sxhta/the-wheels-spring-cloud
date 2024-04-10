@@ -25,7 +25,7 @@ public interface RemoteFileOpenFeign {
      * @return 结果
      */
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    CommonResponse<SysFile> upload(@RequestPart(value = "file") MultipartFile file, @RequestParam(value = "path") String path);
+    CommonResponse<SysFile> upload(@RequestPart(value = "file") MultipartFile file, @RequestParam(value = "folder") String path);
 
     @GetMapping(value = "/meta")
     CommonResponse<FileMetaVo> getFileMeta();

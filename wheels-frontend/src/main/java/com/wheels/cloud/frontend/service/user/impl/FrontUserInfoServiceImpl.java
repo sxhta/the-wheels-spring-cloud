@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sxhta.cloud.common.exception.CommonNullException;
 import com.sxhta.cloud.common.exception.ServiceException;
+import com.sxhta.cloud.remote.service.AttachmentService;
 import com.sxhta.cloud.common.utils.file.FileTypeUtils;
 import com.sxhta.cloud.common.utils.file.MimeTypeUtils;
 import com.sxhta.cloud.remote.RemoteFileOpenFeign;
@@ -44,6 +45,9 @@ public class FrontUserInfoServiceImpl extends ServiceImpl<FrontUserMapper, Wheel
 
     @Inject
     private RemoteFileOpenFeign remoteFileOpenFeign;
+
+    @Inject
+    private AttachmentService attachmentService;
 
     @Override
     public WheelsFrontUser getCurrentUserByToken() {
@@ -99,6 +103,8 @@ public class FrontUserInfoServiceImpl extends ServiceImpl<FrontUserMapper, Wheel
         final var avatar = request.getAvatar();
         final var currentUser = getCurrentUserByToken();
         currentUser.setAvatar(avatar);
+        final var clearPrefixAvatar = attachmentService.clearPrefix(avatar);
+        currentUser.setAvatar(clearPrefixAvatar);
         return updateById(currentUser);
     }
 }
