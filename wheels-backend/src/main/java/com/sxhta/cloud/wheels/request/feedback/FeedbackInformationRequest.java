@@ -2,6 +2,7 @@ package com.sxhta.cloud.wheels.request.feedback;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sxhta.cloud.common.domain.BaseHashEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -11,6 +12,7 @@ import lombok.experimental.Accessors;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Accessors(chain = true)
@@ -40,7 +42,7 @@ public class FeedbackInformationRequest extends BaseHashEntity implements Serial
     /**
      * 反馈截图
      */
-    private String feedbackPhotograph;
+    private List<String> feedbackPhotograph;
 
     /**
      * 反馈人
@@ -50,6 +52,7 @@ public class FeedbackInformationRequest extends BaseHashEntity implements Serial
     /**
      * 反馈时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime feedbackTime;
 
     /**
@@ -66,6 +69,11 @@ public class FeedbackInformationRequest extends BaseHashEntity implements Serial
      * 处理时间
      */
     private LocalDateTime handleTime;
+
+    /**
+     * 处理结果
+     */
+    private Integer handleResult;
 
     /**
      * 处理备注

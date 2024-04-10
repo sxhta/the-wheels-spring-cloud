@@ -9,6 +9,6 @@ import com.sxhta.cloud.wheels.response.car.CarTypeResponse;
 
 import java.util.List;
 
-public interface CarTypeService extends ICommonService<CarTypeSearchRequest, CarTypeRequest, CarTypeResponse>, IService<CarType> {
+public interface CarTypeCategoryService extends ICommonService<CarTypeSearchRequest, CarTypeRequest, CarTypeResponse>, IService<CarType> {
     List<CarType> getCarTypeAll();
 }

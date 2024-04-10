@@ -9,4 +9,5 @@ import com.sxhta.cloud.wheels.response.complain.ComplainInformationResponse;
 
 public interface ComplainInformationService extends ICommonService<ComplainInformationSearchRequest, ComplainInformationRequest, ComplainInformationResponse>, IService<ComplainInformation> {
 
+    Boolean handleComplainInformation(ComplainInformationRequest complainInformationRequest);
 }

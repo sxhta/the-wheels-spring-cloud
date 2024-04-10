@@ -7,7 +7,11 @@ import com.sxhta.cloud.wheels.request.feedback.FeedbackTypeRequest;
 import com.sxhta.cloud.wheels.request.feedback.FeedbackTypeSearchRequest;
 import com.sxhta.cloud.wheels.response.feedback.FeedbackTypeResponse;
 
+import java.util.List;
+
 public interface FeedbackTypeService extends ICommonService<FeedbackTypeSearchRequest, FeedbackTypeRequest, FeedbackTypeResponse>, IService<FeedbackType> {
 
     Boolean updateStatus(String hash);
+
+    List<FeedbackTypeResponse> getAll();
 }

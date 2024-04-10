@@ -1,4 +1,4 @@
-package com.sxhta.cloud.wheels.response.feedback;
+package com.sxhta.cloud.wheels.remote.domain.feedback;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -11,13 +11,14 @@ import lombok.experimental.Accessors;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 @TableName(value = "wheels_feedback_information")
 @Schema(name = "反馈信息", description = "反馈信息实体类")
-public class FeedbackTypeResponse extends BaseHashEntity implements Serializable {
+public class FeedbackInformation extends BaseHashEntity implements Serializable {
 
     @Serial
     @TableField(exist = false)
@@ -29,14 +30,50 @@ public class FeedbackTypeResponse extends BaseHashEntity implements Serializable
     private Long id;
 
     /**
-     * 类型名称
+     * 反馈类型
      */
-    private String name;
-    
+    private String feedbackTypeHash;
+
     /**
-     * 反馈类型状态(0-启用 1-禁用)
+     * 反馈内容
      */
-    private Boolean status = false;
+    private String feedbackContent;
+
+    /**
+     * 反馈截图
+     */
+    private String feedbackPhotograph;
+
+    /**
+     * 反馈人
+     */
+    private String feedbackUser;
+
+    /**
+     * 反馈时间
+     */
+    private LocalDateTime feedbackTime;
+
+    /**
+     * 是否处理(0-未处理 1-已处理)
+     */
+    private Boolean isHandle = false;
+
+    /**
+     * 处理人
+     */
+    private String handleBy;
+
+    /**
+     * 处理时间
+     */
+    private LocalDateTime handleTime;
+
+    /**
+     * 处理备注
+     */
+    private String handleRemark;
+
 
     /**
      * 创建者

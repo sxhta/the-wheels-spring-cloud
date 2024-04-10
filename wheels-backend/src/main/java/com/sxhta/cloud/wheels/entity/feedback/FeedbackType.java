@@ -1,5 +1,6 @@
 package com.sxhta.cloud.wheels.entity.feedback;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -24,7 +25,7 @@ public class FeedbackType extends BaseHashEntity implements Serializable {
     /**
      * id
      */
-    @TableId
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
@@ -32,7 +33,7 @@ public class FeedbackType extends BaseHashEntity implements Serializable {
      */
     private String name;
     /**
-     * 反馈类型状态(0-启用 1-禁用)
+     * 反馈类型状态(0-禁用 1-启用)
      */
     private Boolean status = false;
 

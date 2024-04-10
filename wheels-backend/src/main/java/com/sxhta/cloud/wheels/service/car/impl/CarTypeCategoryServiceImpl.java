@@ -14,7 +14,7 @@ import com.sxhta.cloud.wheels.mapper.car.CarTypeMapper;
 import com.sxhta.cloud.wheels.request.car.CarTypeRequest;
 import com.sxhta.cloud.wheels.request.car.CarTypeSearchRequest;
 import com.sxhta.cloud.wheels.response.car.CarTypeResponse;
-import com.sxhta.cloud.wheels.service.car.CarTypeService;
+import com.sxhta.cloud.wheels.service.car.CarTypeCategoryService;
 import jakarta.inject.Inject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -24,9 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class CarTypeServiceImpl extends ServiceImpl<CarTypeMapper, CarType> implements CarTypeService {
+public class CarTypeCategoryServiceImpl extends ServiceImpl<CarTypeMapper, CarType> implements CarTypeCategoryService {
 
-    //TODO:车辆类型 后管人员
     @Inject
     private TokenService<SystemUserCacheVo, SysUser> tokenService;
 

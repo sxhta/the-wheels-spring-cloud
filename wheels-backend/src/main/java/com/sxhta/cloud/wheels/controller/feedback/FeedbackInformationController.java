@@ -33,14 +33,13 @@ public class FeedbackInformationController extends BaseController implements ICo
 
     @Override
     @GetMapping("/info")
-    public CommonResponse<FeedbackInformationResponse> getInfoByHash(String hash) {
-        feedbackInformationService.getInfoByHash(hash);
-        return null;
+    public CommonResponse<FeedbackInformationResponse> getInfoByHash(@RequestParam String hash) {
+        return CommonResponse.success("查询成功", feedbackInformationService.getInfoByHash(hash));
     }
 
     @Override
     @PostMapping("/save")
-    public CommonResponse<Boolean> create(FeedbackInformationRequest feedbackInformationRequest) {
+    public CommonResponse<Boolean> create(@RequestBody FeedbackInformationRequest feedbackInformationRequest) {
         final var result = feedbackInformationService.create(feedbackInformationRequest);
         return CommonResponse.success(result);
     }
@@ -68,9 +67,8 @@ public class FeedbackInformationController extends BaseController implements ICo
 
     //TODO:处理反馈信息
     @PutMapping("/handle")
-    public CommonResponse<Boolean> handleFeedbackInformation(FeedbackInformationRequest feedbackInformationRequest) {
-        feedbackInformationService.handleFeedbackInformation(feedbackInformationRequest);
-        return null;
+    public CommonResponse<Boolean> handleFeedbackInformation(@RequestBody FeedbackInformationRequest feedbackInformationRequest) {
+        return CommonResponse.result(feedbackInformationService.handleFeedbackInformation(feedbackInformationRequest));
     }
 
     @GetMapping("/")

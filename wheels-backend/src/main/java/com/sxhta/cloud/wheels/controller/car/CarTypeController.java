@@ -8,7 +8,7 @@ import com.sxhta.cloud.common.web.page.TableDataInfo;
 import com.sxhta.cloud.wheels.entity.car.CarType;
 import com.sxhta.cloud.wheels.request.car.CarTypeRequest;
 import com.sxhta.cloud.wheels.request.car.CarTypeSearchRequest;
-import com.sxhta.cloud.wheels.response.CarTypeResponse;
+import com.sxhta.cloud.wheels.response.car.CarTypeResponse;
 import com.sxhta.cloud.wheels.service.car.CarTypeService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.inject.Inject;

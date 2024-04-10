@@ -11,11 +11,9 @@ import com.sxhta.cloud.wheels.response.complain.ComplainInformationResponse;
 import com.sxhta.cloud.wheels.service.complain.ComplainInformationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.inject.Inject;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
-import java.util.List;
 
 @RestController
 @RequestMapping("/complain")
@@ -27,16 +25,17 @@ public class ComplainInformationController extends BaseController implements ICo
 
 
     @Override
-    public TableDataInfo<ComplainInformationResponse> getAdminList(ComplainInformationSearchRequest request, PageRequest pageRequest) {
+    @GetMapping("/list")
+    public TableDataInfo<ComplainInformationResponse> getAdminList(@ModelAttribute("ComplainInformationSearchRequest") ComplainInformationSearchRequest request, PageRequest pageRequest) {
         startPage(pageRequest);
-        List<ComplainInformationResponse> list = complainInformationService.getAdminList(request);
+        final var list = complainInformationService.getAdminList(request);
         return CommonResponse.list(list);
     }
 
     @Override
+    @GetMapping("/info")
     public CommonResponse<ComplainInformationResponse> getInfoByHash(String hash) {
-        complainInformationService.getInfoByHash(hash);
-        return null;
+        return CommonResponse.success("查询成功", complainInformationService.getInfoByHash(hash));
     }
 
     @Override
@@ -62,4 +61,11 @@ public class ComplainInformationController extends BaseController implements ICo
         complainInformationService.updateEntity(complainInformationRequest);
         return null;
     }
+
+    @PutMapping("/handle")
+    public CommonResponse<Boolean> handleComplainInformation(@RequestBody ComplainInformationRequest complainInformationRequest) {
+        return CommonResponse.result(complainInformationService.handleComplainInformation(complainInformationRequest));
+    }
+
+
 }

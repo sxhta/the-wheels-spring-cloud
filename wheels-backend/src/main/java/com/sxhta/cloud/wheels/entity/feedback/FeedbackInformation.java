@@ -1,5 +1,6 @@
 package com.sxhta.cloud.wheels.entity.feedback;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -26,7 +27,7 @@ public class FeedbackInformation extends BaseHashEntity implements Serializable 
     /**
      * id
      */
-    @TableId
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
@@ -52,7 +53,7 @@ public class FeedbackInformation extends BaseHashEntity implements Serializable 
     /**
      * 反馈时间
      */
-    private LocalDateTime feedbackTime;
+    private LocalDateTime feedbackTime = LocalDateTime.now();
 
     /**
      * 是否处理(0-未处理 1-已处理)
@@ -68,6 +69,12 @@ public class FeedbackInformation extends BaseHashEntity implements Serializable 
      * 处理时间
      */
     private LocalDateTime handleTime;
+
+    /**
+     * 处理结果
+     */
+    private Integer handleResult;
+
 
     /**
      * 处理备注

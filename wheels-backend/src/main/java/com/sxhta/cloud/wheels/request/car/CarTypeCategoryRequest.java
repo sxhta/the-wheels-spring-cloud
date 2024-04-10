@@ -1,10 +1,9 @@
-package com.sxhta.cloud.wheels.response.feedback;
+package com.sxhta.cloud.wheels.request.car;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.sxhta.cloud.common.domain.BaseHashEntity;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -15,34 +14,50 @@ import java.io.Serializable;
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-@TableName(value = "wheels_feedback_information")
-@Schema(name = "反馈信息", description = "反馈信息实体类")
-public class FeedbackTypeResponse extends BaseHashEntity implements Serializable {
+@TableName(value = "wheels_car_type_category")
+public class CarTypeCategoryRequest extends BaseHashEntity implements Serializable {
 
     @Serial
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
     /**
      * id
      */
     @TableId
     private Long id;
-
     /**
-     * 类型名称
+     * 车辆类型hash
      */
-    private String name;
-    
+    private String carTypeHash;
     /**
-     * 反馈类型状态(0-启用 1-禁用)
+     * 车辆型号
      */
-    private Boolean status = false;
-
+    private String model;
+    /**
+     * 车辆颜色
+     */
+    private String color;
+    /**
+     * 车辆座位
+     */
+    private Integer seat;
+    /**
+     * 车辆品牌
+     */
+    private String brand;
+    /**
+     * 车标
+     */
+    private String logo;
+    /**
+     * 车辆展示图
+     */
+    private String displayImage;
     /**
      * 创建者
      */
     private String createBy;
-
     /**
      * 修改人
      */

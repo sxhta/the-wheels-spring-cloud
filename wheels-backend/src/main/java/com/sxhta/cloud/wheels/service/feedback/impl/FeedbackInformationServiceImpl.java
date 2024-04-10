@@ -33,8 +33,9 @@ public class FeedbackInformationServiceImpl extends ServiceImpl<FeedbackInformat
     public Boolean create(FeedbackInformationRequest feedbackInformationRequest) {
         final var feedbackInformation = new FeedbackInformation();
         BeanUtils.copyProperties(feedbackInformationRequest, feedbackInformation);
-        feedbackInformation.setCreateBy(tokenService.getUsername());
-        //TODO:反馈截图数组转字符
+        feedbackInformation.setFeedbackUser(tokenService.getUsername())
+                .setFeedbackPhotograph(listToJsonString(feedbackInformationRequest.getFeedbackPhotograph()))
+                .setCreateBy(tokenService.getUsername());
         return save(feedbackInformation);
     }
 
@@ -93,9 +94,12 @@ public class FeedbackInformationServiceImpl extends ServiceImpl<FeedbackInformat
     @Override
     public Boolean handleFeedbackInformation(FeedbackInformationRequest feedbackInformationRequest) {
         FeedbackInformation feedbackInformation = getEntity(feedbackInformationRequest.getHash());
-        feedbackInformation.setHandleBy("处理人")
+        feedbackInformation.setHandleBy(tokenService.getUsername())
                 .setHandleTime(LocalDateTime.now())
-                .setHandleRemark("处理结果");
+                .setHandleResult(feedbackInformationRequest.getHandleResult())
+                .setHandleRemark(feedbackInformationRequest.getHandleRemark())
+                .setUpdateBy(tokenService.getUsername())
+                .setUpdateTime(LocalDateTime.now());
         return updateById(feedbackInformation);
     }
 }
