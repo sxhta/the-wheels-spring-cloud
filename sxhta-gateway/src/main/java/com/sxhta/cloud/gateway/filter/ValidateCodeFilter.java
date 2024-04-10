@@ -1,6 +1,6 @@
 package com.sxhta.cloud.gateway.filter;
 
-import com.alibaba.fastjson2.JSON;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sxhta.cloud.common.component.ServletComponent;
 import com.sxhta.cloud.gateway.config.properties.CaptchaProperties;
 import com.sxhta.cloud.gateway.service.ValidateCodeService;
@@ -55,8 +55,11 @@ public final class ValidateCodeFilter extends AbstractGatewayFilterFactory<Objec
 
             try {
                 final var rspStr = resolveBodyFromRequest(request);
-                final var obj = JSON.parseObject(rspStr);
-                validateCodeService.checkCaptcha(obj.getString(CODE), obj.getString(UUID));
+                final var objectMapper = new ObjectMapper();
+                final var node = objectMapper.readTree(rspStr);
+                final var code = node.get(CODE).asText();
+                final var uuid = node.get(UUID).asText();
+                validateCodeService.checkCaptcha(code, uuid);
             } catch (Exception e) {
                 return servletComponent.webFluxResponseWriter(exchange.getResponse(), e.getMessage());
             }

@@ -39,6 +39,6 @@ public class UserInfoController implements Serializable {
     @PutMapping("/update/avatar")
     public CommonResponse<Boolean> updateUserAvatar(@RequestBody AvatarUpdateRequest request) {
         final var response = frontUserInfoService.updateUserAvatar(request);
-        return CommonResponse.result(response);
+        return CommonResponse.result(response, "用户头像更新成功");
     }
 }

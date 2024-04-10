@@ -2,7 +2,8 @@ package com.sxhta.cloud.log.aspect;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson2.JSON;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sxhta.cloud.common.component.IpComponent;
 import com.sxhta.cloud.common.component.ServletComponent;
 import com.sxhta.cloud.common.utils.CommonStringUtil;
@@ -154,7 +155,14 @@ public class LogAspect {
         }
         // 是否需要保存response，参数和值
         if (log.isSaveResponseData() && ObjectUtil.isNotNull(jsonResult)) {
-            operLog.setJsonResult(CommonStringUtil.substring(JSON.toJSONString(jsonResult), 0, 2000));
+            final var objectMapper = new ObjectMapper();
+            try {
+                final var jsonStr = objectMapper.writeValueAsString(jsonResult);
+                operLog.setJsonResult(CommonStringUtil.substring(jsonStr, 0, 2000));
+
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -171,7 +179,15 @@ public class LogAspect {
             final var params = argsArrayToString(joinPoint.getArgs(), excludeParamNames);
             operLog.setOperParam(CommonStringUtil.substring(params, 0, 2000));
         } else {
-            operLog.setOperParam(CommonStringUtil.substring(JSON.toJSONString(paramsMap, excludePropertyPreFilter(excludeParamNames)), 0, 2000));
+//            operLog.setOperParam(CommonStringUtil.substring(JSON.toJSONString(paramsMap, excludePropertyPreFilter(excludeParamNames)), 0, 2000));
+            final var objectMapper = new ObjectMapper();
+            try {
+                final var jsonStr = objectMapper.writeValueAsString(paramsMap);
+                operLog.setOperParam(CommonStringUtil.substring(jsonStr, 0, 2000));
+
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -184,8 +200,10 @@ public class LogAspect {
             for (Object o : paramsArray) {
                 if (ObjectUtil.isNotNull(o) && !isFilterObject(o)) {
                     try {
-                        String jsonObj = JSON.toJSONString(o, excludePropertyPreFilter(excludeParamNames));
-                        params.append(jsonObj).append(" ");
+                        final var objectMapper = new ObjectMapper();
+                        final var jsonStr = objectMapper.writeValueAsString(o);
+//                        String jsonObj = JSON.toJSONString(o, excludePropertyPreFilter(excludeParamNames));
+                        params.append(jsonStr).append(" ");
                     } catch (Exception e) {
                         //noinspection CallToPrintStackTrace
                         e.printStackTrace();

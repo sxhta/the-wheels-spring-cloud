@@ -1,11 +1,16 @@
-package com.sxhta.cloud.common.utils;
+package com.sxhta.cloud.common.component.impl;
 
+import com.sxhta.cloud.common.component.RequestComponent;
+import jakarta.inject.Singleton;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,8 +19,15 @@ import java.util.Objects;
 /**
  * Request工具类
  */
-public class RequestUtil extends HttpServlet {
-    public static HttpServletRequest getRequest() {
+@Singleton
+@Component
+public class RequestComponentImpl extends HttpServlet implements RequestComponent, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    @Override
+    public HttpServletRequest getRequest() {
         if (RequestContextHolder.getRequestAttributes() != null) {
             return ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
         }
@@ -23,7 +35,8 @@ public class RequestUtil extends HttpServlet {
         return null;
     }
 
-    public static HashMap<String, Object> getRequestParamAndHeader() {
+    @Override
+    public HashMap<String, Object> getRequestParamAndHeader() {
 
         try {
             final var request = getRequest();
@@ -79,7 +92,8 @@ public class RequestUtil extends HttpServlet {
         }
     }
 
-    public static String getDomain() {
+    @Override
+    public String getDomain() {
         final var request = getRequest();
         if (request == null) {
             return null;
@@ -87,7 +101,8 @@ public class RequestUtil extends HttpServlet {
         return request.getServerName() + ":" + request.getServerPort();
     }
 
-    public static String getUri(HttpServletRequest request) {
+    @Override
+    public String getUri(HttpServletRequest request) {
         final var uri = request.getRequestURI();
         final var list = stringToArrayStrRegex(uri, "/");
         list.removeIf(StringUtils::isNumeric); //去掉url中的数字参数
@@ -95,7 +110,8 @@ public class RequestUtil extends HttpServlet {
         return StringUtils.join(list, "/");
     }
 
-    public static List<String> stringToArrayStrRegex(String str, String regex) {
+    @Override
+    public List<String> stringToArrayStrRegex(String str, String regex) {
         final var list = new ArrayList<String>();
         if (str.contains(regex)) {
 

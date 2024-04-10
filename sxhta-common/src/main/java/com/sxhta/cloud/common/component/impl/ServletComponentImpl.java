@@ -1,6 +1,7 @@
 package com.sxhta.cloud.common.component.impl;
 
-import com.alibaba.fastjson2.JSON;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sxhta.cloud.common.component.ServletComponent;
 import com.sxhta.cloud.common.text.Convert;
 import com.sxhta.cloud.common.utils.CommonStringUtil;
@@ -187,6 +188,7 @@ public class ServletComponentImpl implements ServletComponent, Serializable {
      * @param response 渲染对象
      * @param string   待渲染的字符串
      */
+    @SuppressWarnings("CallToPrintStackTrace")
     @Override
     public void renderString(HttpServletResponse response, String string) {
         try {
@@ -299,7 +301,15 @@ public class ServletComponentImpl implements ServletComponent, Serializable {
         response.setStatusCode(status);
         response.getHeaders().add(HttpHeaders.CONTENT_TYPE, contentType);
         final var result = CommonResponse.error(code, value.toString());
-        final var dataBuffer = response.bufferFactory().wrap(JSON.toJSONString(result).getBytes());
-        return response.writeWith(Mono.just(dataBuffer));
+        final var objectMapper = new ObjectMapper();
+        try {
+            final var jsonByts = objectMapper.writeValueAsBytes(result);
+//            final var dataBuffer = response.bufferFactory().wrap(JSON.toJSONString(result).getBytes());
+            final var dataBuffer = response.bufferFactory().wrap(jsonByts);
+            return response.writeWith(Mono.just(dataBuffer));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

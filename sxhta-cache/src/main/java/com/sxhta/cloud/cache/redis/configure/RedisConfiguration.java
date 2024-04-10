@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import jakarta.inject.Singleton;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.cache.annotation.CachingConfigurer;
@@ -23,44 +24,32 @@ import java.io.Serializable;
 /**
  * redis配置
  */
-@Configuration
+@Singleton
 @EnableCaching
+@Configuration
 @AutoConfigureBefore(RedisAutoConfiguration.class)
 public class RedisConfiguration<K, V> implements CachingConfigurer, Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
-    //不使用 FastJSON
-//    @Bean
-//    public RedisTemplate<K, V> redisTemplate(RedisConnectionFactory connectionFactory) {
-//        final var template = new RedisTemplate<K, V>();
-//        template.setConnectionFactory(connectionFactory);
-//        final var serializer = new FastJson2JsonRedisSerializer<>(Object.class);
-//        // 使用StringRedisSerializer来序列化和反序列化redis的key值
-//        template.setKeySerializer(new StringRedisSerializer());
-//        template.setValueSerializer(serializer);
-//        // Hash的key也采用StringRedisSerializer的序列化方式
-//        template.setHashKeySerializer(new StringRedisSerializer());
-//        template.setHashValueSerializer(serializer);
-//        template.afterPropertiesSet();
-//        return template;
-//    }
-
     @Bean
-    public RedisTemplate<K, V> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+    public RedisTemplate<K, V> redisTemplate(RedisConnectionFactory factory) {
         //配置redisTemplate
         final var redisTemplate = new RedisTemplate<K, V>();
-        redisTemplate.setConnectionFactory(redisConnectionFactory);
+        redisTemplate.setConnectionFactory(factory);
         // 使用StringRedisSerializer来序列化和反序列化redis的key值
         final var stringSerializer = new StringRedisSerializer();
         // 用Jackson2JsonRedisSerializer来序列化和反序列化redis的value值
         final var jackson2JsonRedisSerializer = serializer();
-
-        redisTemplate.setKeySerializer(stringSerializer);//key序列化
-        redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);//value序列化
-        redisTemplate.setHashKeySerializer(stringSerializer);//Hash key序列化
-        redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);//Hash value序列化
+        //key序列化
+        redisTemplate.setKeySerializer(stringSerializer);
+        //value序列化
+        redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
+        //Hash key序列化
+        redisTemplate.setHashKeySerializer(stringSerializer);
+        //Hash value序列化
+        redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
         redisTemplate.afterPropertiesSet();
         return redisTemplate;
     }
