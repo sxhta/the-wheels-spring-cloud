@@ -43,4 +43,16 @@ public class OrderInfoResponse extends BaseHashEntity implements Serializable {
     @Schema(description = "到达时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:SS")
     private LocalDateTime arrivalTime;
+
+    @Schema(description = "是否帮叫，1是，2否")
+    private Integer isHelpCall;
+
+    @Schema(description = "帮叫人姓名")
+    private String helpName;
+
+    @Schema(description = "帮叫人电话")
+    private String helpPhone;
+
+    @Schema(description = "帮叫人性别，1男，2女")
+    private Integer helpSex;
 }

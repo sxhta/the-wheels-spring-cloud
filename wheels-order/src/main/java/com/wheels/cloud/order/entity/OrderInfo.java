@@ -50,12 +50,15 @@ public class OrderInfo implements Serializable{
     private LocalDateTime arrivalTime;
 
     @Schema(description = "是否帮叫，1是，2否")
-    private Boolean isHelpCall;
+    private Integer isHelpCall;
 
     @Schema(description = "帮叫人姓名")
     private String helpName;
 
     @Schema(description = "帮叫人电话")
     private String helpPhone;
+
+    @Schema(description = "帮叫人性别，1男，2女")
+    private Integer helpSex;
 
 }

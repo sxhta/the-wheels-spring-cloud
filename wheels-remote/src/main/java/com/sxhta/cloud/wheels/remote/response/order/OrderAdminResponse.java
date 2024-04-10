@@ -1,6 +1,5 @@
 package com.sxhta.cloud.wheels.remote.response.order;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -9,12 +8,10 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-/**
- * 订单管理
- */
 @Data
-@Schema(name = "OrderResponse", description = "订单管理响应体")
-public class OrderResponse implements Serializable {
+@Schema(name = "OrderAdminResponse", description = "订单后管列表响应体")
+public class OrderAdminResponse implements Serializable {
+
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -39,17 +36,18 @@ public class OrderResponse implements Serializable {
     @Schema(description = "目的地")
     private String destination;
 
+    @Schema(description = "下单用户名")
+    private String placeOrderUserName;
+
+    @Schema(description = "下单用户点电话")
+    private String placeOrderUserPhone;
+
+    @Schema(description = "出发时间")
+    private LocalDateTime appointmentTime;
+
     @Schema(description = "实际支付金额(真实订单金额)")
     private BigDecimal orderAmount;
 
-    @Schema(description = "上车时间")
-    @JsonFormat(pattern = "yyyy年M月d日 HH:mm")
-    private LocalDateTime departureTime;
-
-    @Schema(description = "到达时间")
-    @JsonFormat(pattern = "yyyy年M月d日 HH:mm")
-    private LocalDateTime arrivalTime;
-
-    @Schema(description = "车辆类型")
-    private String carType;
+    @Schema(description = "创建时间")
+    private LocalDateTime createTime;
 }
