@@ -1,6 +1,7 @@
 package com.wheels.cloud.order.service;
 
 import com.sxhta.cloud.common.service.ICommonService;
+import com.sxhta.cloud.wheels.remote.response.order.OrderAdminResponse;
 import com.sxhta.cloud.wheels.remote.response.order.OrderExpectationResponse;
 import com.sxhta.cloud.wheels.remote.response.order.OrderInfoResponse;
 import com.sxhta.cloud.wheels.remote.response.order.OrderResponse;
@@ -21,4 +22,6 @@ public interface OrderService extends ICommonService<OrderSearchRequest, OrderRe
     List<OrderExpectationResponse> getFrontExpectationList(String userHash);
 
     Double getFrontTotalMileage(String userHash);
+
+    List<OrderAdminResponse> getBackstageList(OrderSearchRequest request);
 }
