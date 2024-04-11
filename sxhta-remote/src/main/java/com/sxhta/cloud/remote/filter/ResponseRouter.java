@@ -1,5 +1,6 @@
 package com.sxhta.cloud.remote.filter;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.sxhta.cloud.remote.service.AttachmentService;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
@@ -29,13 +30,15 @@ public final class ResponseRouter implements Serializable {
             return data;
         }
         final var fileMetaVo = attachmentService.getFileMetaVo();
-        final var prefix = fileMetaVo.getPrefix();
-        //根据需要处理返回值
-        if (data.contains(prefix) && !data.contains(IMAGE_BASE64)) {
+        if (ObjectUtil.isNotNull(fileMetaVo)) {
+            final var prefix = fileMetaVo.getPrefix();
+            //根据需要处理返回值
+            if (data.contains(prefix) && !data.contains(IMAGE_BASE64)) {
 
-            final var domain = fileMetaVo.getDomain();
-            //此时是"/statics"
-            data = attachmentService.addPrefix(data, domain, prefix);
+                final var domain = fileMetaVo.getDomain();
+                //此时是"/statics"
+                data = attachmentService.addPrefix(data, domain, prefix);
+            }
         }
         return data;
     }

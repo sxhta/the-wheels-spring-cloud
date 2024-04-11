@@ -67,7 +67,7 @@ public class FeedbackTypeController extends BaseController implements ICommonCon
     }
 
     @Override
-    public CommonResponse<Boolean> updateCategory(FeedbackTypeRequest feedbackTypeRequest) {
+    public CommonResponse<Boolean> updateEntity(FeedbackTypeRequest feedbackTypeRequest) {
         return null;
     }
 
