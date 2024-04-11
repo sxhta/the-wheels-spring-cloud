@@ -14,6 +14,7 @@ import com.sxhta.cloud.wheels.remote.domain.user.WheelsFrontUser;
 import com.sxhta.cloud.wheels.remote.vo.FrontUserCacheVo;
 import com.wheels.cloud.frontend.mapper.user.FrontUserMapper;
 import com.wheels.cloud.frontend.request.user.AvatarUpdateRequest;
+import com.wheels.cloud.frontend.request.user.UserInfoRequest;
 import com.wheels.cloud.frontend.response.user.AvatarResponse;
 import com.wheels.cloud.frontend.response.user.FrontUserInfoResponse;
 import com.wheels.cloud.frontend.service.user.FrontUserInfoService;
@@ -48,6 +49,12 @@ public class FrontUserInfoServiceImpl extends ServiceImpl<FrontUserMapper, Wheel
 
     @Inject
     private AttachmentService attachmentService;
+
+    @Override
+    public String getUserHashByToken() {
+        final var currentUser = getCurrentUserByToken();
+        return currentUser.getHash();
+    }
 
     @Override
     public WheelsFrontUser getCurrentUserByToken() {
@@ -105,6 +112,13 @@ public class FrontUserInfoServiceImpl extends ServiceImpl<FrontUserMapper, Wheel
         currentUser.setAvatar(avatar);
         final var clearPrefixAvatar = attachmentService.clearPrefix(avatar);
         currentUser.setAvatar(clearPrefixAvatar);
+        return updateById(currentUser);
+    }
+
+    @Override
+    public Boolean updateUserInfo(UserInfoRequest request) {
+        final var currentUser = getCurrentUserByToken();
+        BeanUtils.copyProperties(request, currentUser);
         return updateById(currentUser);
     }
 }
