@@ -3,6 +3,7 @@ package com.sxhta.cloud.wheels.request.complain;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sxhta.cloud.common.domain.BaseHashEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -50,7 +51,7 @@ public class ComplainInformationSearchRequest extends BaseHashEntity implements 
     /**
      * 投诉时间
      */
-    private LocalDateTime complainTime = LocalDateTime.now();
+    private LocalDateTime complainTime;
 
     /**
      * 投诉的司机
@@ -60,7 +61,7 @@ public class ComplainInformationSearchRequest extends BaseHashEntity implements 
     /**
      * 是否处理(0-未处理 1-已处理)
      */
-    private Boolean isHandle = false;
+    private Boolean isHandle;
 
     /**
      * 处理人
@@ -91,4 +92,15 @@ public class ComplainInformationSearchRequest extends BaseHashEntity implements 
      * 修改人
      */
     private String updateBy;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime complainStartTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime complainEndTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime handleStartTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime handleEndTime;
+
+
 }

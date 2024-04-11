@@ -24,14 +24,16 @@ public class ComplainTypeSearchRequest extends BaseHashEntity implements Seriali
      */
     @TableId
     private Long id;
+
     /**
      * 类型名称
      */
     private String name;
+
     /**
      * 投诉类型状态(0-启用 1-禁用)
      */
-    private Boolean status = false;
+    private Boolean status;
 
     /**
      * 创建者
