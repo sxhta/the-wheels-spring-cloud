@@ -74,12 +74,14 @@ public class ComplainTypeServiceImpl extends ServiceImpl<ComplainTypeMapper, Com
         if (ObjectUtil.isNull(oldComplainType)) {
             throw new ServiceException("该投诉类型异常，请联系管理员");
         }
-        final var complainTypeLqw = new LambdaQueryWrapper<ComplainType>();
-        complainTypeLqw.eq(ComplainType::getName, name)
-                .isNull(ComplainType::getDeleteTime);
-        final var complainTypeList = list(complainTypeLqw);
-        if (CollUtil.isNotEmpty(complainTypeList)) {
-            throw new ServiceException("该类型已存在");
+        if (!oldComplainType.getName().equals(complainTypeRequest.getName())) {
+            final var complainTypeLqw = new LambdaQueryWrapper<ComplainType>();
+            complainTypeLqw.eq(ComplainType::getName, name)
+                    .isNull(ComplainType::getDeleteTime);
+            final var complainTypeList = list(complainTypeLqw);
+            if (CollUtil.isNotEmpty(complainTypeList)) {
+                throw new ServiceException("该类型已存在");
+            }
         }
         oldComplainType.setName(complainTypeRequest.getName())
                 .setStatus(complainTypeRequest.getStatus())

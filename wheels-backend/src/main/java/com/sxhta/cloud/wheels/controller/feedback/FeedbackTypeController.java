@@ -74,7 +74,7 @@ public class FeedbackTypeController extends BaseController implements ICommonCon
 
     //TODO:修改状态
     @PutMapping("/status")
-    public CommonResponse<Boolean> updateStatus(String hash) {
+    public CommonResponse<Boolean> updateStatus(@RequestParam String hash) {
         return CommonResponse.result(feedbackTypeService.updateStatus(hash));
     }
 
