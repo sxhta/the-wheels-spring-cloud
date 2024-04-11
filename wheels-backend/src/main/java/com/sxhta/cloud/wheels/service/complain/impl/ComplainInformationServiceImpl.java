@@ -5,12 +5,15 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.sxhta.cloud.common.constant.SecurityConstants;
 import com.sxhta.cloud.common.exception.ServiceException;
 import com.sxhta.cloud.remote.domain.SysUser;
 import com.sxhta.cloud.remote.vo.SystemUserCacheVo;
 import com.sxhta.cloud.security.service.TokenService;
 import com.sxhta.cloud.wheels.entity.complain.ComplainInformation;
 import com.sxhta.cloud.wheels.mapper.complain.ComplainInformationMapper;
+import com.sxhta.cloud.wheels.remote.domain.user.WheelsFrontUser;
+import com.sxhta.cloud.wheels.remote.openfeign.user.FrontUserOpenFeign;
 import com.sxhta.cloud.wheels.request.complain.ComplainInformationRequest;
 import com.sxhta.cloud.wheels.request.complain.ComplainInformationSearchRequest;
 import com.sxhta.cloud.wheels.response.complain.ComplainInformationResponse;
@@ -34,6 +37,9 @@ public class ComplainInformationServiceImpl extends ServiceImpl<ComplainInformat
 
     @Inject
     private ComplainTypeService complainTypeService;
+
+    @Inject
+    private FrontUserOpenFeign frontUserOpenFeign;
 
 
     @Override
@@ -99,6 +105,12 @@ public class ComplainInformationServiceImpl extends ServiceImpl<ComplainInformat
                 BeanUtils.copyProperties(complainInformation, complainInformationResponse);
                 complainInformationResponse.setComplainType(complainTypeService.getEntity(complainInformation.getComplainTypeHash()))
                         .setComplainPhotograph(stringToJsonList(complainInformation.getComplainPhotograph()));
+                final var user = frontUserOpenFeign.getInfoByHash(complainInformation.getComplainUser(), SecurityConstants.FROM_SOURCE);
+                if (ObjectUtil.isNotNull(user)) {
+                    final var wheelsFrontUser = new WheelsFrontUser();
+                    BeanUtils.copyProperties(user, wheelsFrontUser);
+                    complainInformationResponse.setComplainUser(wheelsFrontUser);
+                }
                 complainInformationResponseList.add(complainInformationResponse);
             });
         }

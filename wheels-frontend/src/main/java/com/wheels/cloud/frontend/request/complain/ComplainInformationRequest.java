@@ -1,11 +1,9 @@
-package com.sxhta.cloud.wheels.response.complain;
+package com.wheels.cloud.frontend.request.complain;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.sxhta.cloud.common.domain.BaseHashEntity;
-import com.sxhta.cloud.wheels.entity.complain.ComplainType;
-import com.sxhta.cloud.wheels.remote.domain.user.WheelsFrontUser;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,17 +17,17 @@ import java.util.List;
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-@TableName(value = "wheels_complain")
-@Schema(name = "投诉信息", description = "投诉信息实体类")
-public class ComplainInformationResponse extends BaseHashEntity implements Serializable {
+@Schema(name = "投诉信息", description = "投诉信息请求体")
+public class ComplainInformationRequest extends BaseHashEntity implements Serializable {
     @Serial
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
     /**
      * id
      */
-    @TableId
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
+
     /**
      * 投诉内容
      */
@@ -38,7 +36,7 @@ public class ComplainInformationResponse extends BaseHashEntity implements Seria
     /**
      * 投诉类型
      */
-    private ComplainType complainType;
+    private String complainTypeHash;
 
     /**
      * 投诉图片
@@ -48,7 +46,7 @@ public class ComplainInformationResponse extends BaseHashEntity implements Seria
     /**
      * 投诉人
      */
-    private WheelsFrontUser complainUser;
+    private String complainUser;
 
     /**
      * 投诉时间
@@ -56,14 +54,14 @@ public class ComplainInformationResponse extends BaseHashEntity implements Seria
     private LocalDateTime complainTime;
 
     /**
-     * 投诉端(1.用户投诉 2.司机投诉)
+     * 投诉的司机
      */
-    private Integer complainant;
+    private String complainOwnerHash;
 
     /**
      * 是否处理(0-未处理 1-已处理)
      */
-    private Boolean isHandle;
+    private Boolean isHandle = false;
 
     /**
      * 处理人
@@ -74,6 +72,11 @@ public class ComplainInformationResponse extends BaseHashEntity implements Seria
      * 处理时间
      */
     private LocalDateTime handleTime;
+
+    /**
+     * 处理结果
+     */
+    private Integer handleResult;
 
     /**
      * 处理备注
@@ -89,4 +92,6 @@ public class ComplainInformationResponse extends BaseHashEntity implements Seria
      * 修改人
      */
     private String updateBy;
+
+
 }
