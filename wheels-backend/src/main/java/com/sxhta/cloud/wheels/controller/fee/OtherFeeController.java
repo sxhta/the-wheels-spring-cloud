@@ -51,7 +51,7 @@ public class OtherFeeController extends BaseController implements ICommonControl
     @Operation(summary = "修改")
     @PutMapping("/update")
     public CommonResponse<Boolean> updateEntity(@RequestBody OtherFeeRequest otherFeeRequest) {
-        return null;
+        return CommonResponse.result(otherFeeService.updateEntity(otherFeeRequest));
     }
 
     @Override
