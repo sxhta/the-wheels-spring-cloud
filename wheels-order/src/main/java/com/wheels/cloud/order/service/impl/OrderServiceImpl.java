@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sxhta.cloud.common.constant.SecurityConstants;
@@ -17,7 +18,7 @@ import com.sxhta.cloud.wheels.remote.request.order.OrderSearchRequest;
 import com.sxhta.cloud.wheels.remote.response.order.*;
 import com.sxhta.cloud.wheels.remote.vo.FrontUserCacheVo;
 import com.sxhta.cloud.wheels.remote.vo.excel.PublicExportData;
-import com.wheels.cloud.order.exportVo.AdminOrderExportVo;
+import com.wheels.cloud.order.exportvo.AdminOrderExportVo;
 import com.wheels.cloud.order.exprot.ExcelTitleHandler;
 import com.wheels.cloud.order.mapper.OrderMapper;
 import com.wheels.cloud.order.request.OrderRequest;
@@ -58,9 +59,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     @Value("${file.path}")
     private String localFilePath;
-    //文件地址
-    @Value("${file.domain}")
-    private String storagePath;
+//    //文件地址
+//    @Value("${file.domain}")
+//    private String storagePath;
 
     @Value("${file.prefix}")
     private String prefixPath;
@@ -273,7 +274,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     }
 
 
-
     @Override
     public List<OrderAdminResponse> getBackstageList(OrderSearchRequest request) throws ParseException {
         return this.getOrderAdminResponseList(request);
@@ -282,7 +282,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Override
     public OrderAdminInfoResponse getBackstageInfo(String orderHash) {
         final var lqw = new LambdaQueryWrapper<Order>();
-        lqw.and((i->i.eq(Order::getHash,orderHash)));
+        lqw.and((i -> i.eq(Order::getHash, orderHash)));
         final var order = getOne(lqw);
         if (ObjectUtil.isNull(order)) {
             throw new CommonNullException("该订单不存在！");
@@ -309,7 +309,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         //TODO 优惠卷
         if (order.getIsUseCoupon()) {
             response.setCouponAmount(new BigDecimal("100"));
-        }else {
+        } else {
             response.setCouponAmount(BigDecimal.ZERO);
         }
         //TODO 车主信息
@@ -318,7 +318,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         response.setOwnerUserAvatar("车主头像");
         //TODO 车辆信息
         response.setCarType("车辆类型");
-        BeanUtils.copyProperties(order,response);
+        BeanUtils.copyProperties(order, response);
         return response;
     }
 
@@ -328,9 +328,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         int[] mergeColumnIndex = {};
         return this.getFileInfo(this.getAdminOrderExport(request), exportFileName, mergeColumnIndex, AdminOrderExportVo.class);
     }
-
-
-
 
 
     private PublicExportData getAdminOrderExport(OrderSearchRequest request) throws ParseException {
@@ -343,19 +340,69 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         }
         for (var order : orderAdminResponseList) {
             final var exportResponse = new AdminOrderExportVo();
-            BeanUtils.copyProperties(order,exportResponse);
-//            exportResponse.setOrderId(storeProductOrderVo.getOrderNo());
-//            switch (storeProductOrderVo.getStatus()) {
-//                case 0 -> exportResponse.setStatus("已下单");
-//                case 1 -> exportResponse.setStatus("已发货");
-//                case 2 -> exportResponse.setStatus("已完成");
-//                case 3 -> exportResponse.setStatus("已退款");
-//                case 4 -> exportResponse.setStatus("拒绝退款");
-//                case 5 -> exportResponse.setStatus("退款中");
-//                case 7 -> exportResponse.setStatus("退款中");
-//                case 8 -> exportResponse.setStatus("退款中");
-//                case 10 -> exportResponse.setStatus("取消订单");
-//            }
+            final var orderInfo = this.getBackstageInfo(order.getHash());
+            BeanUtils.copyProperties(orderInfo, exportResponse);
+            exportResponse.setId(String.valueOf(order.getId()));
+            switch (orderInfo.getOrderStatus()) {
+                case 1 -> exportResponse.setOrderStatus("未接单");
+                case 2 -> exportResponse.setOrderStatus("已接单");
+                case 3 -> exportResponse.setOrderStatus("进行中");
+                case 4 -> exportResponse.setOrderStatus("已完成");
+                case 5 -> exportResponse.setOrderStatus("取消订单");
+                case 6 -> exportResponse.setOrderStatus("待确认");
+            }
+            switch (orderInfo.getOrderType()) {
+                case 1 -> exportResponse.setOrderType("即时订单");
+                case 2 -> exportResponse.setOrderType("预约订单");
+            }
+            switch (orderInfo.getTravelType()) {
+                case 1 -> exportResponse.setTravelType("跨境出行");
+                case 2 -> exportResponse.setTravelType("接送机");
+            }
+            if (ObjectUtil.isNotNull(orderInfo.getPayType())) {
+                switch (orderInfo.getPayType()) {
+                    case 1 -> exportResponse.setPayType("支付宝");
+                    case 2 -> exportResponse.setPayType("微信");
+                    case 3 -> exportResponse.setPayType("余额");
+                    case 4 -> exportResponse.setPayType("现金支付");
+                    case 5 -> exportResponse.setPayType("其他");
+                }
+            }
+
+            if (ObjectUtil.isNotNull(orderInfo.getPayStatus())) {
+                switch (orderInfo.getPayStatus()) {
+                    case 1 -> exportResponse.setPayStatus("待支付");
+                    case 2 -> exportResponse.setPayStatus("支付中");
+                    case 3 -> exportResponse.setPayStatus("支付成功");
+                    case 4 -> exportResponse.setPayStatus("支付失败");
+                    case 5 -> exportResponse.setPayStatus("退款中");
+                    case 6 -> exportResponse.setPayStatus("退款成功");
+                }
+            }
+            switch (orderInfo.getIsUrgent()) {
+                case 1 -> exportResponse.setIsUrgent("是");
+                case 2 -> exportResponse.setIsUrgent("否");
+            }
+            if (orderInfo.getIsUseCoupon()) {
+                exportResponse.setIsUseCoupon("是");
+            } else {
+                exportResponse.setIsUseCoupon("否");
+            }
+            switch (orderInfo.getIsHelpCall()) {
+                case 1 -> exportResponse.setIsHelpCall("是");
+                case 2 -> exportResponse.setIsHelpCall("否");
+            }
+            switch (orderInfo.getTravelersUserSex()) {
+                case 0 -> exportResponse.setTravelersUserSex("未设置");
+                case 1 -> exportResponse.setTravelersUserSex("男");
+                case 2 -> exportResponse.setTravelersUserSex("女");
+                case 3 -> exportResponse.setTravelersUserSex("未知");
+            }
+            if (orderInfo.getIsRefund()) {
+                exportResponse.setIsRefund("是");
+            } else {
+                exportResponse.setIsRefund("否");
+            }
             exportResponseList.add(exportResponse);
             groupDataList.add(1);
         }
@@ -365,7 +412,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         return publicExportData;
     }
 
-    private List<OrderAdminResponse> getOrderAdminResponseList(OrderSearchRequest request)throws ParseException{
+    private List<OrderAdminResponse> getOrderAdminResponseList(OrderSearchRequest request) throws ParseException {
         final var lqw = new LambdaQueryWrapper<Order>();
         if (StrUtil.isNotBlank(request.getOrderNo())) {
             lqw.and(i -> i.like(Order::getOrderNo, request.getOrderNo()));
@@ -411,7 +458,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         }
         orderList.forEach(order -> {
             final var response = new OrderAdminResponse();
-            BeanUtils.copyProperties(order,response);
+            BeanUtils.copyProperties(order, response);
             final var orderInfo = orderInfoService.getInfoByOrderHash(order.getHash());
             response.setDeparture(orderInfo.getDeparture());
             response.setDestination(orderInfo.getDestination());
@@ -446,10 +493,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         EasyExcel.write(rootPath, dataTypeClass)
                 .autoCloseStream(Boolean.TRUE)
                 .registerWriteHandler(EasyExcelStyleUtils.getStyle())
+                .registerWriteHandler(new LongestMatchColumnWidthStyleStrategy())
                 .registerWriteHandler(new ExcelTitleHandler(exportFileName.concat("导出"), "导出时间:".concat(currentTime)))
                 .registerWriteHandler(new ExcelFillCellMergeStrategy(mergeRowIndex, mergeColumnIndex))
                 .sheet(exportFileName).doWrite(publicExportData.getDataList());
-        String url = storagePath.concat(prefixPath).concat("/excel/export/").concat(currentDate).concat("/").concat(fileName);
+        String url = prefixPath.concat("/excel/export/").concat(currentDate).concat("/").concat(fileName);
         sysFile.setName(exportFileName);
         sysFile.setUrl(url);
         return sysFile;
