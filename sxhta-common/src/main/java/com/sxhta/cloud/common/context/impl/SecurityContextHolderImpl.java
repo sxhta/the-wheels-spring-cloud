@@ -102,4 +102,14 @@ public class SecurityContextHolderImpl implements SecurityContextHolder, Seriali
     public void remove() {
         THREAD_LOCAL.remove();
     }
+
+    @Override
+    public String getUserHash() {
+        return get(SecurityConstants.DETAILS_USER_HASH);
+    }
+
+    @Override
+    public void setUserHash(String userHash) {
+        set(SecurityConstants.DETAILS_USER_HASH, userHash);
+    }
 }

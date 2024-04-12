@@ -47,6 +47,7 @@ public class HeaderInterceptor implements AsyncHandlerInterceptor, Serializable 
         securityContextHolder.setUserId(servletComponent.getHeader(request, SecurityConstants.DETAILS_USER_ID));
         securityContextHolder.setUserName(servletComponent.getHeader(request, SecurityConstants.DETAILS_USERNAME));
         securityContextHolder.setUserKey(servletComponent.getHeader(request, SecurityConstants.USER_KEY));
+        securityContextHolder.setUserHash(servletComponent.getHeader(request, SecurityConstants.DETAILS_USER_HASH));
 
         final var token = tokenService.getToken();
         if (ObjectUtil.isNotEmpty(token)) {

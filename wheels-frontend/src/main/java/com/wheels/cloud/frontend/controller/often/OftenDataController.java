@@ -12,8 +12,7 @@ import com.wheels.cloud.frontend.response.often.OftenDataResponse;
 import com.wheels.cloud.frontend.service.often.OftenDataService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.inject.Inject;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -45,9 +44,14 @@ public class OftenDataController extends BaseController implements ICommonContro
     }
 
     @Override
-    public CommonResponse<Boolean> create(OftenDataRequest oftenDataRequest) {
-        Boolean b = oftenDataService.create(oftenDataRequest);
-        return null;
+    @PostMapping("/save")
+    public CommonResponse<Boolean> create(@RequestBody OftenDataRequest oftenDataRequest) {
+        return CommonResponse.result(oftenDataService.create(oftenDataRequest));
+    }
+
+    @GetMapping("/user")
+    public CommonResponse<String> getCurrentUserHash() {
+        return CommonResponse.success("用户Hash", oftenDataService.getCurrentUserHash());
     }
 
     @Override

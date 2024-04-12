@@ -9,4 +9,5 @@ import com.wheels.cloud.frontend.response.often.OftenDataResponse;
 
 public interface OftenDataService extends ICommonService<OftenDataSearchRequest, OftenDataRequest, OftenDataResponse>, IService<OftenData> {
 
+    String getCurrentUserHash();
 }

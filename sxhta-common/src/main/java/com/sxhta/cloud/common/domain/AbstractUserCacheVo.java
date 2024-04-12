@@ -29,6 +29,11 @@ public abstract class AbstractUserCacheVo<Entity extends AbstractUserEntity> imp
     private Long userid;
 
     /**
+     * 用户hash
+     */
+    private String hash;
+
+    /**
      * 用户名
      */
     private String username;

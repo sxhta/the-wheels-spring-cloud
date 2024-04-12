@@ -6,11 +6,11 @@ public interface SecurityContextHolder {
 
     void set(String key, Object value);
 
-    String get(String key) ;
+    String get(String key);
 
     <T> T get(String key, Class<T> clazz);
 
-    Map<String, Object> getLocalMap() ;
+    Map<String, Object> getLocalMap();
 
     void setLocalMap(Map<String, Object> threadLocalMap);
 
@@ -18,7 +18,8 @@ public interface SecurityContextHolder {
 
     void setUserId(String account);
 
-    String getUserName() ;
+    String getUserName();
+
     void setUserName(String username);
 
     String getUserKey();
@@ -30,4 +31,8 @@ public interface SecurityContextHolder {
     void setPermission(String permissions);
 
     void remove();
+
+    String getUserHash();
+
+    void setUserHash(String userHash);
 }
