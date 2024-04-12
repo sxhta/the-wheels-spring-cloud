@@ -52,7 +52,7 @@ public class AttachmentServiceImpl implements AttachmentService, Serializable {
     @Override
     public String clearPrefix(String url) {
         final var domain = fileMetaVo.getDomain();
-        return url.replaceFirst(domain, "");
+        return url.replace(domain, "");
     }
 
 

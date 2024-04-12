@@ -1,5 +1,6 @@
 package com.sxhta.cloud.content.controller;
 
+import com.sxhta.cloud.common.constant.FilePathConstants;
 import com.sxhta.cloud.common.web.controller.BaseController;
 import com.sxhta.cloud.common.web.controller.ICommonController;
 import com.sxhta.cloud.common.web.domain.CommonResponse;
@@ -8,7 +9,9 @@ import com.sxhta.cloud.common.web.page.TableDataInfo;
 import com.sxhta.cloud.content.request.ArticleCategoryRequest;
 import com.sxhta.cloud.content.request.ArticleCategorySearchRequest;
 import com.sxhta.cloud.content.response.ArticleCategoryResponse;
+import com.sxhta.cloud.content.response.UploadResponse;
 import com.sxhta.cloud.content.service.ArticleCategoryService;
+import com.sxhta.cloud.content.service.ContentUploadService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.inject.Inject;
@@ -33,6 +36,9 @@ public class ArticleCategoryController extends BaseController
 
     @Inject
     private ArticleCategoryService articleCategoryService;
+
+    @Inject
+    private ContentUploadService contentUploadService;
 
 
     @GetMapping("/list")
@@ -87,10 +93,9 @@ public class ArticleCategoryController extends BaseController
         return CommonResponse.result(result);
     }
 
-    @PostMapping("/upload")
-    public CommonResponse<String> uploadFile(@RequestParam("file") MultipartFile file) {
-        return CommonResponse.success(articleCategoryService.uploadFile(file));
+    @PostMapping("/upload/thumb")
+    public CommonResponse<UploadResponse> uploadThumb(@RequestParam("file") MultipartFile file) {
+        final var response = contentUploadService.uploadFile(file, FilePathConstants.ARTICLE_CATEGORY_THUMB_PATH);
+        return CommonResponse.success("上传成功", response);
     }
-
-
 }

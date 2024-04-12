@@ -12,6 +12,7 @@ import com.sxhta.cloud.content.request.ArticleSearchRequest;
 import com.sxhta.cloud.content.response.ArticleResponse;
 import com.sxhta.cloud.content.service.ArticleService;
 import com.sxhta.cloud.remote.domain.SysUser;
+import com.sxhta.cloud.remote.service.AttachmentService;
 import com.sxhta.cloud.remote.vo.SystemUserCacheVo;
 import com.sxhta.cloud.security.service.TokenService;
 import jakarta.inject.Inject;
@@ -36,14 +37,28 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
     @Inject
     private TokenService<SystemUserCacheVo, SysUser> tokenService;
 
+    @Inject
+    private AttachmentService attachmentService;
+
     @Override
     public Boolean create(ArticleRequest request) {
         final var entity = new Article();
         BeanUtils.copyProperties(request, entity);
         entity.setCreateBy(tokenService.getLoginUser().getUsername());
         final var imageList = request.getImages();
-        final var images = listToJsonString(imageList);
+        final var resultImageList = new ArrayList<String>();
+        imageList.forEach(originImageUrl -> {
+            final var resultImageUrl = attachmentService.clearPrefix(originImageUrl);
+            resultImageList.add(resultImageUrl);
+        });
+        final var images = listToJsonString(resultImageList);
         entity.setImages(images);
+        final var originThumb = entity.getThumb();
+        final var resulThumb = attachmentService.clearPrefix(originThumb);
+        entity.setThumb(resulThumb);
+        final var originContent = entity.getContent();
+        final var resulContent = attachmentService.clearPrefix(originContent);
+        entity.setContent(resulContent);
         return save(entity);
     }
 
@@ -57,6 +72,20 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
         }
         final var response = new ArticleResponse();
         BeanUtils.copyProperties(entity, response);
+        final var originThumb = response.getThumb();
+        final var resulThumb = attachmentService.addPrefix(originThumb);
+        response.setThumb(resulThumb);
+        final var imagesStr = entity.getImages();
+        final var imageList = jsonStringToList(imagesStr);
+        final var resultImageList = new ArrayList<String>();
+        imageList.forEach(originImageUrl -> {
+            final var resultImageUrl = attachmentService.addPrefix(originImageUrl);
+            resultImageList.add(resultImageUrl);
+        });
+        response.setImages(resultImageList);
+        final var originContent = entity.getContent();
+        final var resulContent = attachmentService.addPrefix(originContent);
+        response.setContent(resulContent);
         return response;
     }
 
@@ -80,13 +109,28 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
             throw new CommonNullException("该文章不存在");
         }
         BeanUtils.copyProperties(request, entity);
+        final var imageList = request.getImages();
+        final var resultImageList = new ArrayList<String>();
+        imageList.forEach(originImageUrl -> {
+            final var resultImageUrl = attachmentService.clearPrefix(originImageUrl);
+            resultImageList.add(resultImageUrl);
+        });
+        final var images = listToJsonString(resultImageList);
+        entity.setImages(images);
+        final var originThumb = entity.getThumb();
+        final var resulThumb = attachmentService.clearPrefix(originThumb);
+        entity.setThumb(resulThumb);
+        final var originContent = entity.getContent();
+        final var resulContent = attachmentService.clearPrefix(originContent);
+        entity.setContent(resulContent);
         return updateById(entity);
     }
 
     @Override
     public List<ArticleResponse> getAdminList(ArticleSearchRequest request) {
         final var lqw = new LambdaQueryWrapper<Article>();
-        lqw.isNull(Article::getDeleteTime);
+        lqw.isNull(Article::getDeleteTime)
+                .orderByDesc(Article::getCreateTime);
         final var searchTitle = request.getTitle();
         if (StrUtil.isNotBlank(searchTitle)) {
             lqw.and(consumer -> consumer.eq(Article::getTitle, searchTitle));
@@ -96,6 +140,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
         entityList.forEach(entity -> {
             final var response = new ArticleResponse();
             BeanUtils.copyProperties(entity, response);
+            final var originThumb = response.getThumb();
+            final var resulThumb = attachmentService.addPrefix(originThumb);
+            response.setThumb(resulThumb);
             responseList.add(response);
         });
         return responseList;

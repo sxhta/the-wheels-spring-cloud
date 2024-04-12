@@ -22,4 +22,8 @@ public interface ICommonService<Search extends Serializable, Request extends Ser
     default String listToJsonString(List<String> list) {
         return CharacterConvert.listToJsonString(list);
     }
+
+    default List<String> jsonStringToList(String jsonString) {
+        return CharacterConvert.stringToJsonList(jsonString);
+    }
 }
