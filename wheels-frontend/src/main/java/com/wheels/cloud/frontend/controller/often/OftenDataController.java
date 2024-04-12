@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * 常用资料
@@ -32,15 +31,17 @@ public class OftenDataController extends BaseController implements ICommonContro
     private OftenDataService oftenDataService;
 
     @Override
-    public TableDataInfo<OftenDataResponse> getAdminList(OftenDataSearchRequest request, PageRequest pageRequest) {
-        List<OftenDataResponse> adminList = oftenDataService.getAdminList(request);
-        return null;
+    @GetMapping("/list")
+    public TableDataInfo<OftenDataResponse> getAdminList(@ModelAttribute("OftenDataSearchRequest") OftenDataSearchRequest request, PageRequest pageRequest) {
+        startPage(pageRequest);
+        final var list = oftenDataService.getAdminList(request);
+        return CommonResponse.list(list);
     }
 
     @Override
-    public CommonResponse<OftenDataResponse> getInfoByHash(String hash) {
-        OftenDataResponse infoByHash = oftenDataService.getInfoByHash(hash);
-        return null;
+    @GetMapping("/info")
+    public CommonResponse<OftenDataResponse> getInfoByHash(@RequestParam String hash) {
+        return CommonResponse.success("查询成功", oftenDataService.getInfoByHash(hash));
     }
 
     @Override
@@ -49,15 +50,11 @@ public class OftenDataController extends BaseController implements ICommonContro
         return CommonResponse.result(oftenDataService.create(oftenDataRequest));
     }
 
-    @GetMapping("/user")
-    public CommonResponse<String> getCurrentUserHash() {
-        return CommonResponse.success("用户Hash", oftenDataService.getCurrentUserHash());
-    }
 
     @Override
-    public CommonResponse<Boolean> softDeleteByHash(String hash) {
-        oftenDataService.softDeleteByHash(hash);
-        return null;
+    @DeleteMapping("/delete")
+    public CommonResponse<Boolean> softDeleteByHash(@RequestParam("hash") String hash) {
+        return CommonResponse.result(oftenDataService.softDeleteByHash(hash));
     }
 
     @Override
@@ -66,8 +63,8 @@ public class OftenDataController extends BaseController implements ICommonContro
     }
 
     @Override
-    public CommonResponse<Boolean> updateEntity(OftenDataRequest oftenDataRequest) {
-        oftenDataService.updateEntity(oftenDataRequest);
-        return null;
+    @PutMapping("/update")
+    public CommonResponse<Boolean> updateEntity(@RequestBody OftenDataRequest oftenDataRequest) {
+        return CommonResponse.result(oftenDataService.updateEntity(oftenDataRequest));
     }
 }
