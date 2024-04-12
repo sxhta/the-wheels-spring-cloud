@@ -68,7 +68,7 @@ public class OtherFeeServiceImpl extends ServiceImpl<OtherFeeMapper, OtherFee> i
         }
         final var lqw = new LambdaQueryWrapper<OtherFee>();
         lqw.eq(OtherFee::getName,request.getName())
-           .ne(OtherFee::getName,otherFee.getUpdateBy());
+           .ne(OtherFee::getName,otherFee.getName());
         final var res = getOne(lqw);
         if (ObjectUtil.isNotNull(res)) {
             throw new CommonNullException("该名称已存在！");
