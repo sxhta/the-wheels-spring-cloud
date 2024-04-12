@@ -1,5 +1,7 @@
 package com.sxhta.cloud.wheels.controller.complain;
 
+import cn.hutool.core.util.StrUtil;
+import com.sxhta.cloud.common.exception.ServiceException;
 import com.sxhta.cloud.common.web.controller.BaseController;
 import com.sxhta.cloud.common.web.controller.ICommonController;
 import com.sxhta.cloud.common.web.domain.CommonResponse;
@@ -11,8 +13,7 @@ import com.sxhta.cloud.wheels.response.complain.ComplainTypeResponse;
 import com.sxhta.cloud.wheels.service.complain.ComplainTypeService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.inject.Inject;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
 
@@ -26,27 +27,35 @@ public class ComplainTypeController extends BaseController implements ICommonCon
 
 
     @Override
-    public TableDataInfo<ComplainTypeResponse> getAdminList(ComplainTypeSearchRequest request, PageRequest pageRequest) {
-        complainTypeService.getAdminList(request);
-        return null;
+    @GetMapping("/list")
+    public TableDataInfo<ComplainTypeResponse> getAdminList(@ModelAttribute("ComplainTypeSearchRequest") ComplainTypeSearchRequest request, PageRequest pageRequest) {
+        startPage(pageRequest);
+        final var list = complainTypeService.getAdminList(request);
+        return CommonResponse.list(list);
     }
 
     @Override
-    public CommonResponse<ComplainTypeResponse> getInfoByHash(String hash) {
-        complainTypeService.getInfoByHash(hash);
-        return null;
+    @GetMapping("/info")
+    public CommonResponse<ComplainTypeResponse> getInfoByHash(@RequestParam String hash) {
+        if (StrUtil.isBlank(hash)) {
+            throw new ServiceException("该投诉类型异常，请联系管理员");
+        }
+        return CommonResponse.success("查询成功", complainTypeService.getInfoByHash(hash));
     }
 
     @Override
-    public CommonResponse<Boolean> create(ComplainTypeRequest complainTypeRequest) {
-        complainTypeService.create(complainTypeRequest);
-        return null;
+    @PostMapping("/save")
+    public CommonResponse<Boolean> create(@RequestBody ComplainTypeRequest complainTypeRequest) {
+        return CommonResponse.result(complainTypeService.create(complainTypeRequest));
     }
 
     @Override
-    public CommonResponse<Boolean> softDeleteByHash(String hash) {
-        complainTypeService.softDeleteByHash(hash);
-        return null;
+    @DeleteMapping("/delete")
+    public CommonResponse<Boolean> softDeleteByHash(@RequestParam String hash) {
+        if (StrUtil.isBlank(hash)) {
+            throw new ServiceException("该投诉类型异常，请联系管理员");
+        }
+        return CommonResponse.result(complainTypeService.softDeleteByHash(hash));
     }
 
     @Override
@@ -56,8 +65,14 @@ public class ComplainTypeController extends BaseController implements ICommonCon
     }
 
     @Override
-    public CommonResponse<Boolean> updateEntity(ComplainTypeRequest complainTypeRequest) {
-        complainTypeService.updateEntity(complainTypeRequest);
-        return null;
+    @PutMapping("/update")
+    public CommonResponse<Boolean> updateEntity(@RequestBody ComplainTypeRequest complainTypeRequest) {
+        return CommonResponse.result(complainTypeService.updateEntity(complainTypeRequest));
     }
+
+    @PutMapping("/status")
+    public CommonResponse<Boolean> updateStatus(@RequestParam String hash) {
+        return CommonResponse.result(complainTypeService.updateStatus(hash));
+    }
+
 }

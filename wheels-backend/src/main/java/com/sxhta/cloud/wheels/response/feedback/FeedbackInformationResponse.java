@@ -12,6 +12,7 @@ import lombok.experimental.Accessors;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Accessors(chain = true)
@@ -42,7 +43,7 @@ public class FeedbackInformationResponse extends BaseHashEntity implements Seria
     /**
      * 反馈截图
      */
-    private String feedbackPhotograph;
+    private List<String> feedbackPhotograph;
 
     /**
      * 反馈人

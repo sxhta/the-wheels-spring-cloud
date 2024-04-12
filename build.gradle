@@ -22,7 +22,7 @@ repositories {
 }
 
 ext {
-    set('springCloudVersion', '2023.0.0')
+    set('springCloudVersion', '2023.0.1')
     set('springCloudAlibabaVersion', '2023.0.0.0-RC1')
     set('springBootVersion', '3.2.4')
     set('springShellVersion', '3.2.3')

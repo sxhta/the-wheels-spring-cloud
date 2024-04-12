@@ -9,4 +9,7 @@ import com.sxhta.cloud.wheels.response.complain.ComplainTypeResponse;
 
 public interface ComplainTypeService extends ICommonService<ComplainTypeSearchRequest, ComplainTypeRequest, ComplainTypeResponse>, IService<ComplainType> {
 
+    Boolean updateStatus(String hash);
+
+    ComplainType getEntity(String hash);
 }

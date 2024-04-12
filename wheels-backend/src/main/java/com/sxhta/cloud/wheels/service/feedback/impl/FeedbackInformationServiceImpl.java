@@ -2,6 +2,7 @@ package com.sxhta.cloud.wheels.service.feedback.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sxhta.cloud.common.exception.ServiceException;
@@ -21,6 +22,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.sxhta.cloud.common.utils.CharacterConvert.stringToJsonList;
 
 @Service
 public class FeedbackInformationServiceImpl extends ServiceImpl<FeedbackInformationMapper, FeedbackInformation> implements FeedbackInformationService {
@@ -66,15 +69,38 @@ public class FeedbackInformationServiceImpl extends ServiceImpl<FeedbackInformat
 
     @Override
     public List<FeedbackInformationResponse> getAdminList(FeedbackInformationSearchRequest request) {
+        final var feedbackTypeHash = request.getFeedbackTypeHash();
+        final var isHandle = request.getIsHandle();
+        final var feedbackStartTime = request.getFeedbackStartTime();
+        final var feedbackEndTime = request.getFeedbackEndTime();
+        final var handleStartTime = request.getHandleStartTime();
+        final var handleEndTime = request.getHandleEndTime();
         final var feedbackInformationResponseList = new ArrayList<FeedbackInformationResponse>();
         final var feedbackInformationLqw = new LambdaQueryWrapper<FeedbackInformation>();
-        //TODO:反馈信息模糊查询参数
+        if (StrUtil.isNotBlank(feedbackTypeHash)) {
+            feedbackInformationLqw.eq(FeedbackInformation::getFeedbackTypeHash, feedbackTypeHash);
+        }
+        if (ObjectUtil.isNotNull(isHandle)) {
+            feedbackInformationLqw.eq(FeedbackInformation::getIsHandle, isHandle);
+        }
+        if (ObjectUtil.isNotNull(feedbackStartTime) && ObjectUtil.isNotNull(feedbackEndTime)) {
+            feedbackInformationLqw.between(FeedbackInformation::getFeedbackTime, feedbackStartTime, feedbackEndTime);
+        }
+//        final var createStartTime = request.getCreateStartTime();
+//        final var createEndTime = request.getCreateEndTime();
+//        if (ObjectUtil.isNotNull(createStartTime) && ObjectUtil.isNotNull(createEndTime)) {
+//            feedbackInformationLqw.between(FeedbackInformation::getCreateTime, createStartTime, createEndTime);
+//        }
+        if (ObjectUtil.isNotNull(handleStartTime) && ObjectUtil.isNotNull(handleEndTime)) {
+            feedbackInformationLqw.between(FeedbackInformation::getHandleTime, handleStartTime, handleEndTime);
+        }
+        feedbackInformationLqw.isNull(FeedbackInformation::getDeleteTime);
         final var feedbackInformationList = list(feedbackInformationLqw);
         if (CollUtil.isNotEmpty(feedbackInformationList)) {
             feedbackInformationList.forEach(feedbackInformation -> {
                 final var feedbackInformationResponse = new FeedbackInformationResponse();
                 BeanUtils.copyProperties(feedbackInformation, feedbackInformationResponse);
-                //TODO:反馈图片字符转数组，时间格式
+                feedbackInformationResponse.setFeedbackPhotograph(stringToJsonList(feedbackInformation.getFeedbackPhotograph()));
                 feedbackInformationResponseList.add(feedbackInformationResponse);
             });
         }
@@ -94,7 +120,11 @@ public class FeedbackInformationServiceImpl extends ServiceImpl<FeedbackInformat
     @Override
     public Boolean handleFeedbackInformation(FeedbackInformationRequest feedbackInformationRequest) {
         FeedbackInformation feedbackInformation = getEntity(feedbackInformationRequest.getHash());
-        feedbackInformation.setHandleBy(tokenService.getUsername())
+        if (feedbackInformation.getIsHandle()) {
+            throw new ServiceException("该反馈已处理");
+        }
+        feedbackInformation.setIsHandle(true)
+                .setHandleBy(tokenService.getUsername())
                 .setHandleTime(LocalDateTime.now())
                 .setHandleResult(feedbackInformationRequest.getHandleResult())
                 .setHandleRemark(feedbackInformationRequest.getHandleRemark())
