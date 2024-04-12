@@ -4,6 +4,7 @@ package com.sxhta.cloud.remote.filter;
 import com.sxhta.cloud.common.component.RequestComponent;
 import com.sxhta.cloud.common.exception.CommonException;
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpFilter;
@@ -21,6 +22,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * 返回值输出过滤器
  */
+@Singleton
 @Component
 public final class ResponseFilter extends HttpFilter implements Serializable {
     @Serial

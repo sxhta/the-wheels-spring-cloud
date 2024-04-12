@@ -4,6 +4,7 @@ import com.alibaba.ttl.TransmittableThreadLocal;
 import com.sxhta.cloud.common.constant.SecurityConstants;
 import com.sxhta.cloud.common.context.SecurityContextHolder;
 import com.sxhta.cloud.common.text.Convert;
+import jakarta.inject.Singleton;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
@@ -16,12 +17,14 @@ import java.util.concurrent.ConcurrentHashMap;
  * 获取当前线程变量中的 用户id、用户名称、Token等信息
  * 注意：必须在网关通过请求头的方法传入，同时在HeaderInterceptor拦截器设置值。 否则这里无法获取
  */
+@Singleton
 @Component
 public class SecurityContextHolderImpl implements SecurityContextHolder, Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
+    @Singleton
     private final ThreadLocal<Map<String, Object>> THREAD_LOCAL = new TransmittableThreadLocal<>();
 
     @Override

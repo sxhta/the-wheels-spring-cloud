@@ -20,14 +20,14 @@ public class ResourcesConfig implements WebMvcConfigurer, Serializable {
     private static final long serialVersionUID = 1L;
 
     @Inject
-    private LocalFileConfig localFilePath;
+    private LocalFileConfig localFileConfig;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        final var localFilePrefix = localFilePath.getPrefix();
+        final var localFilePrefix = localFileConfig.getPrefix();
         /* 本地文件上传路径 */
         registry.addResourceHandler(localFilePrefix + "/**")
-                .addResourceLocations("file:" + localFilePath.getPath() + File.separator);
+                .addResourceLocations("file:" + localFileConfig.getPath() + File.separator);
     }
 
     /**
@@ -35,7 +35,7 @@ public class ResourcesConfig implements WebMvcConfigurer, Serializable {
      */
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        final var localFilePrefix = localFilePath.getPrefix();
+        final var localFilePrefix = localFileConfig.getPrefix();
         // 设置允许跨域的路由
         registry.addMapping(localFilePrefix + "/**")
                 // 设置允许跨域请求的域名

@@ -32,7 +32,7 @@ public class UserInfoController implements Serializable {
     }
 
     @PostMapping("/upload/avatar")
-    public CommonResponse<AvatarResponse> getUserInfo(@RequestPart(value = "file") MultipartFile file) {
+    public CommonResponse<AvatarResponse> uploadAvatar(@RequestParam(value = "file") MultipartFile file) {
         final var response = frontUserInfoService.uploadAvatar(file);
         return CommonResponse.success(response);
     }

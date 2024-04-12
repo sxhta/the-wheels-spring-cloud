@@ -47,6 +47,8 @@ public class LocalSysFileServiceImpl implements ISysFileService {
         //final var domain = localFileConfig.getDomain();
         final var localFilePrefix = localFileConfig.getPrefix();
         final var name = fileUploadComponent.upload(localFilePath, file);
+        final var result = localFilePrefix + folder + name;
+        System.out.println(result);
         return localFilePrefix + folder + name;
     }
 
