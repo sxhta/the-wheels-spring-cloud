@@ -10,10 +10,10 @@ import com.sxhta.cloud.common.constant.CacheConstants;
 import com.sxhta.cloud.common.constant.SecurityConstants;
 import com.sxhta.cloud.common.constant.TokenConstants;
 import com.sxhta.cloud.common.context.SecurityContextHolder;
-import com.sxhta.cloud.common.exception.auth.NotLoginException;
-import com.sxhta.cloud.common.utils.uuid.IdUtils;
 import com.sxhta.cloud.common.domain.AbstractUserCacheVo;
 import com.sxhta.cloud.common.domain.AbstractUserEntity;
+import com.sxhta.cloud.common.exception.auth.NotLoginException;
+import com.sxhta.cloud.common.utils.uuid.IdUtils;
 import com.sxhta.cloud.security.response.TokenResponse;
 import com.sxhta.cloud.security.service.TokenService;
 import jakarta.inject.Inject;
@@ -75,9 +75,11 @@ public class TokenServiceImpl<Cache extends AbstractUserCacheVo<Entity>, Entity
         final var token = IdUtils.fastUUID();
         final var userId = userCacheVo.getUserEntity().getUserId();
         final var userName = userCacheVo.getUserEntity().getUserName();
+        final var userHash = userCacheVo.getUserEntity().getHash();
         userCacheVo.setToken(token);
         userCacheVo.setUserid(userId);
         userCacheVo.setUsername(userName);
+        userCacheVo.setHash(userHash);
         userCacheVo.setIpaddr(ipComponent.getIpAddr());
         refreshToken(userCacheVo);
 
@@ -86,6 +88,7 @@ public class TokenServiceImpl<Cache extends AbstractUserCacheVo<Entity>, Entity
         claimsMap.put(SecurityConstants.USER_KEY, token);
         claimsMap.put(SecurityConstants.DETAILS_USER_ID, userId);
         claimsMap.put(SecurityConstants.DETAILS_USERNAME, userName);
+        claimsMap.put(SecurityConstants.DETAILS_USER_HASH, userHash);
 
         final var accessToken = jwtComponent.createToken(claimsMap);
         final var response = new TokenResponse();
@@ -253,5 +256,10 @@ public class TokenServiceImpl<Cache extends AbstractUserCacheVo<Entity>, Entity
     @Override
     public String getTokenKey(String token) {
         return ACCESS_TOKEN + token;
+    }
+
+    @Override
+    public String getUserHash() {
+        return securityContextHolder.getUserHash();
     }
 }

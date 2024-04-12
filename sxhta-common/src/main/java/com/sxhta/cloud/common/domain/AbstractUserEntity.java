@@ -15,7 +15,7 @@ import java.io.Serializable;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public abstract class AbstractUserEntity  extends BaseEntity implements Serializable {
+public abstract class AbstractUserEntity extends BaseEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -26,6 +26,11 @@ public abstract class AbstractUserEntity  extends BaseEntity implements Serializ
     @Excel(name = "用户序号", cellType = Excel.ColumnType.NUMERIC, prompt = "用户编号")
     @TableId(value = "user_id", type = IdType.AUTO)
     private Long userId;
+
+    /**
+     * 用户Hash
+     */
+    private String hash;
 
     /**
      * 用户账号

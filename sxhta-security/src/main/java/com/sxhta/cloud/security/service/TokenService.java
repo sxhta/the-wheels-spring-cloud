@@ -88,4 +88,11 @@ public interface TokenService<Cache extends AbstractUserCacheVo<Entity>, Entity 
     void refreshToken(Cache loginUser);
 
     String getTokenKey(String token);
+
+    /**
+     * 获取用户hash
+     *
+     * @return 用户hash
+     */
+    String getUserHash();
 }

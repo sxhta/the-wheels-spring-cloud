@@ -5,12 +5,16 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.sxhta.cloud.common.constant.SecurityConstants;
 import com.sxhta.cloud.common.exception.ServiceException;
+import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.sxhta.cloud.remote.domain.SysUser;
 import com.sxhta.cloud.remote.vo.SystemUserCacheVo;
 import com.sxhta.cloud.security.service.TokenService;
 import com.sxhta.cloud.wheels.entity.feedback.FeedbackInformation;
 import com.sxhta.cloud.wheels.mapper.feedback.FeedbackInformationMapper;
+import com.sxhta.cloud.wheels.remote.openfeign.user.FrontUserOpenFeign;
+import com.sxhta.cloud.wheels.remote.response.wheelsUser.WheelsUserResponse;
 import com.sxhta.cloud.wheels.request.feedback.FeedbackInformationRequest;
 import com.sxhta.cloud.wheels.request.feedback.FeedbackInformationSearchRequest;
 import com.sxhta.cloud.wheels.response.feedback.FeedbackInformationResponse;
@@ -30,6 +34,8 @@ public class FeedbackInformationServiceImpl extends ServiceImpl<FeedbackInformat
 
     @Inject
     private TokenService<SystemUserCacheVo, SysUser> tokenService;
+    @Inject
+    private FrontUserOpenFeign frontUserOpenFeign;
 
 
     @Override
@@ -47,6 +53,8 @@ public class FeedbackInformationServiceImpl extends ServiceImpl<FeedbackInformat
         final var feedbackInformation = getEntity(hash);
         final var feedbackInformationResponse = new FeedbackInformationResponse();
         BeanUtils.copyProperties(feedbackInformation, feedbackInformationResponse);
+        CommonResponse<WheelsUserResponse> userResponse = frontUserOpenFeign.getInfoByHash(feedbackInformation.getFeedbackUser(), SecurityConstants.FROM_SOURCE);
+        feedbackInformationResponse.setFeedbackUser(userResponse.getData().getUserName());
         return feedbackInformationResponse;
     }
 
@@ -69,6 +77,7 @@ public class FeedbackInformationServiceImpl extends ServiceImpl<FeedbackInformat
 
     @Override
     public List<FeedbackInformationResponse> getAdminList(FeedbackInformationSearchRequest request) {
+        final var feedbackUser = request.getFeedbackUser();
         final var feedbackTypeHash = request.getFeedbackTypeHash();
         final var isHandle = request.getIsHandle();
         final var feedbackStartTime = request.getFeedbackStartTime();
@@ -86,13 +95,11 @@ public class FeedbackInformationServiceImpl extends ServiceImpl<FeedbackInformat
         if (ObjectUtil.isNotNull(feedbackStartTime) && ObjectUtil.isNotNull(feedbackEndTime)) {
             feedbackInformationLqw.between(FeedbackInformation::getFeedbackTime, feedbackStartTime, feedbackEndTime);
         }
-//        final var createStartTime = request.getCreateStartTime();
-//        final var createEndTime = request.getCreateEndTime();
-//        if (ObjectUtil.isNotNull(createStartTime) && ObjectUtil.isNotNull(createEndTime)) {
-//            feedbackInformationLqw.between(FeedbackInformation::getCreateTime, createStartTime, createEndTime);
-//        }
         if (ObjectUtil.isNotNull(handleStartTime) && ObjectUtil.isNotNull(handleEndTime)) {
             feedbackInformationLqw.between(FeedbackInformation::getHandleTime, handleStartTime, handleEndTime);
+        }
+        if (StrUtil.isNotBlank(feedbackUser)) {
+            feedbackInformationLqw.in(FeedbackInformation::getFeedbackUser, frontUserOpenFeign.getHashListByUserName(feedbackUser, SecurityConstants.FROM_SOURCE));
         }
         feedbackInformationLqw.isNull(FeedbackInformation::getDeleteTime);
         final var feedbackInformationList = list(feedbackInformationLqw);

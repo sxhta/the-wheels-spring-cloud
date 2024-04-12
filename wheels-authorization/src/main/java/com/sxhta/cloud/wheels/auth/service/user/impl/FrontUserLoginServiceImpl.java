@@ -48,7 +48,6 @@ public class FrontUserLoginServiceImpl
             logger.info("用户不存在，注册新用户");
             final var wheelsFrontUser = new WheelsFrontUser();
             wheelsFrontUser.setAccount(phone);
-
             wheelsFrontUser.setUserName(phone);
             final var registerRequest = new RemoteRegisterRequest();
             registerRequest.setAccount(phone);

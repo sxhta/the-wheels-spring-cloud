@@ -15,6 +15,10 @@ public class SecurityConstants implements Serializable {
      * 用户ID字段
      */
     public static final String DETAILS_USER_ID = "user_id";
+    /**
+     * 用户hash字段
+     */
+    public static final String DETAILS_USER_HASH = "hash";
 
     /**
      * 用户名字段
