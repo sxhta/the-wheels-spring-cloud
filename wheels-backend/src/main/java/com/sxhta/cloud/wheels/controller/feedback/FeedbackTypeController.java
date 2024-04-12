@@ -67,14 +67,14 @@ public class FeedbackTypeController extends BaseController implements ICommonCon
     }
 
     @Override
-    public CommonResponse<Boolean> updateCategory(FeedbackTypeRequest feedbackTypeRequest) {
+    public CommonResponse<Boolean> updateEntity(FeedbackTypeRequest feedbackTypeRequest) {
         return null;
     }
 
 
     //TODO:修改状态
     @PutMapping("/status")
-    public CommonResponse<Boolean> updateStatus(String hash) {
+    public CommonResponse<Boolean> updateStatus(@RequestParam String hash) {
         return CommonResponse.result(feedbackTypeService.updateStatus(hash));
     }
 

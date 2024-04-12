@@ -38,7 +38,6 @@ public final class ResponseFilter extends HttpFilter implements Serializable {
         final var wrapperResponse = new ResponseWrapper(response);
         // 这里只拦截返回，直接让请求过去，如果在请求前有处理，可以在这里处理
         super.doFilter(request, wrapperResponse, chain);
-
         //获取返回值
         final var content = wrapperResponse.getContent();
         //判断是否有值

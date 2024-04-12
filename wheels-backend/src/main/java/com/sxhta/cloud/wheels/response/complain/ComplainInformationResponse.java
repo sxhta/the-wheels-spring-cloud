@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.sxhta.cloud.common.domain.BaseHashEntity;
+import com.sxhta.cloud.wheels.entity.complain.ComplainType;
+import com.sxhta.cloud.wheels.remote.domain.user.WheelsFrontUser;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,6 +14,7 @@ import lombok.experimental.Accessors;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Accessors(chain = true)
@@ -30,22 +33,22 @@ public class ComplainInformationResponse extends BaseHashEntity implements Seria
     /**
      * 投诉内容
      */
-    private String complainContent;
+    private String content;
 
     /**
      * 投诉类型
      */
-    private String complainTypeHash;
+    private ComplainType complainType;
 
     /**
      * 投诉图片
      */
-    private String complainPhotograph;
+    private List<String> complainPhotograph;
 
     /**
      * 投诉人
      */
-    private String complainUser;
+    private WheelsFrontUser complainUser;
 
     /**
      * 投诉时间
@@ -60,7 +63,7 @@ public class ComplainInformationResponse extends BaseHashEntity implements Seria
     /**
      * 是否处理(0-未处理 1-已处理)
      */
-    private Boolean isHandle = false;
+    private Boolean isHandle;
 
     /**
      * 处理人

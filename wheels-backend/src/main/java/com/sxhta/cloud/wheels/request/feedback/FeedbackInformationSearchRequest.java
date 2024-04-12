@@ -3,6 +3,7 @@ package com.sxhta.cloud.wheels.request.feedback;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sxhta.cloud.common.domain.BaseHashEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -47,12 +48,13 @@ public class FeedbackInformationSearchRequest extends BaseHashEntity implements 
     /**
      * 反馈时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime feedbackTime;
 
     /**
      * 是否处理(0-未处理 1-已处理)
      */
-    private Boolean isHandle = false;
+    private Boolean isHandle;
 
     /**
      * 处理人
@@ -62,6 +64,7 @@ public class FeedbackInformationSearchRequest extends BaseHashEntity implements 
     /**
      * 处理时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime handleTime;
 
 
@@ -76,10 +79,27 @@ public class FeedbackInformationSearchRequest extends BaseHashEntity implements 
      */
     private String createBy;
 
-
     /**
      * 修改人
      */
     private String updateBy;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime feedbackStartTime;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime feedbackEndTime;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime createStartTime;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime createEndTime;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime handleStartTime;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime handleEndTime;
 
 }

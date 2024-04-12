@@ -1,6 +1,5 @@
 package com.sxhta.cloud.wheels.controller.order;
 
-import com.sxhta.cloud.common.constant.SecurityConstants;
 import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.sxhta.cloud.common.web.page.PageRequest;
 import com.sxhta.cloud.common.web.page.TableDataInfo;
@@ -32,19 +31,19 @@ public class AdminOrderController implements Serializable {
 
     @Operation(summary = "后管订单列表")
     @GetMapping("/list")
-    public TableDataInfo<OrderAdminResponse> getBackstageList(@ModelAttribute("OrderSearchRequest") OrderSearchRequest request, PageRequest pageRequest) throws ParseException{
-        return orderService.getBackstageList(request,pageRequest);
+    public TableDataInfo<OrderAdminResponse> getBackstageList(@ModelAttribute("OrderSearchRequest") OrderSearchRequest request, PageRequest pageRequest) throws ParseException {
+        return orderService.getBackstageList(request, pageRequest);
     }
 
     @Operation(summary = "后管订单详情")
     @GetMapping("/info")
-    public CommonResponse<OrderAdminInfoResponse> getBackstageInfo(@RequestParam("orderHash") String orderHash){
+    public CommonResponse<OrderAdminInfoResponse> getBackstageInfo(@RequestParam("orderHash") String orderHash) {
         return CommonResponse.success(orderService.getBackstageInfo(orderHash));
     }
 
     @Operation(summary = "后管订单导出")
     @GetMapping("/export")
-    public CommonResponse<SysFile> getBackstageExport(@SpringQueryMap OrderSearchRequest request) throws ParseException{
+    public CommonResponse<SysFile> getBackstageExport(@SpringQueryMap OrderSearchRequest request) throws ParseException {
         return CommonResponse.success(orderService.getBackstageExport(request));
     }
 }

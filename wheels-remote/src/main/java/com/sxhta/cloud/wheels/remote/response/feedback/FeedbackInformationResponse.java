@@ -1,12 +1,9 @@
-package com.sxhta.cloud.wheels.response.feedback;
+package com.sxhta.cloud.wheels.remote.response.feedback;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.sxhta.cloud.common.domain.BaseHashEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serial;
@@ -16,19 +13,23 @@ import java.util.List;
 
 @Data
 @Accessors(chain = true)
-@EqualsAndHashCode(callSuper = true)
-@TableName(value = "wheels_feedback_information")
-@Schema(name = "反馈信息", description = "反馈信息实体类")
-public class FeedbackInformationResponse extends BaseHashEntity implements Serializable {
+@Schema(name = "反馈信息", description = "反馈信息响应体")
+public class FeedbackInformationResponse implements Serializable {
 
     @Serial
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
     /**
      * id
      */
     @TableId
     private Long id;
+
+    /**
+     * 反馈hash
+     */
+    private String hash;
 
     /**
      * 反馈类型
@@ -44,16 +45,6 @@ public class FeedbackInformationResponse extends BaseHashEntity implements Seria
      * 反馈截图
      */
     private List<String> feedbackPhotograph;
-
-    /**
-     * 反馈人
-     */
-    private String feedbackUser;
-
-    /**
-     * 反馈时间
-     */
-    private LocalDateTime feedbackTime;
 
     /**
      * 是否处理(0-未处理 1-已处理)
@@ -75,15 +66,5 @@ public class FeedbackInformationResponse extends BaseHashEntity implements Seria
      */
     private String handleRemark;
 
-
-    /**
-     * 创建者
-     */
-    private String createBy;
-
-    /**
-     * 修改人
-     */
-    private String updateBy;
 
 }

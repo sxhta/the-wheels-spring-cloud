@@ -2,18 +2,23 @@ package com.sxhta.cloud.wheels.service.complain.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.sxhta.cloud.common.constant.SecurityConstants;
 import com.sxhta.cloud.common.exception.ServiceException;
 import com.sxhta.cloud.remote.domain.SysUser;
 import com.sxhta.cloud.remote.vo.SystemUserCacheVo;
 import com.sxhta.cloud.security.service.TokenService;
 import com.sxhta.cloud.wheels.entity.complain.ComplainInformation;
 import com.sxhta.cloud.wheels.mapper.complain.ComplainInformationMapper;
+import com.sxhta.cloud.wheels.remote.domain.user.WheelsFrontUser;
+import com.sxhta.cloud.wheels.remote.openfeign.user.FrontUserOpenFeign;
 import com.sxhta.cloud.wheels.request.complain.ComplainInformationRequest;
 import com.sxhta.cloud.wheels.request.complain.ComplainInformationSearchRequest;
 import com.sxhta.cloud.wheels.response.complain.ComplainInformationResponse;
 import com.sxhta.cloud.wheels.service.complain.ComplainInformationService;
+import com.sxhta.cloud.wheels.service.complain.ComplainTypeService;
 import jakarta.inject.Inject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -22,11 +27,19 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.sxhta.cloud.common.utils.CharacterConvert.stringToJsonList;
+
 @Service
 public class ComplainInformationServiceImpl extends ServiceImpl<ComplainInformationMapper, ComplainInformation> implements ComplainInformationService {
 
     @Inject
     private TokenService<SystemUserCacheVo, SysUser> tokenService;
+
+    @Inject
+    private ComplainTypeService complainTypeService;
+
+    @Inject
+    private FrontUserOpenFeign frontUserOpenFeign;
 
 
     @Override
@@ -64,18 +77,42 @@ public class ComplainInformationServiceImpl extends ServiceImpl<ComplainInformat
 
     @Override
     public List<ComplainInformationResponse> getAdminList(ComplainInformationSearchRequest request) {
+        final var isHandle = request.getIsHandle();
+        final var complainTypeHash = request.getComplainTypeHash();
+        final var complainStartTime = request.getComplainStartTime();
+        final var complainEndTime = request.getComplainEndTime();
+        final var handleStartTime = request.getHandleStartTime();
+        final var handleEndTime = request.getHandleEndTime();
         final var complainInformationResponseList = new ArrayList<ComplainInformationResponse>();
         final var complainInformationLqw = new LambdaQueryWrapper<ComplainInformation>();
-        //TODO:投诉信息查询参数
+        if (ObjectUtil.isNotNull(isHandle)) {
+            complainInformationLqw.eq(ComplainInformation::getIsHandle, isHandle);
+        }
+        if (StrUtil.isNotBlank(complainTypeHash)) {
+            complainInformationLqw.eq(ComplainInformation::getComplainTypeHash, complainTypeHash);
+        }
+        if (ObjectUtil.isNotNull(complainStartTime) && ObjectUtil.isNotNull(complainEndTime)) {
+            complainInformationLqw.between(ComplainInformation::getComplainTime, complainStartTime, complainEndTime);
+        }
+        if (ObjectUtil.isNotNull(handleStartTime) && ObjectUtil.isNotNull(handleEndTime)) {
+            complainInformationLqw.between(ComplainInformation::getComplainTime, handleStartTime, handleEndTime);
+        }
         complainInformationLqw.isNull(ComplainInformation::getDeleteTime);
         final var complainInformationList = list(complainInformationLqw);
         if (CollUtil.isNotEmpty(complainInformationList)) {
             complainInformationList.forEach(complainInformation -> {
                 final var complainInformationResponse = new ComplainInformationResponse();
                 BeanUtils.copyProperties(complainInformation, complainInformationResponse);
+                complainInformationResponse.setComplainType(complainTypeService.getEntity(complainInformation.getComplainTypeHash()))
+                        .setComplainPhotograph(stringToJsonList(complainInformation.getComplainPhotograph()));
+                final var user = frontUserOpenFeign.getInfoByHash(complainInformation.getComplainUser(), SecurityConstants.FROM_SOURCE);
+                if (ObjectUtil.isNotNull(user)) {
+                    final var wheelsFrontUser = new WheelsFrontUser();
+                    BeanUtils.copyProperties(user, wheelsFrontUser);
+                    complainInformationResponse.setComplainUser(wheelsFrontUser);
+                }
                 complainInformationResponseList.add(complainInformationResponse);
             });
-
         }
         return complainInformationResponseList;
     }
