@@ -59,7 +59,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     @Value("${file.path}")
     private String localFilePath;
-//    //文件地址
+    //文件地址
 //    @Value("${file.domain}")
 //    private String storagePath;
 
@@ -325,8 +325,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Override
     public SysFile getBackstageExport(OrderSearchRequest request) throws ParseException {
         String exportFileName = "订单";
-        int[] mergeColumnIndex = {};
-        return this.getFileInfo(this.getAdminOrderExport(request), exportFileName, mergeColumnIndex, AdminOrderExportVo.class);
+        return this.getFileInfo(this.getAdminOrderExport(request), exportFileName, AdminOrderExportVo.class);
     }
 
 
@@ -414,6 +413,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     private List<OrderAdminResponse> getOrderAdminResponseList(OrderSearchRequest request) throws ParseException {
         final var lqw = new LambdaQueryWrapper<Order>();
+        final var responseList = new ArrayList<OrderAdminResponse>();
         if (StrUtil.isNotBlank(request.getOrderNo())) {
             lqw.and(i -> i.like(Order::getOrderNo, request.getOrderNo()));
         }
@@ -428,12 +428,18 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         }
         if (StrUtil.isNotBlank(request.getPlaceOrderUserName())) {
             final var resData = frontUserOpenFeign.getHashListByUserName(request.getPlaceOrderUserName(), SecurityConstants.INNER);
+            if (CollUtil.isEmpty(resData.getData())) {
+                return responseList;
+            }
             if (CollUtil.isNotEmpty(resData.getData())) {
                 lqw.and(i -> i.in(Order::getUserHash, resData.getData()));
             }
         }
         if (StrUtil.isNotBlank(request.getPlaceOrderUserPhone())) {
             final var resData = frontUserOpenFeign.getHashListByUserPhone(request.getPlaceOrderUserPhone(), SecurityConstants.INNER);
+            if (CollUtil.isEmpty(resData.getData())) {
+                return responseList;
+            }
             if (CollUtil.isNotEmpty(resData.getData())) {
                 lqw.and(i -> i.in(Order::getUserHash, resData.getData()));
             }
@@ -452,7 +458,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         }
         lqw.orderByDesc(Order::getCreateTime);
         final var orderList = list(lqw);
-        final var responseList = new ArrayList<OrderAdminResponse>();
         if (CollUtil.isEmpty(orderList)) {
             return responseList;
         }
@@ -472,9 +477,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
 
     private <T> SysFile getFileInfo(
-            PublicExportData publicExportData, String exportFileName, int[] mergeColumnIndex, Class<T> dataTypeClass) {
+            PublicExportData publicExportData, String exportFileName, Class<T> dataTypeClass) {
         final var sysFile = new SysFile();
-        int mergeRowIndex = 2;
+        int mergeRowIndex = 3;
         String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
         String directoryPath = localFilePath.concat("/excel/export/").concat(currentDate);
         try {
@@ -493,9 +498,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         EasyExcel.write(rootPath, dataTypeClass)
                 .autoCloseStream(Boolean.TRUE)
                 .registerWriteHandler(EasyExcelStyleUtils.getStyle())
-                .registerWriteHandler(new LongestMatchColumnWidthStyleStrategy())
                 .registerWriteHandler(new ExcelTitleHandler(exportFileName.concat("导出"), "导出时间:".concat(currentTime)))
-                .registerWriteHandler(new ExcelFillCellMergeStrategy(mergeRowIndex, mergeColumnIndex))
+//                .registerWriteHandler(new ExcelFillCellMergeStrategy(mergeRowIndex, mergeColumnIndex))
+                .registerWriteHandler(new LongestMatchColumnWidthStyleStrategy())
                 .sheet(exportFileName).doWrite(publicExportData.getDataList());
         String url = prefixPath.concat("/excel/export/").concat(currentDate).concat("/").concat(fileName);
         sysFile.setName(exportFileName);
