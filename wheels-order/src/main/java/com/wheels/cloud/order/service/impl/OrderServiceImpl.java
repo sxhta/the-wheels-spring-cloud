@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sxhta.cloud.common.constant.SecurityConstants;
 import com.sxhta.cloud.common.exception.CommonNullException;
 import com.sxhta.cloud.remote.domain.SysFile;
+import com.sxhta.cloud.remote.service.AttachmentService;
 import com.sxhta.cloud.security.service.TokenService;
 import com.sxhta.cloud.wheels.remote.domain.order.Order;
 import com.sxhta.cloud.wheels.remote.domain.user.WheelsFrontUser;
@@ -25,11 +26,9 @@ import com.wheels.cloud.order.request.OrderRequest;
 import com.wheels.cloud.order.service.OrderInfoService;
 import com.wheels.cloud.order.service.OrderService;
 import com.wheels.cloud.order.utils.EasyExcelStyleUtils;
-import com.wheels.cloud.order.utils.ExcelFillCellMergeStrategy;
 import com.wheels.cloud.order.utils.TimesUtils;
 import jakarta.inject.Inject;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.Serial;
@@ -57,14 +56,14 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @Value("${file.path}")
-    private String localFilePath;
-    //文件地址
-//    @Value("${file.domain}")
-//    private String storagePath;
-
-    @Value("${file.prefix}")
-    private String prefixPath;
+//    @Value("${file.path}")
+//    private String localFilePath;
+//    //文件地址
+////    @Value("${file.domain}")
+////    private String storagePath;
+//
+//    @Value("${file.prefix}")
+//    private String prefixPath;
 
     @Inject
     private TokenService<FrontUserCacheVo, WheelsFrontUser> tokenService;
@@ -74,6 +73,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     @Inject
     private FrontUserOpenFeign frontUserOpenFeign;
+
+    @Inject
+    private AttachmentService attachmentService;
 
     @Override
     public Boolean create(OrderRequest request) {
@@ -325,7 +327,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Override
     public SysFile getBackstageExport(OrderSearchRequest request) throws ParseException {
         String exportFileName = "订单";
-        return this.getFileInfo(this.getAdminOrderExport(request), exportFileName, AdminOrderExportVo.class);
+        final var sysFile = getFileInfo(this.getAdminOrderExport(request), exportFileName, AdminOrderExportVo.class);
+        final var originUrl = sysFile.getUrl();
+        final var resultUrl = attachmentService.addPrefix(originUrl);
+        sysFile.setUrl(resultUrl);
+        return sysFile;
     }
 
 
@@ -480,6 +486,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             PublicExportData publicExportData, String exportFileName, Class<T> dataTypeClass) {
         final var sysFile = new SysFile();
         int mergeRowIndex = 3;
+        final var meta = attachmentService.getFileMetaVo();
+        final var localFilePath = meta.getPath();
+        final var prefixPath = meta.getPrefix();
         String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
         String directoryPath = localFilePath.concat("/excel/export/").concat(currentDate);
         try {
