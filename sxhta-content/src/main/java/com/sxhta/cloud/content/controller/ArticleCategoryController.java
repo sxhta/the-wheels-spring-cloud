@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.inject.Inject;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -85,4 +86,11 @@ public class ArticleCategoryController extends BaseController
         final var result = articleCategoryService.softDeleteByHash(hash);
         return CommonResponse.result(result);
     }
+
+    @PostMapping("/upload")
+    public CommonResponse<String> uploadFile(@RequestParam("file") MultipartFile file) {
+        return CommonResponse.success(articleCategoryService.uploadFile(file));
+    }
+
+
 }
