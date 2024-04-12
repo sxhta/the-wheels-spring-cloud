@@ -7,6 +7,7 @@ import com.sxhta.cloud.common.web.page.PageRequest;
 import com.sxhta.cloud.common.web.page.TableDataInfo;
 import com.sxhta.cloud.wheels.request.user.UserRequest;
 import com.sxhta.cloud.wheels.request.user.UserSearchRequest;
+import com.sxhta.cloud.wheels.response.common.ImageUploadResponse;
 import com.sxhta.cloud.wheels.response.user.UserResponse;
 import com.sxhta.cloud.wheels.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,6 +15,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
@@ -72,5 +74,12 @@ public class UserController extends BaseController implements
     public CommonResponse<Boolean> updateEntity(@RequestBody UserRequest request) {
         final var result = userService.updateEntity(request);
         return CommonResponse.result(result);
+    }
+
+    @Operation(summary = "上传头像")
+    @PostMapping(value = "/avatar/upload")
+    public CommonResponse<ImageUploadResponse> uploadAvatar(@RequestParam(value = "file") MultipartFile file) {
+        final var result = userService. uploadImage(file);
+        return CommonResponse.success(result);
     }
 }

@@ -8,6 +8,7 @@ import com.sxhta.cloud.common.domain.AbstractUserEntity;
 import com.sxhta.cloud.common.utils.encrypt.EncryptUtil;
 import com.sxhta.cloud.common.utils.uuid.UUID;
 import com.sxhta.cloud.common.xss.Xss;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -43,9 +44,17 @@ public class WheelsFrontUser extends AbstractUserEntity {
      */
     private String avatar;
 
+    private String nickname;
+
     private LocalDateTime deleteTime;
 
     private BigDecimal balance;
+
+    @Schema(name = "位置")
+    private String region;
+
+    @Schema(name = "生日")
+    private LocalDateTime birthday;
 
     /**
      * 请求参数

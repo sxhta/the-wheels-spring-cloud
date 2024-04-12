@@ -1,5 +1,6 @@
 package com.sxhta.cloud.remote.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.sxhta.cloud.cache.redis.service.RedisService;
 import com.sxhta.cloud.common.constant.CacheConstants;
 import com.sxhta.cloud.remote.service.AttachmentService;
@@ -37,6 +38,11 @@ public class AttachmentServiceImpl implements AttachmentService, Serializable {
         return this.fileMetaVo;
     }
 
+    @Override
+    public String getDomain() {
+        return this.fileMetaVo.getDomain();
+    }
+
     /**
      * 给图片加前缀
      *
@@ -59,6 +65,16 @@ public class AttachmentServiceImpl implements AttachmentService, Serializable {
      */
     @Override
     public String addPrefix(String target, String domain, String prefix) {
+        if (ObjectUtil.isNull(target)) {
+            return target;
+        }
         return target.replace(prefix, domain + prefix);
+    }
+
+    @Override
+    public String addPrefix(String target) {
+        final var domain = fileMetaVo.getDomain();
+        final var prefix = fileMetaVo.getPrefix();
+        return addPrefix(target, domain, prefix);
     }
 }

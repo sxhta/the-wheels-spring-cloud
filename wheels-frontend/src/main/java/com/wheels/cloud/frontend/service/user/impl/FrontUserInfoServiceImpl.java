@@ -79,6 +79,9 @@ public class FrontUserInfoServiceImpl extends ServiceImpl<FrontUserMapper, Wheel
         final var currentUser = getCurrentUserByToken();
         final var response = new FrontUserInfoResponse();
         BeanUtils.copyProperties(currentUser, response);
+        final var url = response.getAccount();
+        final var result = attachmentService.addPrefix(url);
+        response.setAvatar(result);
         return response;
     }
 
@@ -99,8 +102,10 @@ public class FrontUserInfoServiceImpl extends ServiceImpl<FrontUserMapper, Wheel
         }
         final var url = fileInfo.getUrl();
         final var name = fileInfo.getName();
+        final var domain = attachmentService.getDomain();
         final var response = new AvatarResponse();
         response.setImageUrl(url)
+                .setDomain(domain)
                 .setName(name);
         return response;
     }

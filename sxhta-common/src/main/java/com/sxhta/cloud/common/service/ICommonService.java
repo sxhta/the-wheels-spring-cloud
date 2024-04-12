@@ -1,7 +1,6 @@
 package com.sxhta.cloud.common.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sxhta.cloud.common.utils.CharacterConvert;
 
 import java.io.Serializable;
 import java.util.List;
@@ -21,11 +20,6 @@ public interface ICommonService<Search extends Serializable, Request extends Ser
     List<Response> getAdminList(Search request);
 
     default String listToJsonString(List<String> list) {
-        final var objectMapper = new ObjectMapper();
-        try {
-            return objectMapper.writeValueAsString(list);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+        return CharacterConvert.listToJsonString(list);
     }
 }

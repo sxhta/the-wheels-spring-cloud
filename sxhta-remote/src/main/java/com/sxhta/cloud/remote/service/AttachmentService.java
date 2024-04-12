@@ -5,8 +5,9 @@ import com.sxhta.cloud.remote.vo.FileMetaVo;
 
 public interface AttachmentService {
 
-
     FileMetaVo getFileMetaVo();
+
+    String getDomain();
 
     /**
      * 给图片加前缀
@@ -23,4 +24,6 @@ public interface AttachmentService {
      * @return String
      */
     String addPrefix(String target, String domain, String prefix);
+
+    String addPrefix(String target);
 }

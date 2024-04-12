@@ -33,6 +33,9 @@ public class FrontUserInfoResponse implements Serializable {
     @JsonProperty("user_name")
     private String userName;
 
+    @Schema(name = "昵称")
+    private String nickname;
+
     @Schema(name = "余额")
     private BigDecimal balance;
 

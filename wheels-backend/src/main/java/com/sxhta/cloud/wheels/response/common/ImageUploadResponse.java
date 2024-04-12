@@ -1,4 +1,4 @@
-package com.wheels.cloud.frontend.response.user;
+package com.sxhta.cloud.wheels.response.common;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,8 +12,8 @@ import java.io.Serializable;
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
-@Schema(name = "头像上传", description = "头像上传响应体")
-public final class AvatarResponse implements Serializable {
+@Schema(name = "ImageUploadResponse", description = "头像上传响应体")
+public final class ImageUploadResponse implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
