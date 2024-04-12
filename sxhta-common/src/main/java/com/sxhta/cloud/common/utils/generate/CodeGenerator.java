@@ -29,11 +29,11 @@ public class CodeGenerator {
                 .packageConfig(builder -> {
                     builder.parent(PARENT_PATH) // 设置父包名
                             .moduleName(null) // 设置父包模块名
-                            .entity("entity")//实体所在的包名
-//                            .service("service")
-//                            .serviceImpl("service.impl")
-//                            .controller("controller")
-//                            .mapper("mapper")
+                            .entity("entity.fee")//实体所在的包名
+                            .service("service.fee")
+                            .serviceImpl("service.fee.impl")
+                            .controller("controller.fee")
+                            .mapper("mapper.fee")
                             .pathInfo(Collections.singletonMap(OutputFile.xml, "D:\\xiangmu\\the-wheels-spring-cloud\\wheels-backend\\src\\main\\resources\\mapper\\")); // 后管
                 })
                 .strategyConfig(builder -> {
@@ -42,7 +42,7 @@ public class CodeGenerator {
 //                    builder.mapperBuilder().enableMapperAnnotation().build();
                     builder.controllerBuilder().enableHyphenStyle()  // 开启驼峰转连字符
                             .enableRestStyle();  // 开启生成@RestController 控制器
-                    builder.addInclude("wheels_route","wheels_area") // 设置需要生成的表名
+                    builder.addInclude("wheels_other_fee") // 设置需要生成的表名
                             .addTablePrefix("item_", "sys_","unify_","wheels_"); // 设置过滤表前缀
                 })
                 .injectionConfig(consumer->{

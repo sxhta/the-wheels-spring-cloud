@@ -14,9 +14,8 @@ import java.time.LocalDateTime;
  * 订单详情
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Schema(name = "OrderInfoResponse", description = "订单详情响应体")
-public class OrderInfoResponse extends BaseHashEntity implements Serializable {
+public class OrderInfoResponse implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
