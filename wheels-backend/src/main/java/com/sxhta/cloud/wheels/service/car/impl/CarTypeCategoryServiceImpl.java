@@ -2,18 +2,17 @@ package com.sxhta.cloud.wheels.service.car.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sxhta.cloud.common.exception.ServiceException;
 import com.sxhta.cloud.remote.domain.SysUser;
 import com.sxhta.cloud.remote.vo.SystemUserCacheVo;
 import com.sxhta.cloud.security.service.TokenService;
-import com.sxhta.cloud.wheels.entity.car.CarType;
-import com.sxhta.cloud.wheels.mapper.car.CarTypeMapper;
-import com.sxhta.cloud.wheels.request.car.CarTypeRequest;
-import com.sxhta.cloud.wheels.request.car.CarTypeSearchRequest;
-import com.sxhta.cloud.wheels.response.car.CarTypeResponse;
+import com.sxhta.cloud.wheels.entity.car.CarTypeCategory;
+import com.sxhta.cloud.wheels.mapper.car.CarTypeCategoryMapper;
+import com.sxhta.cloud.wheels.request.car.CarTypeCategoryRequest;
+import com.sxhta.cloud.wheels.request.car.CarTypeCategorySearchRequest;
+import com.sxhta.cloud.wheels.response.car.CarTypeCategoryResponse;
 import com.sxhta.cloud.wheels.service.car.CarTypeCategoryService;
 import jakarta.inject.Inject;
 import org.springframework.beans.BeanUtils;
@@ -24,92 +23,72 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class CarTypeCategoryServiceImpl extends ServiceImpl<CarTypeMapper, CarType> implements CarTypeCategoryService {
+public class CarTypeCategoryServiceImpl extends ServiceImpl<CarTypeCategoryMapper, CarTypeCategory> implements CarTypeCategoryService {
 
     @Inject
     private TokenService<SystemUserCacheVo, SysUser> tokenService;
 
+
     @Override
-    public Boolean create(CarTypeRequest carTypeRequest) {
-        final var carType = new CarType();
-        BeanUtils.copyProperties(carTypeRequest, carType);
-        carType.setCreateBy(tokenService.getLoginUser().getUsername());
-        return save(carType);
+    public Boolean create(CarTypeCategoryRequest carTypeCategoryRequest) {
+        final var carTypeCategory = new CarTypeCategory();
+        BeanUtils.copyProperties(carTypeCategoryRequest, carTypeCategory);
+        return save(carTypeCategory);
     }
 
     @Override
-    public CarTypeResponse getInfoByHash(String hash) {
-        final var carType = getEntity(hash);
-        final var carTypeResponse = new CarTypeResponse();
-        BeanUtils.copyProperties(carType, carTypeResponse);
-        return carTypeResponse;
+    public CarTypeCategoryResponse getInfoByHash(String hash) {
+        final var carTypeCategory = getEntity(hash);
+        if (ObjectUtil.isNull(carTypeCategory)) {
+            throw new ServiceException("该车辆类型异常，请联系管理员");
+        }
+        CarTypeCategoryResponse carTypeCategoryResponse = new CarTypeCategoryResponse();
+        BeanUtils.copyProperties(carTypeCategory, carTypeCategoryResponse);
+        return carTypeCategoryResponse;
     }
 
     @Override
     public Boolean softDeleteByHash(String hash) {
-        final var carType = getEntity(hash);
-        carType.setDeleteTime(LocalDateTime.now());
-        return updateById(carType);
+        final var carTypeCategory = getEntity(hash);
+        if (ObjectUtil.isNull(carTypeCategory)) {
+            throw new ServiceException("该车辆类型异常，请联系管理员");
+        }
+        carTypeCategory.setDeleteTime(LocalDateTime.now());
+        return updateById(carTypeCategory);
     }
 
     @Override
     public Boolean deleteByHash(String hash) {
-        final var carType = getEntity(hash);
-        return removeById(carType);
+        return null;
     }
 
     @Override
-    public Boolean updateEntity(CarTypeRequest carTypeRequest) {
-        final var carType = new CarType();
-        BeanUtils.copyProperties(carTypeRequest, carType);
-        carType.setUpdateBy(tokenService.getUsername())
-                .setUpdateTime(LocalDateTime.now());
-        return updateById(carType);
+    public Boolean updateEntity(CarTypeCategoryRequest carTypeCategoryRequest) {
+        return null;
     }
 
     @Override
-    public List<CarTypeResponse> getAdminList(CarTypeSearchRequest request) {
-        final var carTypeResponseList = new ArrayList<CarTypeResponse>();
-        final var carTypeLqw = new LambdaQueryWrapper<CarType>();
-        final var status = request.getStatus();
-        final var createBy = request.getCreateBy();
-        final var updateBy = request.getUpdateBy();
-        if (ObjectUtil.isNotNull(status)) {
-            carTypeLqw.eq(CarType::getStatus, status);
-        }
-        if (StrUtil.isNotBlank(createBy)) {
-            carTypeLqw.like(CarType::getCreateBy, createBy);
-        }
-        if (StrUtil.isNotBlank(updateBy)) {
-            carTypeLqw.like(CarType::getUpdateBy, updateBy);
-        }
-        carTypeLqw.isNull(CarType::getDeleteTime);
-        final var carTypeList = list(carTypeLqw);
-        if (CollUtil.isNotEmpty(carTypeList)) {
-            carTypeList.forEach(carType -> {
-                final var carTypeResponse = new CarTypeResponse();
-                BeanUtils.copyProperties(carType, carTypeResponse);
-                carTypeResponseList.add(carTypeResponse);
+    public List<CarTypeCategoryResponse> getAdminList(CarTypeCategorySearchRequest request) {
+        final var carTypeCategoryResponseList = new ArrayList<CarTypeCategoryResponse>();
+        final var carTypeCategoryLqw = new LambdaQueryWrapper<CarTypeCategory>();
+        carTypeCategoryLqw.isNull(CarTypeCategory::getDeleteTime);
+        final var carTypeCategoryList = list(carTypeCategoryLqw);
+        if (CollUtil.isNotEmpty(carTypeCategoryList)) {
+            carTypeCategoryList.forEach(carTypeCategory -> {
+                final var carTypeCategoryResponse = new CarTypeCategoryResponse();
+                BeanUtils.copyProperties(carTypeCategory, carTypeCategoryResponse);
+                carTypeCategoryResponseList.add(carTypeCategoryResponse);
             });
         }
-        return carTypeResponseList;
+        return carTypeCategoryResponseList;
     }
 
-    private CarType getEntity(String hash) {
-        final var carTypeLqw = new LambdaQueryWrapper<CarType>();
-        carTypeLqw.eq(CarType::getHash, hash);
-        final var carType = getOne(carTypeLqw);
-        if (ObjectUtil.isNull(carType)) {
-            throw new ServiceException("该车辆类型异常，请联系管理员");
-        }
-        return carType;
+    private CarTypeCategory getEntity(String hash) {
+        final var carTypeCategoryLqw = new LambdaQueryWrapper<CarTypeCategory>();
+        carTypeCategoryLqw.eq(CarTypeCategory::getHash, hash)
+                .isNull(CarTypeCategory::getDeleteTime);
+        return getOne(carTypeCategoryLqw);
     }
 
-    @Override
-    public List<CarType> getCarTypeAll() {
-        final var carTypeLqw = new LambdaQueryWrapper<CarType>();
-        carTypeLqw.eq(CarType::getStatus, 0)
-                .isNull(CarType::getDeleteTime);
-        return list(carTypeLqw);
-    }
+
 }

@@ -26,38 +26,47 @@ public class CarTypeCategory extends BaseHashEntity implements Serializable {
      */
     @TableId
     private Long id;
+
     /**
      * 车辆类型hash
      */
     private String carTypeHash;
+
     /**
      * 车辆型号
      */
     private String model;
+
     /**
      * 车辆颜色
      */
     private String color;
+
     /**
      * 车辆座位
      */
     private Integer seat;
+
     /**
      * 车辆品牌
      */
     private String brand;
+
     /**
      * 车标
      */
     private String logo;
+
     /**
      * 车辆展示图
      */
     private String displayImage;
+
     /**
      * 创建者
      */
     private String createBy;
+
     /**
      * 修改人
      */
