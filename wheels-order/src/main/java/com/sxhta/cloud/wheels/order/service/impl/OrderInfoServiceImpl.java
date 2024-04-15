@@ -12,8 +12,9 @@ import com.sxhta.cloud.wheels.order.entity.OrderInfo;
 import com.sxhta.cloud.wheels.order.mapper.OrderInfoMapper;
 import com.sxhta.cloud.wheels.order.request.OrderInfoRequest;
 import com.sxhta.cloud.wheels.order.request.OrderInfoSearchRequest;
-import com.sxhta.cloud.wheels.order.response.OrderInfoResponse;
+import com.sxhta.cloud.wheels.order.response.InfoResponse;
 import com.sxhta.cloud.wheels.order.service.OrderInfoService;
+import com.sxhta.cloud.wheels.remote.response.order.front.OrderInfoResponse;
 import jakarta.inject.Inject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -104,15 +105,15 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     }
 
     @Override
-    public OrderInfoResponse getInfoByOrderHash(String orderHash) {
+    public InfoResponse getInfoByOrderHash(String orderHash) {
         final var lqw = new LambdaQueryWrapper<OrderInfo>();
-        lqw.eq(OrderInfo::getOrderHash,orderHash);
+        lqw.eq(OrderInfo::getOrderHash, orderHash);
         final var orderInfo = getOne(lqw);
         if (ObjectUtil.isNull(orderInfo)) {
             throw new CommonException("该条数据不存在！");
         }
-        final var response = new OrderInfoResponse();
-        BeanUtils.copyProperties(orderInfo,response);
+        final var response = new InfoResponse();
+        BeanUtils.copyProperties(orderInfo, response);
         return response;
     }
 }

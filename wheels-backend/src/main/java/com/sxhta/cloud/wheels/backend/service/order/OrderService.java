@@ -4,8 +4,8 @@ import com.sxhta.cloud.common.web.page.PageRequest;
 import com.sxhta.cloud.common.web.page.TableDataInfo;
 import com.sxhta.cloud.wheels.remote.domain.SysFile;
 import com.sxhta.cloud.wheels.remote.request.order.OrderSearchRequest;
-import com.sxhta.cloud.wheels.remote.response.order.OrderAdminInfoResponse;
-import com.sxhta.cloud.wheels.remote.response.order.OrderAdminResponse;
+import com.sxhta.cloud.wheels.remote.response.order.admin.OrderAdminInfoResponse;
+import com.sxhta.cloud.wheels.remote.response.order.admin.OrderAdminResponse;
 
 import java.text.ParseException;
 

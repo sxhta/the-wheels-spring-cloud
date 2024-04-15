@@ -16,36 +16,36 @@ import java.math.BigDecimal;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Schema(name = "RouteRequest", description = "行程配置表请求体")
-public class RouteRequest extends BaseHashEntity implements Serializable{
+public class RouteRequest extends BaseHashEntity implements Serializable {
 
-@Serial
-private static final long serialVersionUID=1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-                    @Schema(description = "id")
-                        private Long id;
+    @Schema(description = "id")
+    private Long id;
 
-                                    @Schema(description = "出发地HASH")
-                        private String departure;
+    @Schema(description = "出发地HASH")
+    private String departure;
 
-                                @Schema(description = "目的地HASH")
-                        private String destination;
+    @Schema(description = "目的地HASH")
+    private String destination;
 
-                                @Schema(description = "价格")
-                        private BigDecimal price;
+    @Schema(description = "价格")
+    private BigDecimal price;
 
-                                @Schema(description = "里程")
-                        private String mileage;
+    @Schema(description = "里程")
+    private String mileage;
 
-                                @Schema(description = "备注")
-                        private String mark;
+    @Schema(description = "备注")
+    private String mark;
 
-                                    @Schema(description = "创建人HASH")
-                        private String createBy;
+    @Schema(description = "创建人HASH")
+    private String createBy;
 
-                                    @Schema(description = "修改人HASH")
-                        private String updateBy;
+    @Schema(description = "修改人HASH")
+    private String updateBy;
 
-                                    @Schema(description = "删除人HASH")
-                        private String deleteBy;
+    @Schema(description = "删除人HASH")
+    private String deleteBy;
 
-            }
+}

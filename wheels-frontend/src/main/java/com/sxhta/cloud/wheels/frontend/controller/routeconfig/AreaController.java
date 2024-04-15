@@ -13,7 +13,7 @@ import java.io.Serializable;
 /**
  * 地区配置表 前端控制器
  */
-@Tag(name = "地区配置表", description = "地区配置表"+"控制器")
+@Tag(name = "地区配置表", description = "地区配置表" + "控制器")
 @RestController
 @RequestMapping("/area")
 public class AreaController extends BaseController implements Serializable {
@@ -23,7 +23,6 @@ public class AreaController extends BaseController implements Serializable {
 
     @Inject
     private AreaService areaService;
-
 
 
 //    @GetMapping("/list")

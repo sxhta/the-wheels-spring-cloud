@@ -25,6 +25,4 @@ public class OtherFeeServiceImpl extends ServiceImpl<OtherFeeMapper, OtherFee> i
     private TokenService<SystemUserCacheVo, SysUser> tokenService;
 
 
-
-
 }

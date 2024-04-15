@@ -14,9 +14,11 @@ import com.sxhta.cloud.wheels.backend.mapper.complain.ComplainInformationMapper;
 import com.sxhta.cloud.wheels.backend.request.complain.ComplainInformationRequest;
 import com.sxhta.cloud.wheels.backend.request.complain.ComplainInformationSearchRequest;
 import com.sxhta.cloud.wheels.backend.response.complain.ComplainInformationResponse;
+import com.sxhta.cloud.wheels.backend.response.complain.ComplainTypeToInfoResponse;
+import com.sxhta.cloud.wheels.backend.response.user.FrontendUserResponse;
 import com.sxhta.cloud.wheels.backend.service.complain.ComplainInformationService;
 import com.sxhta.cloud.wheels.backend.service.complain.ComplainTypeService;
-import com.sxhta.cloud.wheels.cloud.logic.service.user.WheelsUserService;
+import com.sxhta.cloud.wheels.backend.service.user.UserService;
 import jakarta.inject.Inject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -35,10 +37,8 @@ public class ComplainInformationServiceImpl extends ServiceImpl<ComplainInformat
 
     @Inject
     private ComplainTypeService complainTypeService;
-
-
     @Inject
-    private WheelsUserService wheelsUserService;
+    private UserService userService;
 
 
     @Override
@@ -102,11 +102,23 @@ public class ComplainInformationServiceImpl extends ServiceImpl<ComplainInformat
             complainInformationList.forEach(complainInformation -> {
                 final var complainInformationResponse = new ComplainInformationResponse();
                 BeanUtils.copyProperties(complainInformation, complainInformationResponse);
-                complainInformationResponse.setComplainType(complainTypeService.getEntity(complainInformation.getComplainTypeHash()))
-                        .setComplainPhotograph(stringToJsonList(complainInformation.getComplainPhotograph()));
-                final var user = wheelsUserService.getInfoByHash(complainInformation.getComplainUser());
-                if (ObjectUtil.isNotNull(user)) {
-                    complainInformationResponse.setComplainUser(user);
+                complainInformationResponse.setComplainPhotograph(stringToJsonList(complainInformation.getComplainPhotograph()));
+                //投诉类型
+                final var complainType = complainTypeService.getEntity(complainInformation.getComplainTypeHash());
+                if (ObjectUtil.isNotNull(complainType)) {
+                    final var complainTypeToInfoResponse = new ComplainTypeToInfoResponse();
+                    BeanUtils.copyProperties(complainType, complainTypeToInfoResponse);
+                    complainInformationResponse.setComplainType(complainTypeToInfoResponse);
+                }
+                //司机
+
+
+                //投诉人
+                final var frontUser = userService.getUserByHash(complainInformation.getComplainUser());
+                if (ObjectUtil.isNotNull(frontUser)) {
+                    final var wheelsFrontUser = new FrontendUserResponse();
+                    BeanUtils.copyProperties(frontUser, wheelsFrontUser);
+                    complainInformationResponse.setComplainUser(wheelsFrontUser);
                 }
                 complainInformationResponseList.add(complainInformationResponse);
             });

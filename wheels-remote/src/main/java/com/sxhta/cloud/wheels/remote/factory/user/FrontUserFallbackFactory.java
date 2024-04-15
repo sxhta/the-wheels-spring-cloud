@@ -1,8 +1,10 @@
 package com.sxhta.cloud.wheels.remote.factory.user;
 
+import com.sxhta.cloud.common.constant.SecurityConstants;
 import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.sxhta.cloud.wheels.remote.openfeign.user.FrontUserOpenFeign;
 import com.sxhta.cloud.wheels.remote.request.RemoteRegisterRequest;
+import com.sxhta.cloud.wheels.remote.response.wheelsUser.WheelsUserResponse;
 import com.sxhta.cloud.wheels.remote.vo.FrontUserCacheVo;
 import com.sxhta.cloud.wheels.remote.vo.FrontUserHashVo;
 import org.slf4j.Logger;
@@ -37,6 +39,26 @@ public class FrontUserFallbackFactory implements FallbackFactory<FrontUserOpenFe
             @Override
             public CommonResponse<Boolean> register(RemoteRegisterRequest sysUser, String source) {
                 return CommonResponse.error("注册用户失败:" + throwable.getMessage());
+            }
+
+            @Override
+            public CommonResponse<FrontUserHashVo> getHashById(Long id, String source) {
+                return CommonResponse.error("获取用户失败:" + throwable.getMessage());
+            }
+
+            @Override
+            public CommonResponse<List<String>> getHashListByUserName(String userName, String source) {
+                return CommonResponse.error("获取用户HASH列表失败:" + throwable.getMessage());
+            }
+
+            @Override
+            public CommonResponse<List<String>> getHashListByUserPhone(String userPhone, String source) {
+                return CommonResponse.error("获取用户HASH列表失败:" + throwable.getMessage());
+            }
+
+            @Override
+            public CommonResponse<WheelsUserResponse> getInfoByHash(String userHash, String source) {
+                return CommonResponse.error("获取用户信息失败:" + throwable.getMessage());
             }
         };
     }

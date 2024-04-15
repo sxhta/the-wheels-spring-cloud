@@ -7,23 +7,29 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.sxhta.cloud.common.constant.SecurityConstants;
 import com.sxhta.cloud.common.exception.CommonNullException;
 import com.sxhta.cloud.remote.domain.SysFile;
 import com.sxhta.cloud.remote.service.AttachmentService;
 import com.sxhta.cloud.security.service.TokenService;
-import com.sxhta.cloud.wheels.cloud.logic.service.user.WheelsUserService;
 import com.sxhta.cloud.wheels.order.exportvo.AdminOrderExportVo;
 import com.sxhta.cloud.wheels.order.exprot.ExcelTitleHandler;
-import com.sxhta.cloud.wheels.cloud.logic.mapper.order.OrderMapper;
+import com.sxhta.cloud.wheels.order.mapper.OrderMapper;
 import com.sxhta.cloud.wheels.order.request.OrderRequest;
 import com.sxhta.cloud.wheels.order.service.OrderInfoService;
 import com.sxhta.cloud.wheels.order.service.OrderService;
 import com.sxhta.cloud.wheels.order.utils.EasyExcelStyleUtils;
 import com.sxhta.cloud.wheels.order.utils.TimesUtils;
-import com.sxhta.cloud.wheels.cloud.logic.entity.order.Order;
+import com.sxhta.cloud.wheels.remote.domain.order.Order;
 import com.sxhta.cloud.wheels.remote.domain.user.WheelsFrontUser;
+import com.sxhta.cloud.wheels.remote.openfeign.user.FrontUserOpenFeign;
 import com.sxhta.cloud.wheels.remote.request.order.OrderSearchRequest;
-import com.sxhta.cloud.wheels.remote.response.order.*;
+import com.sxhta.cloud.wheels.remote.response.order.admin.OrderAdminInfoResponse;
+import com.sxhta.cloud.wheels.remote.response.order.admin.OrderAdminResponse;
+import com.sxhta.cloud.wheels.remote.response.order.admin.OrderExpectationResponse;
+import com.sxhta.cloud.wheels.remote.response.order.front.OrderInfoResponse;
+import com.sxhta.cloud.wheels.remote.response.order.front.OrderResponse;
+import com.sxhta.cloud.wheels.remote.response.order.owner.OrderOwnerResponse;
 import com.sxhta.cloud.wheels.remote.vo.FrontUserCacheVo;
 import com.sxhta.cloud.wheels.remote.vo.excel.PublicExportData;
 import jakarta.inject.Inject;
@@ -40,7 +46,6 @@ import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,16 +59,6 @@ import java.util.concurrent.atomic.AtomicReference;
 public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements OrderService, Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
-
-//    @Value("${file.path}")
-//    private String localFilePath;
-//    //文件地址
-////    @Value("${file.domain}")
-////    private String storagePath;
-//
-//    @Value("${file.prefix}")
-//    private String prefixPath;
-
     @Inject
     private TokenService<FrontUserCacheVo, WheelsFrontUser> tokenService;
 
@@ -71,11 +66,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     private OrderInfoService orderInfoService;
 
     @Inject
-    private WheelsUserService wheelsUserService;
+    private FrontUserOpenFeign frontUserOpenFeign;
 
     @Inject
     private AttachmentService attachmentService;
-
 
     @Override
     public Boolean create(OrderRequest request) {
@@ -90,6 +84,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Override
     public OrderResponse getInfoByHash(String hash) {
         final var lqw = new LambdaQueryWrapper<Order>();
+        lqw.isNull(Order::getDeleteTime);
         lqw.eq(Order::getHash, hash);
         final var entity = getOne(lqw);
         if (ObjectUtil.isNull(entity)) {
@@ -102,31 +97,19 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     @Override
     public Boolean softDeleteByHash(String hash) {
-        final var lqw = new LambdaQueryWrapper<Order>();
-        lqw.eq(Order::getHash, hash);
-        final var entity = getOne(lqw);
-        if (ObjectUtil.isNull(entity)) {
-            throw new CommonNullException("");
-        }
-        entity.setDeleteTime(LocalDateTime.now());
-        return updateById(entity);
+        return null;
     }
 
     @Override
     public Boolean deleteByHash(String hash) {
-        final var lqw = new LambdaQueryWrapper<Order>();
-        lqw.eq(Order::getHash, hash);
-        final var entity = getOne(lqw);
-        if (ObjectUtil.isNull(entity)) {
-            throw new CommonNullException("");
-        }
-        return removeById(entity);
+        return null;
     }
 
     @Override
     public Boolean updateEntity(OrderRequest request) {
         final var hash = request.getHash();
         final var lqw = new LambdaQueryWrapper<Order>();
+        lqw.isNull(Order::getDeleteTime);
         lqw.eq(Order::getHash, hash);
         final var entity = getOne(lqw);
         if (ObjectUtil.isNull(entity)) {
@@ -140,7 +123,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     public List<OrderResponse> getAdminList(OrderSearchRequest request) {
         final var lqw = new LambdaQueryWrapper<Order>();
         lqw.isNull(Order::getDeleteTime);
-
         final var entityList = list(lqw);
         final var responseList = new ArrayList<OrderResponse>();
         entityList.forEach(entity -> {
@@ -294,9 +276,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         response.setDestination(orderInfo.getDestination());
         response.setDeparture(orderInfo.getDeparture());
         response.setMileage(orderInfo.getMileage());
-        final var resData = wheelsUserService.getInfoByHash(order.getUserHash());
-        response.setPlaceOrderUserName(resData.getUserName());
-        response.setPlaceOrderUserPhone(resData.getAccount());
+        final var resData = frontUserOpenFeign.getInfoByHash(order.getUserHash(), SecurityConstants.INNER);
+        response.setPlaceOrderUserName(resData.getData().getUserName());
+        response.setPlaceOrderUserPhone(resData.getData().getAccount());
         if (orderInfo.getIsHelpCall() == 1) {
             response.setTravelersUserName(orderInfo.getHelpName());
             response.setTravelersUserPhone(orderInfo.getHelpPhone());
@@ -304,9 +286,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         }
         response.setIsHelpCall(orderInfo.getIsHelpCall());
         if (orderInfo.getIsHelpCall() == 2) {
-            response.setTravelersUserName(resData.getUserName());
-            response.setTravelersUserPhone(resData.getAccount());
-            response.setTravelersUserSex(resData.getGender());
+            response.setTravelersUserName(resData.getData().getUserName());
+            response.setTravelersUserPhone(resData.getData().getAccount());
+            response.setTravelersUserSex(resData.getData().getGender());
         }
         //TODO 优惠卷
         if (order.getIsUseCoupon()) {
@@ -334,6 +316,34 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         return sysFile;
     }
 
+    @Override
+    public List<OrderOwnerResponse> getOwnerList(String ownerHash, Integer location, Integer orderType, Integer ownerAcceptStatus) {
+        final var lqw = new LambdaQueryWrapper<Order>();
+        lqw.and(i -> i.isNull(Order::getDeleteTime))
+                .and(i -> i.eq(Order::getOwnerHash, ownerHash))
+                .and(i -> i.eq(Order::getPayStatus, 3))
+                .and(i -> i.eq(Order::getIsAccept, false))
+                .and(i -> i.eq(Order::getIsRefund, false))
+                .and(i -> i.eq(Order::getOwnerAcceptStatus, ownerAcceptStatus))
+                .and(i -> i.eq(Order::getOrderType, orderType));
+        lqw.orderByDesc(Order::getCreateTime);
+        if (ObjectUtil.isNotNull(location) && location == 1) {
+            lqw.last("LIMIT 2");
+        }
+        final var orderList = list(lqw);
+        final var responseList = new ArrayList<OrderOwnerResponse>();
+        if (CollUtil.isEmpty(orderList)) {
+            return responseList;
+        }
+        orderList.forEach(order -> {
+            final var response = new OrderOwnerResponse();
+            final var infoByOrderHash = orderInfoService.getInfoByOrderHash(order.getHash());
+            BeanUtils.copyProperties(infoByOrderHash, response);
+            BeanUtils.copyProperties(order, response);
+            responseList.add(response);
+        });
+        return responseList;
+    }
 
     private PublicExportData getAdminOrderExport(OrderSearchRequest request) throws ParseException {
         final var exportResponseList = new ArrayList<AdminOrderExportVo>();//数据
@@ -433,21 +443,21 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             lqw.and(i -> i.in(Order::getOrderType, request.getOrderType()));
         }
         if (StrUtil.isNotBlank(request.getPlaceOrderUserName())) {
-            final var resData = wheelsUserService.getHashListByUserNameLike(request.getPlaceOrderUserName());
-            if (CollUtil.isEmpty(resData)) {
+            final var resData = frontUserOpenFeign.getHashListByUserName(request.getPlaceOrderUserName(), SecurityConstants.INNER);
+            if (CollUtil.isEmpty(resData.getData())) {
                 return responseList;
             }
-            if (CollUtil.isNotEmpty(resData)) {
-                lqw.and(i -> i.in(Order::getUserHash, resData));
+            if (CollUtil.isNotEmpty(resData.getData())) {
+                lqw.and(i -> i.in(Order::getUserHash, resData.getData()));
             }
         }
         if (StrUtil.isNotBlank(request.getPlaceOrderUserPhone())) {
-            final var resData = wheelsUserService.getHashListByUserPhoneLike(request.getPlaceOrderUserPhone());
-            if (CollUtil.isEmpty(resData)) {
+            final var resData = frontUserOpenFeign.getHashListByUserPhone(request.getPlaceOrderUserPhone(), SecurityConstants.INNER);
+            if (CollUtil.isEmpty(resData.getData())) {
                 return responseList;
             }
-            if (CollUtil.isNotEmpty(resData)) {
-                lqw.and(i -> i.in(Order::getUserHash, resData));
+            if (CollUtil.isNotEmpty(resData.getData())) {
+                lqw.and(i -> i.in(Order::getUserHash, resData.getData()));
             }
         }
         if (StrUtil.isNotBlank(request.getReservationStartTime()) && StrUtil.isNotBlank(request.getReservationEndTime())) {
@@ -473,9 +483,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             final var orderInfo = orderInfoService.getInfoByOrderHash(order.getHash());
             response.setDeparture(orderInfo.getDeparture());
             response.setDestination(orderInfo.getDestination());
-            final var resData = wheelsUserService.getInfoByHash(order.getUserHash());
-            response.setPlaceOrderUserName(resData.getUserName());
-            response.setPlaceOrderUserPhone(resData.getAccount());
+            final var resData = frontUserOpenFeign.getInfoByHash(order.getUserHash(), SecurityConstants.INNER);
+            response.setPlaceOrderUserName(resData.getData().getUserName());
+            response.setPlaceOrderUserPhone(resData.getData().getAccount());
             responseList.add(response);
         });
         return responseList;

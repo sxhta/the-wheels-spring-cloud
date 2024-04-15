@@ -1,27 +1,17 @@
 package com.sxhta.cloud.wheels.backend.entity.fee;
 
 
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.sxhta.cloud.common.domain.BaseHashEntity;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.EqualsAndHashCode;
-
-import com.sxhta.cloud.common.domain.BaseHashEntity;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import lombok.Data;
 
 /**
  * 其他费用配置表
@@ -30,10 +20,10 @@ import lombok.Data;
 @TableName("wheels_other_fee")
 @EqualsAndHashCode(callSuper = true)
 @Schema(name = "OtherFee", description = "其他费用配置表")
-public class OtherFee extends BaseHashEntity implements Serializable{
+public class OtherFee extends BaseHashEntity implements Serializable {
 
     @Serial
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     @Schema(description = "ID")

@@ -1,11 +1,11 @@
 package com.sxhta.cloud.wheels.backend.response.complain;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sxhta.cloud.common.domain.BaseHashEntity;
-import com.sxhta.cloud.wheels.backend.entity.complain.ComplainType;
-import com.sxhta.cloud.wheels.remote.domain.user.WheelsFrontUser;
+import com.sxhta.cloud.wheels.backend.response.user.DriverUserResponse;
+import com.sxhta.cloud.wheels.backend.response.user.FrontendUserResponse;
+import com.sxhta.cloud.wheels.backend.response.user.SystemUserResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,8 +19,7 @@ import java.util.List;
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-@TableName(value = "wheels_complain")
-@Schema(name = "投诉信息", description = "投诉信息实体类")
+@Schema(name = "投诉信息", description = "投诉信息响应体")
 public class ComplainInformationResponse extends BaseHashEntity implements Serializable {
     @Serial
     @TableField(exist = false)
@@ -28,8 +27,8 @@ public class ComplainInformationResponse extends BaseHashEntity implements Seria
     /**
      * id
      */
-    @TableId
     private Long id;
+
     /**
      * 投诉内容
      */
@@ -38,7 +37,7 @@ public class ComplainInformationResponse extends BaseHashEntity implements Seria
     /**
      * 投诉类型
      */
-    private ComplainType complainType;
+    private ComplainTypeToInfoResponse complainType;
 
     /**
      * 投诉图片
@@ -48,32 +47,39 @@ public class ComplainInformationResponse extends BaseHashEntity implements Seria
     /**
      * 投诉人
      */
-    private WheelsFrontUser complainUser;
+    private FrontendUserResponse complainUser;
 
     /**
      * 投诉时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime complainTime;
 
     /**
-     * 投诉端(1.用户投诉 2.司机投诉)
+     * 投诉的司机
      */
-    private Integer complainant;
+    private DriverUserResponse complainOwner;
 
     /**
      * 是否处理(0-未处理 1-已处理)
      */
-    private Boolean isHandle;
+    private Boolean isHandle = false;
 
     /**
      * 处理人
      */
-    private String handleBy;
+    private SystemUserResponse handleBy;
 
     /**
      * 处理时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime handleTime;
+
+    /**
+     * 处理结果
+     */
+    private Integer handleResult;
 
     /**
      * 处理备注
@@ -83,10 +89,10 @@ public class ComplainInformationResponse extends BaseHashEntity implements Seria
     /**
      * 创建者
      */
-    private String createBy;
+    private FrontendUserResponse createBy;
 
     /**
      * 修改人
      */
-    private String updateBy;
+    private SystemUserResponse updateBy;
 }

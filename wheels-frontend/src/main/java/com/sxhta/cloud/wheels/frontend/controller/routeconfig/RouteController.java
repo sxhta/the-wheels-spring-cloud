@@ -34,14 +34,14 @@ public class RouteController extends BaseController implements Serializable {
 
     @Operation(summary = "出发地列表")
     @GetMapping("/departure/list")
-    public TableDataInfo<RouteResponse> getDepartureList(@RequestParam(value = "destinationHash",defaultValue = "") String destinationHash, PageRequest pageRequest) {
+    public TableDataInfo<RouteResponse> getDepartureList(@RequestParam(value = "destinationHash", defaultValue = "") String destinationHash, PageRequest pageRequest) {
         startPage(pageRequest);
         return CommonResponse.list(routeService.getDepartureList(destinationHash));
     }
 
     @Operation(summary = "目的地列表")
     @GetMapping("/destination/list")
-    public TableDataInfo<RouteResponse> getDestinationList(@RequestParam(value = "departureHash",defaultValue = "") String departureHash, PageRequest pageRequest) {
+    public TableDataInfo<RouteResponse> getDestinationList(@RequestParam(value = "departureHash", defaultValue = "") String departureHash, PageRequest pageRequest) {
         startPage(pageRequest);
         return CommonResponse.list(routeService.getDestinationList(departureHash));
     }

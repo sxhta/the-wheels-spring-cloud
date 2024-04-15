@@ -16,30 +16,30 @@ import java.math.BigDecimal;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Schema(name = "OtherFeeRequest", description = "其他费用配置表请求体")
-public class OtherFeeRequest extends BaseHashEntity implements Serializable{
+public class OtherFeeRequest extends BaseHashEntity implements Serializable {
 
-@Serial
-private static final long serialVersionUID=1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-                    @Schema(description = "ID")
-                        private Long id;
+    @Schema(description = "ID")
+    private Long id;
 
-                                    @Schema(description = "项目名称")
-                        private String name;
+    @Schema(description = "项目名称")
+    private String name;
 
-                                @Schema(description = "价格")
-                        private BigDecimal price;
+    @Schema(description = "价格")
+    private BigDecimal price;
 
-                                @Schema(description = "备注")
-                        private String remark;
+    @Schema(description = "备注")
+    private String remark;
 
-                                    @Schema(description = "创建人HASH")
-                        private String createBy;
+    @Schema(description = "创建人HASH")
+    private String createBy;
 
-                                    @Schema(description = "修改人HASH")
-                        private String updateBy;
+    @Schema(description = "修改人HASH")
+    private String updateBy;
 
-                                    @Schema(description = "删除人HASh")
-                        private String deleteBy;
+    @Schema(description = "删除人HASh")
+    private String deleteBy;
 
-            }
+}

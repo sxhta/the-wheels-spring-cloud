@@ -32,16 +32,16 @@ public class RouteServiceImpl extends ServiceImpl<RouteMapper, Route> implements
     @Override
     public List<RouteResponse> getDepartureList(String destinationHash) {
         final var lqw = new LambdaQueryWrapper<Route>();
-        lqw.and(i->i.isNull(Route::getDeleteTime));
+        lqw.and(i -> i.isNull(Route::getDeleteTime));
         if (StrUtil.isNotBlank(destinationHash)) {
-            lqw.and(i->i.eq(Route::getDestination,destinationHash));
+            lqw.and(i -> i.eq(Route::getDestination, destinationHash));
         }
         final var routeList = list(lqw);
         final var responseList = new ArrayList<RouteResponse>();
         if (CollUtil.isEmpty(routeList)) {
             return responseList;
         }
-        return routeList.stream().map(route->{
+        return routeList.stream().map(route -> {
             final var response = new RouteResponse();
             response.setAreaHash(route.getDeparture());
             response.setAreaName(areaService.geAreaNameByHash(route.getDeparture()));
@@ -52,16 +52,16 @@ public class RouteServiceImpl extends ServiceImpl<RouteMapper, Route> implements
     @Override
     public List<RouteResponse> getDestinationList(String departureHash) {
         final var lqw = new LambdaQueryWrapper<Route>();
-        lqw.and(i->i.isNull(Route::getDeleteTime));
+        lqw.and(i -> i.isNull(Route::getDeleteTime));
         if (StrUtil.isNotBlank(departureHash)) {
-            lqw.and(i->i.eq(Route::getDeparture,departureHash));
+            lqw.and(i -> i.eq(Route::getDeparture, departureHash));
         }
         final var routeList = list(lqw);
         final var responseList = new ArrayList<RouteResponse>();
         if (CollUtil.isEmpty(routeList)) {
             return responseList;
         }
-        return routeList.stream().map(route->{
+        return routeList.stream().map(route -> {
             final var response = new RouteResponse();
             response.setAreaHash(route.getDestination());
             response.setAreaName(areaService.geAreaNameByHash(route.getDestination()));

@@ -81,13 +81,10 @@ public class AuthFilter implements GlobalFilter, Ordered, Serializable {
             return unauthorizedResponse(exchange, "令牌验证失败");
         }
 
-        final var userHash = jwtComponent.getUserHash(claims);
-
         // 设置用户信息到请求
         addHeader(mutate, SecurityConstants.USER_KEY, userKey);
         addHeader(mutate, SecurityConstants.DETAILS_USER_ID, userid);
         addHeader(mutate, SecurityConstants.DETAILS_USERNAME, username);
-        addHeader(mutate, SecurityConstants.DETAILS_USER_HASH, userHash);
         // 内部请求来源参数清除
         removeHeader(mutate);
         return chain.filter(exchange.mutate().request(mutate.build()).build());

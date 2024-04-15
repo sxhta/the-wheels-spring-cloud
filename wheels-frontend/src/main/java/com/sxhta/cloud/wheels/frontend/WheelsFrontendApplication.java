@@ -13,7 +13,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableCustomConfig
 @EnableCustomFeignClients
 @SpringBootApplication
-@MapperScan("com.sxhta.cloud.**.mapper")
+@MapperScan("com.sxhta.cloud.wheels.frontend.mapper")
 @EnableFeignClients(basePackages = "com.sxhta.cloud")
 public class WheelsFrontendApplication {
     public static void main(String[] args) {

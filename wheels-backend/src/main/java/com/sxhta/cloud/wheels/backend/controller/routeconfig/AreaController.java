@@ -2,30 +2,28 @@ package com.sxhta.cloud.wheels.backend.controller.routeconfig;
 
 import com.sxhta.cloud.common.web.controller.BaseController;
 import com.sxhta.cloud.common.web.controller.ICommonController;
-import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.web.bind.annotation.*;
-import jakarta.inject.Inject;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import com.sxhta.cloud.common.web.domain.CommonResponse;
-import com.sxhta.cloud.common.web.page.TableDataInfo;
-
-import java.io.Serializable;
-import java.io.Serial;
 import com.sxhta.cloud.common.web.page.PageRequest;
+import com.sxhta.cloud.common.web.page.TableDataInfo;
 import com.sxhta.cloud.wheels.backend.request.AreaRequest;
-import com.sxhta.cloud.wheels.backend.response.AreaResponse;
 import com.sxhta.cloud.wheels.backend.request.AreaSearchRequest;
+import com.sxhta.cloud.wheels.backend.response.AreaResponse;
 import com.sxhta.cloud.wheels.backend.service.routeconfig.AreaService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.inject.Inject;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RestController;
+import java.io.Serial;
+import java.io.Serializable;
 
 /**
  * 地区配置表 前端控制器
  */
-@Tag(name = "地区配置表", description = "地区配置表"+"控制器")
+@Tag(name = "地区配置表", description = "地区配置表" + "控制器")
 @RestController
 @RequestMapping("/area")
-public class AreaController extends BaseController implements ICommonController<AreaSearchRequest,AreaRequest,AreaResponse> ,Serializable {
+public class AreaController extends BaseController implements ICommonController<AreaSearchRequest, AreaRequest, AreaResponse>, Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -72,7 +70,7 @@ public class AreaController extends BaseController implements ICommonController<
     @Override
     @Operation(summary = "列表")
     @GetMapping("/list")
-    public TableDataInfo<AreaResponse> getAdminList(@ModelAttribute("AreaSearchRequest") AreaSearchRequest request,PageRequest pageRequest) {
+    public TableDataInfo<AreaResponse> getAdminList(@ModelAttribute("AreaSearchRequest") AreaSearchRequest request, PageRequest pageRequest) {
         startPage(pageRequest);
         return CommonResponse.list(areaService.getAdminList(request));
     }

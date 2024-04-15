@@ -19,10 +19,10 @@ import java.io.Serializable;
 @TableName("wheels_area")
 @EqualsAndHashCode(callSuper = true)
 @Schema(name = "Area", description = "地区配置表")
-public class Area extends BaseHashEntity implements Serializable{
+public class Area extends BaseHashEntity implements Serializable {
 
     @Serial
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     @Schema(description = "ID")

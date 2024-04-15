@@ -15,24 +15,24 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Schema(name = "AreaRequest", description = "地区配置表请求体")
-public class AreaRequest extends BaseHashEntity implements Serializable{
+public class AreaRequest extends BaseHashEntity implements Serializable {
 
-@Serial
-private static final long serialVersionUID=1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-                    @Schema(description = "ID")
-                        private Long id;
+    @Schema(description = "ID")
+    private Long id;
 
-                                    @Schema(description = "地区名称")
-                        private String areaName;
+    @Schema(description = "地区名称")
+    private String areaName;
 
-                                    @Schema(description = "创建人HASH")
-                        private String createBy;
+    @Schema(description = "创建人HASH")
+    private String createBy;
 
-                                    @Schema(description = "修改人HASH")
-                        private String updateBy;
+    @Schema(description = "修改人HASH")
+    private String updateBy;
 
-                                    @Schema(description = "删除人")
-                        private String deleteBy;
+    @Schema(description = "删除人")
+    private String deleteBy;
 
-            }
+}

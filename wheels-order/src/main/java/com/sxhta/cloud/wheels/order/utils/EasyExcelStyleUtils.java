@@ -11,7 +11,7 @@ import org.apache.poi.ss.usermodel.VerticalAlignment;
 public class EasyExcelStyleUtils {
 
     //配置头策略
-    private static WriteCellStyle settingHeaderCellStyle(){
+    private static WriteCellStyle settingHeaderCellStyle() {
         // 头的策略
         WriteCellStyle headWriteCellStyle = new WriteCellStyle();
         // 设置背景为浅蓝色
@@ -30,7 +30,7 @@ public class EasyExcelStyleUtils {
     }
 
     //设置内容策略
-    private static WriteCellStyle settingContentStyle(){
+    private static WriteCellStyle settingContentStyle() {
         // 内容的策略
         WriteCellStyle contentWriteCellStyle = new WriteCellStyle();
         // 这里需要指定 FillPatternType 为 FillPatternType.SOLID_FOREGROUND 不然无法显示背景颜色.头默认了 FillPatternType 所以可以不指定
@@ -59,10 +59,10 @@ public class EasyExcelStyleUtils {
         //contentWriteCellStyle.setShrinkToFit(true);//设置文本收缩至合适
         return contentWriteCellStyle;
     }
-    public static HorizontalCellStyleStrategy getStyle(){
-        return new HorizontalCellStyleStrategy(settingHeaderCellStyle(),settingContentStyle());
-    }
 
+    public static HorizontalCellStyleStrategy getStyle() {
+        return new HorizontalCellStyleStrategy(settingHeaderCellStyle(), settingContentStyle());
+    }
 
 
 }

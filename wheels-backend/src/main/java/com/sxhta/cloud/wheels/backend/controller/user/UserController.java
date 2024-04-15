@@ -80,7 +80,7 @@ public class UserController extends BaseController implements
     @Operation(summary = "上传头像")
     @PostMapping(value = "/avatar/upload")
     public CommonResponse<ImageUploadResponse> uploadAvatar(@RequestParam(value = "file") MultipartFile file) {
-        final var result = userService. uploadImage(file);
+        final var result = userService.uploadImage(file);
         return CommonResponse.success(result);
     }
 

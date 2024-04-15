@@ -23,7 +23,7 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements Ar
     @Override
     public String geAreaNameByHash(String hash) {
         final var lqw = new LambdaQueryWrapper<Area>();
-        lqw.eq(Area::getHash,hash);
+        lqw.eq(Area::getHash, hash);
         final var area = getOne(lqw);
         if (ObjectUtil.isNull(area)) {
             throw new CommonNullException("该条数据不存在!");

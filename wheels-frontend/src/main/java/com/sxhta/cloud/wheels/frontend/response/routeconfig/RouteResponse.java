@@ -11,7 +11,7 @@ import java.io.Serializable;
  */
 @Data
 @Schema(name = "RouteResponse", description = "前端地点响应体")
-public class RouteResponse  implements Serializable {
+public class RouteResponse implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 

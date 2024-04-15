@@ -2,30 +2,28 @@ package com.sxhta.cloud.wheels.backend.controller.fee;
 
 import com.sxhta.cloud.common.web.controller.BaseController;
 import com.sxhta.cloud.common.web.controller.ICommonController;
-import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.web.bind.annotation.*;
-import jakarta.inject.Inject;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import com.sxhta.cloud.common.web.domain.CommonResponse;
-import com.sxhta.cloud.common.web.page.TableDataInfo;
-
-import java.io.Serializable;
-import java.io.Serial;
 import com.sxhta.cloud.common.web.page.PageRequest;
+import com.sxhta.cloud.common.web.page.TableDataInfo;
 import com.sxhta.cloud.wheels.backend.request.OtherFeeRequest;
-import com.sxhta.cloud.wheels.backend.response.OtherFeeResponse;
 import com.sxhta.cloud.wheels.backend.request.OtherFeeSearchRequest;
+import com.sxhta.cloud.wheels.backend.response.OtherFeeResponse;
 import com.sxhta.cloud.wheels.backend.service.fee.OtherFeeService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.inject.Inject;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RestController;
+import java.io.Serial;
+import java.io.Serializable;
 
 /**
  * 其他费用配置表 前端控制器
  */
-@Tag(name = "其他费用配置表", description = "其他费用配置表"+"控制器")
+@Tag(name = "其他费用配置表", description = "其他费用配置表" + "控制器")
 @RestController
 @RequestMapping("/other/fee")
-public class OtherFeeController extends BaseController implements ICommonController<OtherFeeSearchRequest,OtherFeeRequest,OtherFeeResponse> ,Serializable {
+public class OtherFeeController extends BaseController implements ICommonController<OtherFeeSearchRequest, OtherFeeRequest, OtherFeeResponse>, Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -64,7 +62,7 @@ public class OtherFeeController extends BaseController implements ICommonControl
     @Override
     @GetMapping("/list")
     @Operation(summary = "列表")
-    public TableDataInfo<OtherFeeResponse> getAdminList(@ModelAttribute("OtherFeeSearchRequest") OtherFeeSearchRequest request,PageRequest pageRequest) {
+    public TableDataInfo<OtherFeeResponse> getAdminList(@ModelAttribute("OtherFeeSearchRequest") OtherFeeSearchRequest request, PageRequest pageRequest) {
         startPage(pageRequest);
         return CommonResponse.list(otherFeeService.getAdminList(request));
     }

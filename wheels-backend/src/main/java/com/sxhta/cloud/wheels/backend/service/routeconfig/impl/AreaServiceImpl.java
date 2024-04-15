@@ -87,8 +87,8 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements Ar
             throw new CommonNullException("该地点已使用！");
         }
         final var lqw = new LambdaQueryWrapper<Area>();
-        lqw.eq(Area::getAreaName,request.getAreaName())
-           .ne(Area::getAreaName,res.getAreaName());
+        lqw.eq(Area::getAreaName, request.getAreaName())
+                .ne(Area::getAreaName, res.getAreaName());
         final var area = getOne(lqw);
         if (ObjectUtil.isNotNull(area)) {
             throw new CommonNullException("该地点已存在！");
@@ -117,7 +117,7 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements Ar
         final var lqw = new LambdaQueryWrapper<Area>();
         lqw.isNull(Area::getDeleteTime);
         if (StrUtil.isNotBlank(request.getAreaName())) {
-            lqw.and(i->i.like(Area::getAreaName,request.getAreaName()));
+            lqw.and(i -> i.like(Area::getAreaName, request.getAreaName()));
         }
         lqw.orderByDesc(Area::getCreateTime);
         final var entityList = list(lqw);
@@ -138,22 +138,22 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements Ar
         return null;
     }
 
-    private Area getByAreaName(String areaName){
+    private Area getByAreaName(String areaName) {
         final var lqw = new LambdaQueryWrapper<Area>();
-        lqw.eq(Area::getAreaName,areaName);
+        lqw.eq(Area::getAreaName, areaName);
         return getOne(lqw);
     }
 
-    private Area getByHash(String hash){
+    private Area getByHash(String hash) {
         final var lqw = new LambdaQueryWrapper<Area>();
-        lqw.eq(Area::getHash,hash);
+        lqw.eq(Area::getHash, hash);
         return getOne(lqw);
     }
 
     @Override
     public List<String> getAreaNameListByAreaHash(String areaHash) {
         final var lqw = new LambdaQueryWrapper<Area>();
-        lqw.like(Area::getAreaName,areaHash);
+        lqw.like(Area::getAreaName, areaHash);
         final var areaList = list(lqw);
         if (CollUtil.isEmpty(areaList)) {
             return null;
@@ -163,7 +163,7 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements Ar
 
     public Boolean getByDepartureHash(String departureHash) {
         final var lqw = new LambdaQueryWrapper<Route>();
-        lqw.eq(Route::getDeparture,departureHash);
+        lqw.eq(Route::getDeparture, departureHash);
         final var route = routeMapper.selectOne(lqw);
         if (ObjectUtil.isNull(route)) {
             return Boolean.FALSE;
@@ -174,7 +174,7 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements Ar
 
     public Boolean getByDestination(String destinationHash) {
         final var lqw = new LambdaQueryWrapper<Route>();
-        lqw.eq(Route::getDestination,destinationHash);
+        lqw.eq(Route::getDestination, destinationHash);
         final var route = routeMapper.selectOne(lqw);
         if (ObjectUtil.isNull(route)) {
             return Boolean.FALSE;

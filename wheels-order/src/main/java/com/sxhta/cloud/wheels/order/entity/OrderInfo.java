@@ -19,10 +19,10 @@ import java.time.LocalDateTime;
 @Data
 @TableName("wheels_order_info")
 @Schema(name = "OrderInfo", description = "订单详情")
-public class OrderInfo implements Serializable{
+public class OrderInfo implements Serializable {
 
     @Serial
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     @Schema(description = "ID")

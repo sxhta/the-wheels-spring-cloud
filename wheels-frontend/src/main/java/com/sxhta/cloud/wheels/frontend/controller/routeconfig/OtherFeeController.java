@@ -13,7 +13,7 @@ import java.io.Serializable;
 /**
  * 其他费用配置表 前端控制器
  */
-@Tag(name = "其他费用配置表", description = "其他费用配置表"+"控制器")
+@Tag(name = "其他费用配置表", description = "其他费用配置表" + "控制器")
 @RestController
 @RequestMapping("/other/fee")
 public class OtherFeeController extends BaseController implements Serializable {

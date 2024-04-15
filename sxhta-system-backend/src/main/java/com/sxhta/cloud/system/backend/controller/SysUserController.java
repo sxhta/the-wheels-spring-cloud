@@ -294,10 +294,4 @@ public class SysUserController extends BaseController {
     public CommonResponse<List<TreeSelect>> deptTree(SysDept dept) {
         return CommonResponse.success(deptService.selectDeptTreeList(dept));
     }
-
-    @GetMapping("/test/hash")
-    public CommonResponse<String> getHash() {
-       final var hash =  tokenService.getUserHash();
-        return CommonResponse.success(hash,hash);
-    }
 }

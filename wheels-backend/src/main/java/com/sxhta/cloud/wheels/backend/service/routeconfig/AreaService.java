@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * 地区配置表 服务类
  */
-public interface AreaService extends ICommonService<AreaSearchRequest, AreaRequest,AreaResponse> {
+public interface AreaService extends ICommonService<AreaSearchRequest, AreaRequest, AreaResponse> {
 
     List<String> getAreaNameListByAreaHash(String areaHash);
 }

@@ -6,11 +6,11 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sxhta.cloud.common.exception.CommonNullException;
 import com.sxhta.cloud.wheels.backend.mapper.bank.BankCategoryMapper;
-import com.sxhta.cloud.wheels.remote.domain.bank.BankCategory;
 import com.sxhta.cloud.wheels.backend.request.bank.BankCategoryRequest;
 import com.sxhta.cloud.wheels.backend.request.bank.BankCategorySearchRequest;
 import com.sxhta.cloud.wheels.backend.response.bank.BankCategoryResponse;
 import com.sxhta.cloud.wheels.backend.service.bank.BankCategoryService;
+import com.sxhta.cloud.wheels.remote.domain.bank.BankCategory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 

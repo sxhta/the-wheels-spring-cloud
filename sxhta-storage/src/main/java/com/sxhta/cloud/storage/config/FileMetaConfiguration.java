@@ -9,15 +9,9 @@ import jakarta.inject.Singleton;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.io.Serial;
-import java.io.Serializable;
-
 @Singleton
 @Configuration
-public class FileMetaConfiguration implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class FileMetaConfiguration {
 
     @Inject
     private RedisService<String, FileMetaVo> redisService;

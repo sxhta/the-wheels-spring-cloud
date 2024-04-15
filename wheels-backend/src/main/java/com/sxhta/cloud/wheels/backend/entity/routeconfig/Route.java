@@ -20,10 +20,10 @@ import java.math.BigDecimal;
 @TableName("wheels_route")
 @EqualsAndHashCode(callSuper = true)
 @Schema(name = "Route", description = "行程配置表")
-public class Route extends BaseHashEntity implements Serializable{
+public class Route extends BaseHashEntity implements Serializable {
 
     @Serial
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     @Schema(description = "id")

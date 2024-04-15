@@ -3,7 +3,7 @@ plugins {
     id "org.springdoc.openapi-gradle-plugin" version "1.8.0"
 }
 
-group = 'com.sxhta.cloud.wheels.backend'
+group = 'com.sxhta.cloud.system.backend'
 version = '1.0.0'
 
 repositories {
@@ -18,7 +18,6 @@ dependencies {
     implementation project(':sxhta-log')
     implementation project(':sxhta-cache')
     implementation project(':wheels-remote')
-    implementation project(':wheels-logic')
     compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
     implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery'
     implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config'

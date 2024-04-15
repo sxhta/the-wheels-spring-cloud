@@ -10,7 +10,7 @@ import com.sxhta.cloud.common.utils.file.MimeTypeUtils;
 import com.sxhta.cloud.remote.RemoteFileOpenFeign;
 import com.sxhta.cloud.remote.service.AttachmentService;
 import com.sxhta.cloud.security.service.TokenService;
-import com.sxhta.cloud.wheels.cloud.logic.mapper.user.WheelsFrontUserMapper;
+import com.sxhta.cloud.wheels.frontend.mapper.user.FrontUserMapper;
 import com.sxhta.cloud.wheels.frontend.request.user.AvatarUpdateRequest;
 import com.sxhta.cloud.wheels.frontend.request.user.UserInfoRequest;
 import com.sxhta.cloud.wheels.frontend.response.user.AvatarResponse;
@@ -33,7 +33,7 @@ import java.util.Arrays;
 
 @Slf4j
 @Service
-public class FrontUserInfoServiceImpl extends ServiceImpl<WheelsFrontUserMapper, WheelsFrontUser>
+public class FrontUserInfoServiceImpl extends ServiceImpl<FrontUserMapper, WheelsFrontUser>
         implements FrontUserInfoService, Serializable {
 
     @Serial
@@ -79,7 +79,7 @@ public class FrontUserInfoServiceImpl extends ServiceImpl<WheelsFrontUserMapper,
         final var currentUser = getCurrentUserByToken();
         final var response = new FrontUserInfoResponse();
         BeanUtils.copyProperties(currentUser, response);
-        final var url = response.getAvatar();
+        final var url = response.getAccount();
         final var result = attachmentService.addPrefix(url);
         response.setAvatar(result);
         return response;

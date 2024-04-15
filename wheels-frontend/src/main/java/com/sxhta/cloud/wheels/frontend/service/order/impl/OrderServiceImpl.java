@@ -12,9 +12,10 @@ import com.sxhta.cloud.wheels.frontend.service.order.OrderService;
 import com.sxhta.cloud.wheels.frontend.service.user.FrontUserService;
 import com.sxhta.cloud.wheels.remote.domain.user.WheelsFrontUser;
 import com.sxhta.cloud.wheels.remote.openfeign.order.OrderOpenfeign;
-import com.sxhta.cloud.wheels.remote.response.order.OrderExpectationResponse;
-import com.sxhta.cloud.wheels.remote.response.order.OrderInfoResponse;
-import com.sxhta.cloud.wheels.remote.response.order.OrderResponse;
+import com.sxhta.cloud.wheels.remote.response.order.admin.OrderExpectationResponse;
+import com.sxhta.cloud.wheels.remote.response.order.front.OrderInfoResponse;
+import com.sxhta.cloud.wheels.remote.response.order.front.OrderResponse;
+import com.sxhta.cloud.wheels.remote.response.order.owner.OrderOwnerResponse;
 import com.sxhta.cloud.wheels.remote.vo.FrontUserCacheVo;
 import jakarta.inject.Inject;
 import org.springframework.stereotype.Service;
@@ -51,7 +52,7 @@ public class OrderServiceImpl implements OrderService, Serializable {
                 StrUtil.isBlank(orderInfo.getData().getUserPhone())) {
             final var orderInfoResponse = orderInfo.getData();
             final var userLqw = new LambdaQueryWrapper<WheelsFrontUser>();
-            userLqw.eq(WheelsFrontUser::getUserId,tokenService.getUserId());
+            userLqw.eq(WheelsFrontUser::getUserId, tokenService.getUserId());
             final var frontUser = frontUserService.getOne(userLqw);
             if (ObjectUtil.isNull(frontUser)) {
                 throw new CommonNullException("用户不存在！");
@@ -80,7 +81,7 @@ public class OrderServiceImpl implements OrderService, Serializable {
                 final var frontUserInCache = frontUserCacheVo.getUserEntity();
                 final var frontUserId = frontUserInCache.getUserId();
                 final var userLqw = new LambdaQueryWrapper<WheelsFrontUser>();
-                userLqw.eq(WheelsFrontUser::getUserId,frontUserId);
+                userLqw.eq(WheelsFrontUser::getUserId, frontUserId);
                 final var frontUser = frontUserService.getOne(userLqw);
                 if (ObjectUtil.isNull(frontUser)) {
                     throw new CommonNullException("用户不存在！");
@@ -91,5 +92,12 @@ public class OrderServiceImpl implements OrderService, Serializable {
             }
         });
         return orderFrontExpectationList.getData();
+    }
+
+    @Override
+    public TableDataInfo<OrderOwnerResponse> getOwnerList(Integer location, Integer orderType, Integer ownerAcceptStatus, PageRequest pageRequest) {
+        //TODO:司机登录HASH
+        final var resData = orderOpenfeign.getOwnerList("a1", location, orderType, ownerAcceptStatus, pageRequest, SecurityConstants.INNER);
+        return resData.getData();
     }
 }

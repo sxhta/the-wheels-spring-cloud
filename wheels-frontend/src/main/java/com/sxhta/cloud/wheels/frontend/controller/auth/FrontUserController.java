@@ -1,18 +1,22 @@
 package com.sxhta.cloud.wheels.frontend.controller.auth;
 
+
 import cn.hutool.core.util.ObjectUtil;
 import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.sxhta.cloud.security.annotation.InnerAuth;
 import com.sxhta.cloud.wheels.frontend.service.user.FrontUserService;
 import com.sxhta.cloud.wheels.remote.request.RemoteRegisterRequest;
+import com.sxhta.cloud.wheels.remote.response.wheelsUser.WheelsUserResponse;
 import com.sxhta.cloud.wheels.remote.vo.FrontUserCacheVo;
 import com.sxhta.cloud.wheels.remote.vo.FrontUserHashVo;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -53,4 +57,26 @@ public class FrontUserController implements Serializable {
     public CommonResponse<FrontUserHashVo> getHashById(@PathVariable("id") Long id) {
         return CommonResponse.success(frontUserService.getHashById(id));
     }
+
+    @Operation(summary = "用户名模糊查询")
+    @InnerAuth
+    @GetMapping("/hash/name/list/{userName}")
+    public CommonResponse<List<String>> getHashListByUserName(@PathVariable("userName") String userName) {
+        return CommonResponse.success(frontUserService.getHashListByUserName(userName));
+    }
+
+    @Operation(summary = "电话模糊查询")
+    @InnerAuth
+    @GetMapping("/hash/phone/list/{userPhone}")
+    public CommonResponse<List<String>> getHashListByUserPhone(@PathVariable("userPhone") String userPhone) {
+        return CommonResponse.success(frontUserService.getHashListByUserPhone(userPhone));
+    }
+
+    @Operation(summary = "HASH查询")
+    @InnerAuth
+    @GetMapping("/info/hash/{userHash}")
+    public CommonResponse<WheelsUserResponse> getInfoByHash(@PathVariable("userHash") String userHash) {
+        return CommonResponse.success(frontUserService.getInfoByHash(userHash));
+    }
+
 }

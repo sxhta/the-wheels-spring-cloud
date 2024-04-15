@@ -127,11 +127,6 @@ public class JwtComponentImpl implements JwtComponent, Serializable {
         return getValue(claims, SecurityConstants.DETAILS_USERNAME);
     }
 
-    @Override
-    public String getUserHash(Claims claims) {
-        return getValue(claims, SecurityConstants.DETAILS_USER_HASH);
-    }
-
     /**
      * 根据身份信息获取键值
      *

@@ -61,7 +61,7 @@ public class ComplainInformationRequest extends BaseHashEntity implements Serial
      * 处理人
      */
     private String handleBy;
-    
+
     /**
      * 处理时间
      */

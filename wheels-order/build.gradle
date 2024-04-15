@@ -18,7 +18,6 @@ dependencies {
     implementation project(':sxhta-log')
     implementation project(':sxhta-cache')
     implementation project(':wheels-remote')
-    implementation project(':wheels-logic')
     compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
     implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery'
     implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config'

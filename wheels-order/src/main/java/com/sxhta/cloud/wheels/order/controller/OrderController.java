@@ -8,9 +8,14 @@ import com.sxhta.cloud.common.web.page.TableDataInfo;
 import com.sxhta.cloud.remote.domain.SysFile;
 import com.sxhta.cloud.security.annotation.InnerAuth;
 import com.sxhta.cloud.wheels.order.request.OrderRequest;
-import com.sxhta.cloud.wheels.remote.response.order.*;
-import com.sxhta.cloud.wheels.remote.request.order.OrderSearchRequest;
 import com.sxhta.cloud.wheels.order.service.OrderService;
+import com.sxhta.cloud.wheels.remote.request.order.OrderSearchRequest;
+import com.sxhta.cloud.wheels.remote.response.order.admin.OrderAdminInfoResponse;
+import com.sxhta.cloud.wheels.remote.response.order.admin.OrderAdminResponse;
+import com.sxhta.cloud.wheels.remote.response.order.admin.OrderExpectationResponse;
+import com.sxhta.cloud.wheels.remote.response.order.front.OrderInfoResponse;
+import com.sxhta.cloud.wheels.remote.response.order.front.OrderResponse;
+import com.sxhta.cloud.wheels.remote.response.order.owner.OrderOwnerResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.inject.Inject;
@@ -24,10 +29,10 @@ import java.text.ParseException;
 /**
  * 订单管理 前端控制器
  */
-@Tag(name = "订单管理", description = "订单管理"+"控制器")
+@Tag(name = "订单管理", description = "订单管理" + "控制器")
 @RestController
 @RequestMapping("/orders")
-public class OrderController extends BaseController implements ICommonController<OrderSearchRequest, OrderRequest, OrderResponse> ,Serializable {
+public class OrderController extends BaseController implements ICommonController<OrderSearchRequest, OrderRequest, OrderResponse>, Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -39,14 +44,14 @@ public class OrderController extends BaseController implements ICommonController
     @PostMapping("/create")
     @Operation(summary = "新增")
     public CommonResponse<Boolean> create(@RequestBody OrderRequest request) {
-        return CommonResponse.result(orderService.create(request));
+        return CommonResponse.result(null);
     }
 
     @Override
     @DeleteMapping("/delete")
     @Operation(summary = "删除")
     public CommonResponse<Boolean> deleteByHash(@RequestParam(value = "hash") String hash) {
-        return CommonResponse.result(orderService.deleteByHash(hash));
+        return CommonResponse.result(null);
     }
 
     @Override
@@ -61,7 +66,7 @@ public class OrderController extends BaseController implements ICommonController
     @PutMapping("/update")
     @Operation(summary = "修改")
     public CommonResponse<Boolean> updateEntity(@RequestBody OrderRequest request) {
-        return CommonResponse.result(orderService.updateEntity(request));
+        return CommonResponse.result(null);
     }
 
     @Override
@@ -73,17 +78,17 @@ public class OrderController extends BaseController implements ICommonController
     @Override
     @GetMapping("/info")
     public CommonResponse<OrderResponse> getInfoByHash(@RequestParam("hash") String hash) {
-        return CommonResponse.success(orderService.getInfoByHash(hash));
+        return CommonResponse.success(null);
     }
 
     @Operation(summary = "客户端订单列表")
     @InnerAuth
     @GetMapping("/user/front/list")
     public CommonResponse<TableDataInfo<OrderResponse>> getFrontList(@RequestParam(value = "userHash") String userHash,
-                                                                     @RequestParam(value = "type",defaultValue = "") Integer type,//1已完成，2已取消
-                                                     PageRequest pageRequest) {
+                                                                     @RequestParam(value = "type", defaultValue = "") Integer type,//1已完成，2已取消
+                                                                     PageRequest pageRequest) {
         startPage(pageRequest);
-        return CommonResponse.success(CommonResponse.list(orderService.getFrontList(userHash,type)));
+        return CommonResponse.success(CommonResponse.list(orderService.getFrontList(userHash, type)));
     }
 
     @Operation(summary = "客户端订单详情")
@@ -121,7 +126,7 @@ public class OrderController extends BaseController implements ICommonController
     @Operation(summary = "后管订单详情")
     @InnerAuth
     @GetMapping("/admin/info/{orderHash}")
-    public CommonResponse<OrderAdminInfoResponse> getBackstageInfo(@PathVariable(value = "orderHash") String orderHash){
+    public CommonResponse<OrderAdminInfoResponse> getBackstageInfo(@PathVariable(value = "orderHash") String orderHash) {
         return CommonResponse.success(orderService.getBackstageInfo(orderHash));
     }
 
@@ -130,5 +135,18 @@ public class OrderController extends BaseController implements ICommonController
     @GetMapping("/admin/export")
     public CommonResponse<SysFile> getBackstageExport(@SpringQueryMap OrderSearchRequest request) throws ParseException {
         return CommonResponse.success(orderService.getBackstageExport(request));
+    }
+
+
+    @Operation(summary = "司机端列表")
+    @InnerAuth
+    @GetMapping("/owner/list")
+    public CommonResponse<TableDataInfo<OrderOwnerResponse>> getOwnerList(@RequestParam(value = "ownerHash") String ownerHash,
+                                                                          @RequestParam(value = "location") Integer location,//1首页，2全部
+                                                                          @RequestParam(value = "orderType") Integer orderType,//1即时订单，2预约订单
+                                                                          @RequestParam(value = "ownerAcceptStatus") Integer ownerAcceptStatus,//1即时订单，2预约订单
+                                                                          PageRequest pageRequest) {
+        startPage(pageRequest);
+        return CommonResponse.success(CommonResponse.list(orderService.getOwnerList(ownerHash, location, orderType, ownerAcceptStatus)));
     }
 }

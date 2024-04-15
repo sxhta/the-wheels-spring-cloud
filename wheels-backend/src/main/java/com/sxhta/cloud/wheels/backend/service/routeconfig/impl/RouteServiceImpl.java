@@ -71,7 +71,7 @@ public class RouteServiceImpl extends ServiceImpl<RouteMapper, Route> implements
         this.isSame(request.getDeparture(), request.getDestination());
         //起点或终点修改时才进入判断路线
         if (!route.getDestination().equals(request.getDestination()) || !route.getDeparture().equals(request.getDeparture())) {
-            this.isHave(request.getDeparture(),request.getDestination());
+            this.isHave(request.getDeparture(), request.getDestination());
         }
         route.setDeparture(request.getDeparture());
         route.setDestination(request.getDestination());
@@ -105,13 +105,13 @@ public class RouteServiceImpl extends ServiceImpl<RouteMapper, Route> implements
         if (ObjectUtil.isNotNull(request.getDeparture())) {
             final var departureList = areaService.getAreaNameListByAreaHash(request.getDeparture());
             if (CollUtil.isNotEmpty(departureList)) {
-               lqw.and(i->i.in(Route::getDeparture,departureList)) ;
+                lqw.and(i -> i.in(Route::getDeparture, departureList));
             }
         }
         if (ObjectUtil.isNotNull(request.getDestination())) {
             final var destinationList = areaService.getAreaNameListByAreaHash(request.getDestination());
             if (CollUtil.isNotEmpty(destinationList)) {
-                lqw.and(i->i.in(Route::getDestination,destinationList)) ;
+                lqw.and(i -> i.in(Route::getDestination, destinationList));
             }
         }
         lqw.orderByDesc(Route::getCreateTime);
@@ -130,9 +130,9 @@ public class RouteServiceImpl extends ServiceImpl<RouteMapper, Route> implements
         return responseList;
     }
 
-    private Route getByHash(String hash){
+    private Route getByHash(String hash) {
         final var lqw = new LambdaQueryWrapper<Route>();
-        lqw.eq(Route::getHash,hash);
+        lqw.eq(Route::getHash, hash);
         return getOne(lqw);
     }
 

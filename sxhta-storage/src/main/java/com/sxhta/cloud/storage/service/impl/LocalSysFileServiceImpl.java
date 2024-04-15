@@ -13,18 +13,13 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.Serial;
-import java.io.Serializable;
 
 /**
  * 本地文件存储
  */
 @Primary
 @Service
-public class LocalSysFileServiceImpl implements ISysFileService, Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class LocalSysFileServiceImpl implements ISysFileService {
 
     @Inject
     private FileUploadComponent fileUploadComponent;

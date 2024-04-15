@@ -14,8 +14,9 @@ import com.sxhta.cloud.wheels.backend.mapper.feedback.FeedbackInformationMapper;
 import com.sxhta.cloud.wheels.backend.request.feedback.FeedbackInformationRequest;
 import com.sxhta.cloud.wheels.backend.request.feedback.FeedbackInformationSearchRequest;
 import com.sxhta.cloud.wheels.backend.response.feedback.FeedbackInformationResponse;
+import com.sxhta.cloud.wheels.backend.response.user.FrontendUserResponse;
 import com.sxhta.cloud.wheels.backend.service.feedback.FeedbackInformationService;
-import com.sxhta.cloud.wheels.cloud.logic.service.user.WheelsUserService;
+import com.sxhta.cloud.wheels.backend.service.user.UserService;
 import jakarta.inject.Inject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,8 @@ public class FeedbackInformationServiceImpl extends ServiceImpl<FeedbackInformat
     private TokenService<SystemUserCacheVo, SysUser> tokenService;
 
     @Inject
-    private WheelsUserService wheelsUserService;
+    private UserService userService;
+
 
     @Override
     public Boolean create(FeedbackInformationRequest feedbackInformationRequest) {
@@ -50,8 +52,12 @@ public class FeedbackInformationServiceImpl extends ServiceImpl<FeedbackInformat
         final var feedbackInformation = getEntity(hash);
         final var feedbackInformationResponse = new FeedbackInformationResponse();
         BeanUtils.copyProperties(feedbackInformation, feedbackInformationResponse);
-        final var user = wheelsUserService.getInfoByHash(feedbackInformation.getFeedbackUser());
-        feedbackInformationResponse.setFeedbackUser(user.getUserName());
+        final var frontUser = userService.getUserByHash(feedbackInformation.getFeedbackUser());
+        if (ObjectUtil.isNotNull(frontUser)) {
+            final var frontendUserResponse = new FrontendUserResponse();
+            BeanUtils.copyProperties(frontUser, frontendUserResponse);
+            feedbackInformationResponse.setFeedbackUser(frontendUserResponse);
+        }
         return feedbackInformationResponse;
     }
 
@@ -96,7 +102,12 @@ public class FeedbackInformationServiceImpl extends ServiceImpl<FeedbackInformat
             feedbackInformationLqw.between(FeedbackInformation::getHandleTime, handleStartTime, handleEndTime);
         }
         if (StrUtil.isNotBlank(feedbackUser)) {
-            feedbackInformationLqw.in(FeedbackInformation::getFeedbackUser, wheelsUserService.getHashListByUserNameLike(feedbackUser));
+            final var userHashList = userService.getUserHashListByName(feedbackUser);
+            if (CollUtil.isNotEmpty(userHashList)) {
+                feedbackInformationLqw.in(FeedbackInformation::getFeedbackUser, userHashList);
+            } else {
+                return feedbackInformationResponseList;
+            }
         }
         feedbackInformationLqw.isNull(FeedbackInformation::getDeleteTime);
         final var feedbackInformationList = list(feedbackInformationLqw);
@@ -105,6 +116,12 @@ public class FeedbackInformationServiceImpl extends ServiceImpl<FeedbackInformat
                 final var feedbackInformationResponse = new FeedbackInformationResponse();
                 BeanUtils.copyProperties(feedbackInformation, feedbackInformationResponse);
                 feedbackInformationResponse.setFeedbackPhotograph(stringToJsonList(feedbackInformation.getFeedbackPhotograph()));
+                final var wheelsUser = userService.getUserByHash(feedbackInformation.getFeedbackUser());
+                if (ObjectUtil.isNotNull(wheelsUser)) {
+                    final var frontendUserResponse = new FrontendUserResponse();
+                    BeanUtils.copyProperties(wheelsUser, frontendUserResponse);
+                    feedbackInformationResponse.setFeedbackUser(frontendUserResponse);
+                }
                 feedbackInformationResponseList.add(feedbackInformationResponse);
             });
         }
@@ -127,12 +144,13 @@ public class FeedbackInformationServiceImpl extends ServiceImpl<FeedbackInformat
         if (feedbackInformation.getIsHandle()) {
             throw new ServiceException("该反馈已处理");
         }
+        //TODO:处理人暂时使用ID，后面整合后使用用户hash
         feedbackInformation.setIsHandle(true)
-                .setHandleBy(tokenService.getUsername())
+                .setHandleBy(tokenService.getUserId().toString())
                 .setHandleTime(LocalDateTime.now())
                 .setHandleResult(feedbackInformationRequest.getHandleResult())
                 .setHandleRemark(feedbackInformationRequest.getHandleRemark())
-                .setUpdateBy(tokenService.getUsername())
+                .setUpdateBy(tokenService.getUserId().toString())
                 .setUpdateTime(LocalDateTime.now());
         return updateById(feedbackInformation);
     }

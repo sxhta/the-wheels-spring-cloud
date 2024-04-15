@@ -11,6 +11,7 @@ import com.sxhta.cloud.wheels.backend.response.complain.ComplainInformationRespo
 import com.sxhta.cloud.wheels.backend.service.complain.ComplainInformationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.inject.Inject;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
@@ -26,7 +27,7 @@ public class ComplainInformationController extends BaseController implements ICo
 
     @Override
     @GetMapping("/list")
-    public TableDataInfo<ComplainInformationResponse> getAdminList(@ModelAttribute("ComplainInformationSearchRequest") ComplainInformationSearchRequest request, PageRequest pageRequest) {
+    public TableDataInfo<ComplainInformationResponse> getAdminList(ComplainInformationSearchRequest request, @Validated PageRequest pageRequest) {
         startPage(pageRequest);
         final var list = complainInformationService.getAdminList(request);
         return CommonResponse.list(list);
@@ -34,7 +35,7 @@ public class ComplainInformationController extends BaseController implements ICo
 
     @Override
     @GetMapping("/info")
-    public CommonResponse<ComplainInformationResponse> getInfoByHash(String hash) {
+    public CommonResponse<ComplainInformationResponse> getInfoByHash(@RequestParam String hash) {
         return CommonResponse.success("查询成功", complainInformationService.getInfoByHash(hash));
     }
 

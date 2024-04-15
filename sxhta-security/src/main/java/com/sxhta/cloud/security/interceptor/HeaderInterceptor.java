@@ -44,15 +44,10 @@ public class HeaderInterceptor implements AsyncHandlerInterceptor, Serializable 
             return true;
         }
 
-        final var userId = servletComponent.getHeader(request, SecurityConstants.DETAILS_USER_ID);
-        final var userName = servletComponent.getHeader(request, SecurityConstants.DETAILS_USERNAME);
-        final var userKey = servletComponent.getHeader(request, SecurityConstants.USER_KEY);
-        final var userHash = servletComponent.getHeader(request, SecurityConstants.DETAILS_USER_HASH);
-
-        securityContextHolder.setUserId(userId);
-        securityContextHolder.setUserName(userName);
-        securityContextHolder.setUserKey(userKey);
-        securityContextHolder.setUserHash(userHash);
+        securityContextHolder.setUserId(servletComponent.getHeader(request, SecurityConstants.DETAILS_USER_ID));
+        securityContextHolder.setUserName(servletComponent.getHeader(request, SecurityConstants.DETAILS_USERNAME));
+        securityContextHolder.setUserKey(servletComponent.getHeader(request, SecurityConstants.USER_KEY));
+        securityContextHolder.setUserHash(servletComponent.getHeader(request, SecurityConstants.DETAILS_USER_HASH));
 
         final var token = tokenService.getToken();
         if (ObjectUtil.isNotEmpty(token)) {

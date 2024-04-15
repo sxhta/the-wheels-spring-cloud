@@ -8,7 +8,12 @@ import com.sxhta.cloud.common.web.page.TableDataInfo;
 import com.sxhta.cloud.wheels.remote.domain.SysFile;
 import com.sxhta.cloud.wheels.remote.factory.order.OrderFallbackFactory;
 import com.sxhta.cloud.wheels.remote.request.order.OrderSearchRequest;
-import com.sxhta.cloud.wheels.remote.response.order.*;
+import com.sxhta.cloud.wheels.remote.response.order.admin.OrderAdminInfoResponse;
+import com.sxhta.cloud.wheels.remote.response.order.admin.OrderAdminResponse;
+import com.sxhta.cloud.wheels.remote.response.order.admin.OrderExpectationResponse;
+import com.sxhta.cloud.wheels.remote.response.order.front.OrderInfoResponse;
+import com.sxhta.cloud.wheels.remote.response.order.front.OrderResponse;
+import com.sxhta.cloud.wheels.remote.response.order.owner.OrderOwnerResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.SpringQueryMap;
@@ -52,4 +57,12 @@ public interface OrderOpenfeign {
     @Operation(summary = "后管订单导出")
     @GetMapping("/orders/admin/export")
     CommonResponse<SysFile> getBackstageExport(@SpringQueryMap OrderSearchRequest request, @RequestHeader(SecurityConstants.FROM_SOURCE) String source) throws ParseException;
+
+    @Operation(summary = "司机端列表")
+    @GetMapping("/orders/owner/list")
+    CommonResponse<TableDataInfo<OrderOwnerResponse>> getOwnerList(@RequestParam(value = "ownerHash") String ownerHash,
+                                                                   @RequestParam(value = "location") Integer location,//1首页，2全部
+                                                                   @RequestParam(value = "orderType") Integer orderType,//1即时订单，2预约订单
+                                                                   @RequestParam(value = "ownerAcceptStatus") Integer ownerAcceptStatus,//1即时订单，2预约订单
+                                                                   @RequestParam PageRequest pageRequest, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
 }

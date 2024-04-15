@@ -76,8 +76,6 @@ public interface JwtComponent {
      */
     String getUserName(Claims claims);
 
-    String getUserHash(Claims claims);
-
     /**
      * 根据身份信息获取键值
      *
