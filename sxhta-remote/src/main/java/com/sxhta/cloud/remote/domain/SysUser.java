@@ -28,6 +28,11 @@ public class SysUser extends AbstractUserEntity {
     private Long deptId;
 
     /**
+     * 用户Hash
+     */
+    private String hash;
+
+    /**
      * 用户账号
      */
     @Excel(name = "登录名称")

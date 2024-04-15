@@ -39,6 +39,10 @@ public class FeignRequestInterceptor implements RequestInterceptor, Serializable
             if (ObjectUtil.isNotEmpty(userId)) {
                 requestTemplate.header(SecurityConstants.DETAILS_USER_ID, userId);
             }
+            final var userHash = headers.get(SecurityConstants.DETAILS_USER_HASH);
+            if (ObjectUtil.isNotEmpty(userHash)) {
+                requestTemplate.header(SecurityConstants.DETAILS_USER_HASH, userHash);
+            }
             final var userKey = headers.get(SecurityConstants.USER_KEY);
             if (ObjectUtil.isNotEmpty(userKey)) {
                 requestTemplate.header(SecurityConstants.USER_KEY, userKey);
