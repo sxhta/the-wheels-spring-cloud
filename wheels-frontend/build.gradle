@@ -3,7 +3,7 @@ plugins {
     id "org.springdoc.openapi-gradle-plugin" version "1.8.0"
 }
 
-group = 'com.wheels.cloud.frontend'
+group = 'com.sxhta.cloud.wheels.frontend'
 version = '1.0.0'
 
 repositories {
