@@ -3,7 +3,10 @@ package com.sxhta.cloud.wheels.response.feedback;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sxhta.cloud.common.domain.BaseHashEntity;
+import com.sxhta.cloud.wheels.response.user.FrontendUserResponse;
+import com.sxhta.cloud.wheels.response.user.SystemUserResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -48,11 +51,12 @@ public class FeedbackInformationResponse extends BaseHashEntity implements Seria
     /**
      * 反馈人
      */
-    private String feedbackUser;
+    private FrontendUserResponse feedbackUser;
 
     /**
      * 反馈时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime feedbackTime;
 
     /**
@@ -63,11 +67,12 @@ public class FeedbackInformationResponse extends BaseHashEntity implements Seria
     /**
      * 处理人
      */
-    private String handleBy;
+    private SystemUserResponse handleBy;
 
     /**
      * 处理时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime handleTime;
 
     /**

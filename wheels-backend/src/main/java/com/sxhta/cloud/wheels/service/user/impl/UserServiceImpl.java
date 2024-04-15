@@ -1,5 +1,6 @@
 package com.sxhta.cloud.wheels.service.user.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -35,8 +36,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class UserServiceImpl extends ServiceImpl<UserMapper, WheelsFrontUser>
-        implements UserService {
+public class UserServiceImpl extends ServiceImpl<UserMapper, WheelsFrontUser> implements UserService {
 
     @Inject
     private TokenService<SystemUserCacheVo, SysUser> tokenService;
@@ -171,7 +171,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, WheelsFrontUser>
 
     @Override
     public Boolean toggleStatus(ToggleStatusRequest request) {
-        final var hash =request.getHash();
+        final var hash = request.getHash();
         final var lqw = new LambdaQueryWrapper<WheelsFrontUser>();
         lqw.eq(WheelsFrontUser::getHash, hash);
         final var currentUser = getOne(lqw);
@@ -179,12 +179,32 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, WheelsFrontUser>
             throw new CommonNullException("该用户不存在");
         }
         final var currentStatus = currentUser.getStatus();
-        if(currentStatus.equals("0")){
+        if (currentStatus.equals("0")) {
             currentUser.setStatus("1");
         }
-        if(currentStatus.equals("1")){
+        if (currentStatus.equals("1")) {
             currentUser.setStatus("0");
         }
         return updateById(currentUser);
+    }
+
+    @Override
+    public WheelsFrontUser getUserByHash(String hash) {
+        final var wheelsFrontUserLqw = new LambdaQueryWrapper<WheelsFrontUser>();
+        wheelsFrontUserLqw.eq(WheelsFrontUser::getHash, hash)
+                .isNull(WheelsFrontUser::getDeleteTime);
+        return getOne(wheelsFrontUserLqw);
+    }
+
+    @Override
+    public List<String> getUserHashListByName(String name) {
+        final var userHashList = new ArrayList<String>();
+        final var wheelsFrontUserLqw = new LambdaQueryWrapper<WheelsFrontUser>();
+        wheelsFrontUserLqw.like(WheelsFrontUser::getNickname, name).isNull(WheelsFrontUser::getDeleteTime);
+        final var wheelsFrontUserList = list(wheelsFrontUserLqw);
+        if (CollUtil.isNotEmpty(wheelsFrontUserList)) {
+            wheelsFrontUserList.forEach(wheelsFrontUser -> userHashList.add(wheelsFrontUser.getHash()));
+        }
+        return userHashList;
     }
 }

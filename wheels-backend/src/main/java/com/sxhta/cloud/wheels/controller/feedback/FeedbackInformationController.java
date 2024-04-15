@@ -11,6 +11,7 @@ import com.sxhta.cloud.wheels.response.feedback.FeedbackInformationResponse;
 import com.sxhta.cloud.wheels.service.feedback.FeedbackInformationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.inject.Inject;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
@@ -25,7 +26,7 @@ public class FeedbackInformationController extends BaseController implements ICo
 
     @Override
     @GetMapping("/list")
-    public TableDataInfo<FeedbackInformationResponse> getAdminList(FeedbackInformationSearchRequest request, PageRequest pageRequest) {
+    public TableDataInfo<FeedbackInformationResponse> getAdminList(FeedbackInformationSearchRequest request, @Validated PageRequest pageRequest) {
         startPage(pageRequest);
         final var list = feedbackInformationService.getAdminList(request);
         return CommonResponse.list(list);

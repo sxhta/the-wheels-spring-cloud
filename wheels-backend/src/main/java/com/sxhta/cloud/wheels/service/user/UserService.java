@@ -10,10 +10,17 @@ import com.sxhta.cloud.wheels.response.common.ImageUploadResponse;
 import com.sxhta.cloud.wheels.response.user.UserResponse;
 import org.springframework.web.multipart.MultipartFile;
 
-public interface UserService extends IService<WheelsFrontUser>,
-        ICommonService<UserSearchRequest, UserRequest, UserResponse> {
+import java.util.List;
+
+public interface UserService extends IService<WheelsFrontUser>, ICommonService<UserSearchRequest, UserRequest, UserResponse> {
 
     ImageUploadResponse uploadImage(MultipartFile file);
 
     Boolean toggleStatus(ToggleStatusRequest request);
+
+
+    WheelsFrontUser getUserByHash(String hash);
+
+    List<String> getUserHashListByName(String name);
+
 }
