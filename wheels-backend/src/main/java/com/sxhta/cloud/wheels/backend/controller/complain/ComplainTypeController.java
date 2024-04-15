@@ -71,7 +71,7 @@ public class ComplainTypeController extends BaseController implements ICommonCon
     }
 
     @PutMapping("/status")
-    public CommonResponse<Boolean> updateStatus(@RequestParam String hash) {
+    public CommonResponse<Boolean> updateStatus(@RequestBody String hash) {
         return CommonResponse.result(complainTypeService.updateStatus(hash));
     }
 

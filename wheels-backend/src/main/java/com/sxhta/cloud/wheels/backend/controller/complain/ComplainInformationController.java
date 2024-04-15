@@ -46,9 +46,9 @@ public class ComplainInformationController extends BaseController implements ICo
     }
 
     @Override
-    public CommonResponse<Boolean> softDeleteByHash(String hash) {
-        complainInformationService.softDeleteByHash(hash);
-        return null;
+    @DeleteMapping("/delete")
+    public CommonResponse<Boolean> softDeleteByHash(@RequestParam String hash) {
+        return CommonResponse.result(complainInformationService.softDeleteByHash(hash));
     }
 
     @Override

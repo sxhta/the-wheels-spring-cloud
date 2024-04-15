@@ -125,11 +125,11 @@ public class ComplainTypeServiceImpl extends ServiceImpl<ComplainTypeMapper, Com
 
     @Override
     public Boolean updateStatus(String hash) {
-//        final var complainType = getEntity(hash);
-        final var complainTypeLqw = new LambdaQueryWrapper<ComplainType>();
-        complainTypeLqw.eq(ComplainType::getHash, hash)
-                .isNull(ComplainType::getDeleteTime);
-        final var complainType = getOne(complainTypeLqw);
+        final var complainType = getEntity(hash);
+//        final var complainTypeLqw = new LambdaQueryWrapper<ComplainType>();
+//        complainTypeLqw.eq(ComplainType::getHash, hash)
+//                .isNull(ComplainType::getDeleteTime);
+//        final var complainType = getOne(complainTypeLqw);
         if (ObjectUtil.isNull(complainType)) {
             throw new ServiceException("该投诉类型异常，请联系管理员");
         }
