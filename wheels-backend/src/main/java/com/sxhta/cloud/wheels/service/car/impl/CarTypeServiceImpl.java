@@ -26,7 +26,6 @@ import java.util.List;
 @Service
 public class CarTypeServiceImpl extends ServiceImpl<CarTypeMapper, CarType> implements CarTypeService {
 
-    //TODO:车辆类型 后管人员
     @Inject
     private TokenService<SystemUserCacheVo, SysUser> tokenService;
 
@@ -109,7 +108,7 @@ public class CarTypeServiceImpl extends ServiceImpl<CarTypeMapper, CarType> impl
     @Override
     public List<CarType> getCarTypeAll() {
         final var carTypeLqw = new LambdaQueryWrapper<CarType>();
-        carTypeLqw.eq(CarType::getStatus, 0)
+        carTypeLqw.eq(CarType::getStatus, true)
                 .isNull(CarType::getDeleteTime);
         return list(carTypeLqw);
     }

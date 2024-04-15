@@ -27,51 +27,51 @@ public class CarTypeController extends BaseController implements ICommonControll
 
     @Override
     @GetMapping("/list")
-    public TableDataInfo<CarTypeResponse> getAdminList(CarTypeSearchRequest request, PageRequest pageRequest) {
+    public TableDataInfo<CarTypeResponse> getAdminList(@ModelAttribute("CarTypeSearchRequest") CarTypeSearchRequest request, PageRequest pageRequest) {
+        startPage(pageRequest);
         List<CarTypeResponse> list = carTypeService.getAdminList(request);
         return CommonResponse.list(list);
     }
 
     @Override
     @GetMapping("/info")
-    public CommonResponse<CarTypeResponse> getInfoByHash(String hash) {
+    public CommonResponse<CarTypeResponse> getInfoByHash(@RequestParam String hash) {
         CarTypeResponse infoByHash = carTypeService.getInfoByHash(hash);
         return CommonResponse.success(infoByHash);
     }
 
     @Override
     @PostMapping("/save")
-    public CommonResponse<Boolean> create(CarTypeRequest carTypeRequest) {
+    public CommonResponse<Boolean> create(@RequestBody CarTypeRequest carTypeRequest) {
         Boolean result = carTypeService.create(carTypeRequest);
         return CommonResponse.result(result);
     }
 
     @Override
     @DeleteMapping("/soft")
-    public CommonResponse<Boolean> softDeleteByHash(String hash) {
+    public CommonResponse<Boolean> softDeleteByHash(@RequestParam String hash) {
         Boolean result = carTypeService.softDeleteByHash(hash);
-
         return CommonResponse.result(result);
     }
 
     @Override
     @DeleteMapping("/delete")
-    public CommonResponse<Boolean> deleteByHash(String hash) {
+    public CommonResponse<Boolean> deleteByHash(@RequestParam String hash) {
         Boolean result = carTypeService.deleteByHash(hash);
         return CommonResponse.result(result);
     }
 
     @Override
     @PutMapping("/update")
-    public CommonResponse<Boolean> updateEntity(CarTypeRequest carTypeRequest) {
+    public CommonResponse<Boolean> updateEntity(@RequestBody CarTypeRequest carTypeRequest) {
         Boolean result = carTypeService.updateEntity(carTypeRequest);
         return CommonResponse.result(result);
     }
 
 
     @GetMapping("/all")
-    public List<CarType> getCarTypeAll() {
-        return carTypeService.getCarTypeAll();
+    public CommonResponse<List<CarType>> getCarTypeAll() {
+        return CommonResponse.success("查询成功", carTypeService.getCarTypeAll());
     }
 
 
