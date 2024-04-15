@@ -2,14 +2,12 @@ package com.sxhta.cloud.cache.redis.service.impl;
 
 import com.sxhta.cloud.cache.redis.service.RedisService;
 import com.sxhta.cloud.common.exception.CommonException;
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.springframework.data.redis.core.BoundSetOperations;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.web.service.annotation.PostExchange;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -23,6 +21,7 @@ public class RedisServiceImpl<K, V> implements RedisService<K, V>, Serializable 
     @Serial
     private static final long serialVersionUID = 1L;
 
+    @Singleton
     @Inject
     public RedisTemplate<K, V> redisTemplate;
 

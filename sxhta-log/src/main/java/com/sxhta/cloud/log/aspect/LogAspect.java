@@ -12,6 +12,8 @@ import com.sxhta.cloud.log.enums.BusinessStatus;
 import com.sxhta.cloud.log.filter.PropertyPreExcludeFilter;
 import com.sxhta.cloud.log.service.AsyncLogService;
 import com.sxhta.cloud.remote.domain.SysOperLog;
+import com.sxhta.cloud.remote.domain.SysUser;
+import com.sxhta.cloud.remote.vo.SystemUserCacheVo;
 import com.sxhta.cloud.security.service.TokenService;
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletRequest;
@@ -56,7 +58,7 @@ public class LogAspect {
 
 
     @Inject
-    private TokenService tokenService;
+    private TokenService<SystemUserCacheVo, SysUser> tokenService;
 
     @Inject
     private ServletComponent servletComponent;

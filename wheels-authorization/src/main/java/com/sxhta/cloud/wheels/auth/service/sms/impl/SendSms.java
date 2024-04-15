@@ -6,19 +6,23 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.exceptions.ServerException;
 import com.aliyuncs.profile.DefaultProfile;
 import com.google.gson.Gson;
- 
+
 public class SendSms {
 
-    /** use STS Token
-     DefaultProfile profile = DefaultProfile.getProfile(
-     "<your-region-id>",           // The region ID
-     "<your-access-key-id>",       // The AccessKey ID of the RAM account
-     "<your-access-key-secret>",   // The AccessKey Secret of the RAM account
-     "<your-sts-token>");          // STS Token
+    /**
+     * use STS Token
+     * DefaultProfile profile = DefaultProfile.getProfile(
+     * "<your-region-id>",           // The region ID
+     * "<your-access-key-id>",       // The AccessKey ID of the RAM account
+     * "<your-access-key-secret>",   // The AccessKey Secret of the RAM account
+     * "<your-sts-token>");          // STS Token
      **/
     public static void main(String[] args) {
- 
-        final var profile = DefaultProfile.getProfile("cn-hangzhou", "<your-access-key-id>", "<your-access-key-secret>");
+
+        final var profile = DefaultProfile.getProfile(
+                "cn-hangzhou",
+                "<your-access-key-id>",
+                "<your-access-key-secret>");
 
 
         final var client = new DefaultAcsClient(profile);

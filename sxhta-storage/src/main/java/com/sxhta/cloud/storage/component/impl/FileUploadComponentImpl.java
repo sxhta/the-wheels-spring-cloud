@@ -4,8 +4,8 @@ import com.sxhta.cloud.common.exception.file.FileException;
 import com.sxhta.cloud.common.exception.file.FileNameLengthLimitExceededException;
 import com.sxhta.cloud.common.exception.file.FileSizeLimitExceededException;
 import com.sxhta.cloud.common.exception.file.InvalidExtensionException;
-import com.sxhta.cloud.common.utils.CommonStringUtil;
 import com.sxhta.cloud.common.utils.CommonDateUtil;
+import com.sxhta.cloud.common.utils.CommonStringUtil;
 import com.sxhta.cloud.common.utils.file.FileTypeUtils;
 import com.sxhta.cloud.common.utils.file.MimeTypeUtils;
 import com.sxhta.cloud.common.utils.uuid.Seq;
@@ -17,6 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serial;
+import java.io.Serializable;
 import java.nio.file.Paths;
 import java.util.Objects;
 
@@ -25,7 +27,11 @@ import java.util.Objects;
  */
 @Singleton
 @Component
-public final class FileUploadComponentImpl implements FileUploadComponent {
+public final class FileUploadComponentImpl implements FileUploadComponent, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     /**
      * 默认大小 50M
      */
@@ -78,7 +84,6 @@ public final class FileUploadComponentImpl implements FileUploadComponent {
         assertAllowed(file, allowedExtension);
 
         final var fileName = extractFilename(file);
-
         final var absPath = getAbsoluteFile(baseDir, fileName).getAbsolutePath();
         file.transferTo(Paths.get(absPath));
         return getPathFileName(fileName);

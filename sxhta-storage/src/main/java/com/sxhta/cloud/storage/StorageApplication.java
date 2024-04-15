@@ -8,6 +8,9 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.scheduling.annotation.EnableAsync;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * 文件服务
  */
@@ -16,7 +19,11 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableCustomFeignClients
 @EnableFeignClients(basePackages = "com.sxhta.cloud")
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
-public class StorageApplication {
+public class StorageApplication implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     public static void main(String[] args) {
         SpringApplication.run(StorageApplication.class, args);
     }

@@ -56,6 +56,8 @@ dependencies {
     api group: 'org.apache.velocity', name: 'velocity', version: '1.7'
     api group: 'mysql', name: 'mysql-connector-java', version: '8.0.30'
     api 'com.squareup.okhttp3:okhttp:4.12.0'
+    // https://mvnrepository.com/artifact/io.github.openfeign/feign-okhttp
+//    api 'io.github.openfeign:feign-okhttp·:13.2.1'
 }
 
 test {

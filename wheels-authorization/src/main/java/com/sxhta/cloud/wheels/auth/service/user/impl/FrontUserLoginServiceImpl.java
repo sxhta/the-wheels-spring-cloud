@@ -56,6 +56,7 @@ public class FrontUserLoginServiceImpl
             final var isCreate = registerResponse.getData();
             if (!isCreate) {
                 throw new CommonNullException("新用户创建失败");
+
             }
             final var newCacheResponse = frontUserOpenFeign.getUserInfo(phone, SecurityConstants.INNER);
             return newCacheResponse.getData();
