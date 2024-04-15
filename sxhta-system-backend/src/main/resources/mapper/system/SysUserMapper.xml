@@ -9,6 +9,7 @@
         <result property="deptId" column="dept_id"/>
         <result property="userName" column="user_name"/>
         <result property="nickName" column="nick_name"/>
+        <result property="hash" column="hash"/>
         <result property="email" column="email"/>
         <result property="phonenumber" column="phonenumber"/>
         <result property="sex" column="sex"/>
@@ -49,6 +50,7 @@
     <sql id="selectUserVo">
         select u.user_id,
                u.dept_id,
+               u.hash,
                u.user_name,
                u.nick_name,
                u.email,
@@ -164,21 +166,24 @@
         select user_id, user_name
         from sys_user
         where user_name = #{userName}
-          and del_flag = '0' limit 1
+          and del_flag = '0'
+        limit 1
     </select>
 
     <select id="checkPhoneUnique" parameterType="String" resultMap="SysUserResult">
         select user_id, phonenumber
         from sys_user
         where phonenumber = #{phonenumber}
-          and del_flag = '0' limit 1
+          and del_flag = '0'
+        limit 1
     </select>
 
     <select id="checkEmailUnique" parameterType="String" resultMap="SysUserResult">
         select user_id, email
         from sys_user
         where email = #{email}
-          and del_flag = '0' limit 1
+          and del_flag = '0'
+        limit 1
     </select>
 
     <insert id="insertUser" parameterType="com.sxhta.cloud.remote.domain.SysUser" useGeneratedKeys="true"

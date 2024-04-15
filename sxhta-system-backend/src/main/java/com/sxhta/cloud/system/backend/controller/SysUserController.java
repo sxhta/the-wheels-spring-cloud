@@ -294,4 +294,13 @@ public class SysUserController extends BaseController {
     public CommonResponse<List<TreeSelect>> deptTree(SysDept dept) {
         return CommonResponse.success(deptService.selectDeptTreeList(dept));
     }
+
+    /**
+     * 获取部门树列表
+     */
+    @RequiresPermissions("system:user:list")
+    @GetMapping("/test/hash")
+    public CommonResponse<SystemUserCacheVo> getHash() {
+        return CommonResponse.success(tokenService.getUserHash());
+    }
 }
