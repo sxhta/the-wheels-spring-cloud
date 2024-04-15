@@ -5,6 +5,7 @@ import com.sxhta.cloud.common.web.controller.ICommonController;
 import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.sxhta.cloud.common.web.page.PageRequest;
 import com.sxhta.cloud.common.web.page.TableDataInfo;
+import com.sxhta.cloud.wheels.request.user.ToggleStatusRequest;
 import com.sxhta.cloud.wheels.request.user.UserRequest;
 import com.sxhta.cloud.wheels.request.user.UserSearchRequest;
 import com.sxhta.cloud.wheels.response.common.ImageUploadResponse;
@@ -81,5 +82,13 @@ public class UserController extends BaseController implements
     public CommonResponse<ImageUploadResponse> uploadAvatar(@RequestParam(value = "file") MultipartFile file) {
         final var result = userService. uploadImage(file);
         return CommonResponse.success(result);
+    }
+
+
+    @Operation(summary = "上传头像")
+    @PutMapping(value = "/status/toggle")
+    public CommonResponse<Boolean> uploadAvatar(@RequestBody ToggleStatusRequest request) {
+        final var result = userService.toggleStatus(request);
+        return CommonResponse.result(result);
     }
 }

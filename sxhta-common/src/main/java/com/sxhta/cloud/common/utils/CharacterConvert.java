@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CharacterConvert implements Serializable {
@@ -19,10 +18,10 @@ public class CharacterConvert implements Serializable {
      * @param str 字符串
      * @return Json数组
      */
-    public static ArrayList stringToJsonList(String str) {
+    public static List<String> stringToJsonList(String str) {
         final var objectMapper = new ObjectMapper();
         try {
-            return objectMapper.readValue(str, ArrayList.class);
+            return objectMapper.readValue(str, List.class);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

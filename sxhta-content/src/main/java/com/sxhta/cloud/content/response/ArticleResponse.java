@@ -8,6 +8,7 @@ import lombok.experimental.Accessors;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @Accessors(chain = true)
@@ -34,7 +35,7 @@ public final class ArticleResponse extends BaseHashEntity implements Serializabl
     private String thumb;
 
     @Schema(name = "文章图片，存为json数组")
-    private String images;
+    private List<String> images;
 
     @Schema(name = "富文本内容", description = "包含样式的富文本内容")
     private String content;

@@ -50,3 +50,4 @@ public class RouteSearchRequest extends BaseHashEntity implements Serializable {
     @Schema(description = "删除人HASH")
     private String deleteBy;
 }
+

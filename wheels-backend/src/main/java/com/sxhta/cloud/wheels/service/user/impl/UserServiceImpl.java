@@ -17,6 +17,7 @@ import com.sxhta.cloud.remote.vo.SystemUserCacheVo;
 import com.sxhta.cloud.security.service.TokenService;
 import com.sxhta.cloud.wheels.mapper.user.UserMapper;
 import com.sxhta.cloud.wheels.remote.domain.user.WheelsFrontUser;
+import com.sxhta.cloud.wheels.request.user.ToggleStatusRequest;
 import com.sxhta.cloud.wheels.request.user.UserRequest;
 import com.sxhta.cloud.wheels.request.user.UserSearchRequest;
 import com.sxhta.cloud.wheels.response.common.ImageUploadResponse;
@@ -166,5 +167,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, WheelsFrontUser>
         final var resultUrl = domain + url;
         response.setImageUrl(resultUrl);
         return response;
+    }
+
+    @Override
+    public Boolean toggleStatus(ToggleStatusRequest request) {
+        final var hash =request.getHash();
+        final var lqw = new LambdaQueryWrapper<WheelsFrontUser>();
+        lqw.eq(WheelsFrontUser::getHash, hash);
+        final var currentUser = getOne(lqw);
+        if (ObjectUtil.isNull(currentUser)) {
+            throw new CommonNullException("该用户不存在");
+        }
+        final var currentStatus = currentUser.getStatus();
+        if(currentStatus.equals("0")){
+            currentUser.setStatus("1");
+        }
+        if(currentStatus.equals("1")){
+            currentUser.setStatus("0");
+        }
+        return updateById(currentUser);
     }
 }
