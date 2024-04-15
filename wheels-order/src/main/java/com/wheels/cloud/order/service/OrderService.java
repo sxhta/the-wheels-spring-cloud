@@ -2,7 +2,12 @@ package com.wheels.cloud.order.service;
 
 import com.sxhta.cloud.common.service.ICommonService;
 import com.sxhta.cloud.remote.domain.SysFile;
-import com.sxhta.cloud.wheels.remote.response.order.*;
+import com.sxhta.cloud.wheels.remote.response.order.admin.OrderAdminInfoResponse;
+import com.sxhta.cloud.wheels.remote.response.order.admin.OrderAdminResponse;
+import com.sxhta.cloud.wheels.remote.response.order.admin.OrderExpectationResponse;
+import com.sxhta.cloud.wheels.remote.response.order.front.OrderInfoResponse;
+import com.sxhta.cloud.wheels.remote.response.order.front.OrderResponse;
+import com.sxhta.cloud.wheels.remote.response.order.owner.OrderOwnerResponse;
 import com.wheels.cloud.order.request.OrderRequest;
 import com.sxhta.cloud.wheels.remote.request.order.OrderSearchRequest;
 
@@ -14,7 +19,7 @@ import java.util.List;
  */
 public interface OrderService extends ICommonService<OrderSearchRequest, OrderRequest, OrderResponse> {
 
-    List<OrderResponse> getFrontList(String userHash,Integer type);
+    List<OrderResponse> getFrontList(String userHash, Integer type);
 
     OrderInfoResponse getFrontInfo(String orderHash);
 
@@ -27,4 +32,6 @@ public interface OrderService extends ICommonService<OrderSearchRequest, OrderRe
     OrderAdminInfoResponse getBackstageInfo(String orderHash);
 
     SysFile getBackstageExport(OrderSearchRequest request) throws ParseException;
+
+    List<OrderOwnerResponse> getOwnerList(String ownerHash, Integer location, Integer orderType,Integer ownerAcceptStatus);
 }

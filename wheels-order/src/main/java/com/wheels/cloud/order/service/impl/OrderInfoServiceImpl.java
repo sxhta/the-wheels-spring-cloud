@@ -8,11 +8,12 @@ import com.sxhta.cloud.common.exception.CommonNullException;
 import com.sxhta.cloud.remote.domain.SysUser;
 import com.sxhta.cloud.remote.vo.SystemUserCacheVo;
 import com.sxhta.cloud.security.service.TokenService;
+import com.sxhta.cloud.wheels.remote.response.order.front.OrderInfoResponse;
 import com.wheels.cloud.order.entity.OrderInfo;
 import com.wheels.cloud.order.mapper.OrderInfoMapper;
 import com.wheels.cloud.order.request.OrderInfoRequest;
 import com.wheels.cloud.order.request.OrderInfoSearchRequest;
-import com.wheels.cloud.order.response.OrderInfoResponse;
+import com.wheels.cloud.order.response.InfoResponse;
 import com.wheels.cloud.order.service.OrderInfoService;
 import jakarta.inject.Inject;
 import org.springframework.beans.BeanUtils;
@@ -20,7 +21,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,14 +105,14 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     }
 
     @Override
-    public OrderInfoResponse getInfoByOrderHash(String orderHash) {
+    public InfoResponse getInfoByOrderHash(String orderHash) {
         final var lqw = new LambdaQueryWrapper<OrderInfo>();
         lqw.eq(OrderInfo::getOrderHash,orderHash);
         final var orderInfo = getOne(lqw);
         if (ObjectUtil.isNull(orderInfo)) {
             throw new CommonException("该条数据不存在！");
         }
-        final var response = new OrderInfoResponse();
+        final var response = new InfoResponse();
         BeanUtils.copyProperties(orderInfo,response);
         return response;
     }
