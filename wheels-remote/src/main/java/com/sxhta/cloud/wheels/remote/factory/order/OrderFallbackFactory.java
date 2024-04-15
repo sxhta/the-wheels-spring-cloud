@@ -72,7 +72,7 @@ public class OrderFallbackFactory implements FallbackFactory<OrderOpenfeign>, Se
             }
 
             @Override
-            public CommonResponse<TableDataInfo<OrderOwnerResponse>> getOwnerList(String ownerHash, Integer location, Integer orderType, PageRequest pageRequest, String source) {
+            public CommonResponse<TableDataInfo<OrderOwnerResponse>> getOwnerList(String ownerHash, Integer location, Integer orderType,Integer ownerAcceptStatus, PageRequest pageRequest, String source) {
                 return CommonResponse.error("接单列表获取失败:" + throwable.getMessage());
             }
         };

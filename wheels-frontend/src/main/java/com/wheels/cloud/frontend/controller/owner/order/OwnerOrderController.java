@@ -18,7 +18,7 @@ import java.io.Serializable;
 @Slf4j
 @RestController
 @RequestMapping("/owner/order")
-public class OrderController implements Serializable {
+public class OwnerOrderController implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -28,10 +28,11 @@ public class OrderController implements Serializable {
 
     @Operation(summary = "司机端列表")
     @GetMapping("/list")
-    public TableDataInfo<OrderOwnerResponse> getOwnerList(@RequestParam(value = "location",defaultValue = "") Integer location,//1首页，2全部
-                                                                          @RequestParam(value = "orderType") Integer orderType,//1即时订单，2预约订单
-                                                                          PageRequest pageRequest) {
-        return orderService.getOwnerList(location,orderType,pageRequest);
+    public TableDataInfo<OrderOwnerResponse> getOwnerList(@RequestParam(value = "location") Integer location,//1首页，2全部
+                                                          @RequestParam(value = "orderType") Integer orderType,//1即时订单，2预约订单
+                                                          @RequestParam(value = "ownerAcceptStatus") Integer ownerAcceptStatus, //2可接单，3成功接单，
+                                                          PageRequest pageRequest) {
+        return orderService.getOwnerList(location,orderType,ownerAcceptStatus,pageRequest);
     }
 
 }

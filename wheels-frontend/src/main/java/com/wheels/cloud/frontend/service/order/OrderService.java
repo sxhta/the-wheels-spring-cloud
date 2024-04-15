@@ -16,5 +16,5 @@ public interface OrderService {
 
     TableDataInfo<OrderExpectationResponse> getFrontExpectationList(PageRequest pageRequest);
 
-    TableDataInfo<OrderOwnerResponse> getOwnerList(Integer location, Integer orderType, PageRequest pageRequest);
+    TableDataInfo<OrderOwnerResponse> getOwnerList(Integer location, Integer orderType,Integer ownerAcceptStatus,  PageRequest pageRequest);
 }

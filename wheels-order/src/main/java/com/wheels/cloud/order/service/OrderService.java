@@ -33,5 +33,5 @@ public interface OrderService extends ICommonService<OrderSearchRequest, OrderRe
 
     SysFile getBackstageExport(OrderSearchRequest request) throws ParseException;
 
-    List<OrderOwnerResponse> getOwnerList(String ownerHash, Integer location, Integer orderType);
+    List<OrderOwnerResponse> getOwnerList(String ownerHash, Integer location, Integer orderType,Integer ownerAcceptStatus);
 }

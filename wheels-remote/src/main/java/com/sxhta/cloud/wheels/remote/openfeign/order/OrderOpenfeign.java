@@ -63,5 +63,6 @@ public interface OrderOpenfeign {
     CommonResponse<TableDataInfo<OrderOwnerResponse>> getOwnerList(@RequestParam(value = "ownerHash") String ownerHash,
                                                                    @RequestParam(value = "location") Integer location,//1首页，2全部
                                                                    @RequestParam(value = "orderType") Integer orderType,//1即时订单，2预约订单
+                                                                   @RequestParam(value = "ownerAcceptStatus") Integer ownerAcceptStatus,//1即时订单，2预约订单
                                                                    @RequestParam PageRequest pageRequest, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
 }

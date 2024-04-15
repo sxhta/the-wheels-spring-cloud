@@ -24,7 +24,7 @@ public class AdminOrderExportVo implements Serializable {
     @ExcelProperty(value = {"${titleName}","${createTime}","订单编号"}, index = 1)
     private String orderNo;
 
-    @Schema(description = "订单状态，1未接单，2已接单，3进行中，4已完成，5取消订单，6待确认")
+    @Schema(description = "订单状态，1待确认，2待出行，3已完成，4取消，5进行中")
     @ExcelProperty(value = {"${titleName}","${createTime}","订单状态"}, index = 2)
     private String orderStatus;
 

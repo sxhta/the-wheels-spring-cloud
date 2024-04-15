@@ -24,7 +24,7 @@ public class OrderResponse implements Serializable {
     @Schema(description = "订单HASH")
     private String hash;
 
-    @Schema(description = "订单状态，1未接单，2已接单，3进行中，4已完成，5取消订单，6待确认")
+    @Schema(description = "订单状态，1待确认，2待出行，3已完成，4取消，5进行中")
     private Integer orderStatus;
 
     @Schema(description = "预约类型，1即时订单，2预约订单")

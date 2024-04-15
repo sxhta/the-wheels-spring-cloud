@@ -142,10 +142,11 @@ public class OrderController extends BaseController implements ICommonController
     @InnerAuth
     @GetMapping("/owner/list")
     public CommonResponse<TableDataInfo<OrderOwnerResponse>> getOwnerList(@RequestParam(value = "ownerHash") String ownerHash,
-                                                                          @RequestParam(value = "location",defaultValue = "") Integer location,//1首页，2全部
+                                                                          @RequestParam(value = "location") Integer location,//1首页，2全部
                                                                           @RequestParam(value = "orderType") Integer orderType,//1即时订单，2预约订单
+                                                                          @RequestParam(value = "ownerAcceptStatus") Integer ownerAcceptStatus,//1即时订单，2预约订单
                                                                           PageRequest pageRequest) {
         startPage(pageRequest);
-        return CommonResponse.success(CommonResponse.list(orderService.getOwnerList(ownerHash,location,orderType)));
+        return CommonResponse.success(CommonResponse.list(orderService.getOwnerList(ownerHash,location,orderType,ownerAcceptStatus)));
     }
 }

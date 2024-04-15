@@ -23,6 +23,8 @@ import java.time.LocalDateTime;
 @Schema(name = "Order", description = "订单管理")
 public class Order extends BaseHashEntity implements Serializable {
 
+
+
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -51,7 +53,7 @@ public class Order extends BaseHashEntity implements Serializable {
     @Schema(description = "航班号")
     private String flightNumber;
 
-    @Schema(description = "订单状态，1未接单，2已接单，3进行中，4已完成，5取消订单，6待确认")
+    @Schema(description = "订单状态，1待确认，2待出行，3已完成，4取消，5进行中")
     private Integer orderStatus;
 
     @Schema(description = "支付类型，1支付宝，2微信，3余额，4现金支付，5其他")
@@ -112,5 +114,8 @@ public class Order extends BaseHashEntity implements Serializable {
     private LocalDateTime ownerCreateTime;
 
     @Schema(description = "是否确认，0否，1是")
-    private Boolean isAffirmance;
+    private Boolean isConfirm;
+
+    @Schema(description = "是否接单，0否，1是")
+    private Boolean isAccept;
 }

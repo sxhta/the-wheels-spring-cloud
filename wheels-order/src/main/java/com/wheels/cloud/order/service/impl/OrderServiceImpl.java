@@ -318,13 +318,14 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     }
 
     @Override
-    public List<OrderOwnerResponse> getOwnerList(String ownerHash, Integer location, Integer orderType) {
+    public List<OrderOwnerResponse> getOwnerList(String ownerHash, Integer location, Integer orderType,Integer ownerAcceptStatus) {
         final var lqw = new LambdaQueryWrapper<Order>();
         lqw.and(i -> i.isNull(Order::getDeleteTime))
                 .and(i -> i.eq(Order::getOwnerHash,ownerHash))
                 .and(i -> i.eq(Order::getPayStatus, 3))
-                .and(i -> i.eq(Order::getOrderStatus, 1))
+                .and(i -> i.eq(Order::getIsAccept, false))
                 .and(i -> i.eq(Order::getIsRefund, false))
+                .and(i -> i.eq(Order::getOwnerAcceptStatus, ownerAcceptStatus))
                 .and(i -> i.eq(Order::getOrderType, orderType));
         lqw.orderByDesc(Order::getCreateTime);
         if (ObjectUtil.isNotNull(location) && location==1) {

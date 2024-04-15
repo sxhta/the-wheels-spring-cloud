@@ -95,9 +95,9 @@ public class OrderServiceImpl implements OrderService, Serializable {
     }
 
     @Override
-    public TableDataInfo<OrderOwnerResponse> getOwnerList(Integer location, Integer orderType, PageRequest pageRequest) {
+    public TableDataInfo<OrderOwnerResponse> getOwnerList(Integer location, Integer orderType,Integer ownerAcceptStatus,  PageRequest pageRequest) {
         //TODO:司机登录HASH
-        final var resData = orderOpenfeign.getOwnerList("a1", location, orderType, pageRequest, SecurityConstants.INNER);
+        final var resData = orderOpenfeign.getOwnerList("a1", location, orderType, ownerAcceptStatus,pageRequest, SecurityConstants.INNER);
         return resData.getData();
     }
 }
