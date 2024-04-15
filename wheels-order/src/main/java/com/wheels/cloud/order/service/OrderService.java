@@ -8,6 +8,7 @@ import com.sxhta.cloud.wheels.remote.response.order.admin.OrderExpectationRespon
 import com.sxhta.cloud.wheels.remote.response.order.front.OrderInfoResponse;
 import com.sxhta.cloud.wheels.remote.response.order.front.OrderResponse;
 import com.sxhta.cloud.wheels.remote.response.order.owner.OrderOwnerResponse;
+import com.sxhta.cloud.wheels.remote.response.order.owner.OrderOwnerTravelResponse;
 import com.wheels.cloud.order.request.OrderRequest;
 import com.sxhta.cloud.wheels.remote.request.order.OrderSearchRequest;
 
@@ -34,4 +35,6 @@ public interface OrderService extends ICommonService<OrderSearchRequest, OrderRe
     SysFile getBackstageExport(OrderSearchRequest request) throws ParseException;
 
     List<OrderOwnerResponse> getOwnerList(String ownerHash, Integer location, Integer orderType,Integer ownerAcceptStatus);
+
+    List<OrderOwnerTravelResponse> getOwnerTravelList(String ownerHash);
 }

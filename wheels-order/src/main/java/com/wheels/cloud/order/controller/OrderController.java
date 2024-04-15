@@ -13,6 +13,7 @@ import com.sxhta.cloud.wheels.remote.response.order.admin.OrderExpectationRespon
 import com.sxhta.cloud.wheels.remote.response.order.front.OrderInfoResponse;
 import com.sxhta.cloud.wheels.remote.response.order.front.OrderResponse;
 import com.sxhta.cloud.wheels.remote.response.order.owner.OrderOwnerResponse;
+import com.sxhta.cloud.wheels.remote.response.order.owner.OrderOwnerTravelResponse;
 import com.wheels.cloud.order.request.OrderRequest;
 import com.sxhta.cloud.wheels.remote.request.order.OrderSearchRequest;
 import com.wheels.cloud.order.service.OrderService;
@@ -148,5 +149,14 @@ public class OrderController extends BaseController implements ICommonController
                                                                           PageRequest pageRequest) {
         startPage(pageRequest);
         return CommonResponse.success(CommonResponse.list(orderService.getOwnerList(ownerHash,location,orderType,ownerAcceptStatus)));
+    }
+
+    @Operation(summary = "司机端列表")
+    @InnerAuth
+    @GetMapping("/owner/travel/list")
+    public CommonResponse<TableDataInfo<OrderOwnerTravelResponse>> getOwnerTravelList(@RequestParam(value = "ownerHash") String ownerHash,
+                                                                                      PageRequest pageRequest) {
+        startPage(pageRequest);
+        return CommonResponse.success(CommonResponse.list(orderService.getOwnerTravelList(ownerHash)));
     }
 }
