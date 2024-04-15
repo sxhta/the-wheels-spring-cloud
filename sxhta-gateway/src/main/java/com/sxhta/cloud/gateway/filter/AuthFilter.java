@@ -32,7 +32,7 @@ import java.io.Serializable;
  */
 @Singleton
 @Component
-public class AuthFilter implements GlobalFilter, Ordered, Serializable {
+public final class AuthFilter implements GlobalFilter, Ordered, Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

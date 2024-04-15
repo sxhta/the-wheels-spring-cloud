@@ -1,5 +1,6 @@
 package com.sxhta.cloud.gateway.filter;
 
+import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -26,18 +27,20 @@ public final class CacheRequestFilter extends AbstractGatewayFilterFactory<Cache
     @Serial
     private static final long serialVersionUID = 1L;
 
+    @Inject
+    private CacheRequestGatewayFilter cacheRequestGatewayFilter;
+
     public CacheRequestFilter() {
         super(CacheRequestFilterConfig.class);
     }
 
     @Override
     public String name() {
-        return "CacheRequestFilter";
+        return CacheRequestFilter.class.getSimpleName();
     }
 
     @Override
     public GatewayFilter apply(CacheRequestFilterConfig config) {
-        final var cacheRequestGatewayFilter = new CacheRequestGatewayFilter();
         final var order = config.getOrder();
         if (order == null) {
             return cacheRequestGatewayFilter;
@@ -45,22 +48,6 @@ public final class CacheRequestFilter extends AbstractGatewayFilterFactory<Cache
         return new OrderedGatewayFilter(cacheRequestGatewayFilter, order);
     }
 
-    public static class CacheRequestGatewayFilter implements GatewayFilter {
-        @Override
-        public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-            // GET DELETE 不过滤
-            final var method = exchange.getRequest().getMethod();
-            if (method == HttpMethod.GET || method == HttpMethod.DELETE) {
-                return chain.filter(exchange);
-            }
-            return ServerWebExchangeUtils.cacheRequestBodyAndRequest(exchange, (serverHttpRequest) -> {
-                if (serverHttpRequest == exchange.getRequest()) {
-                    return chain.filter(exchange);
-                }
-                return chain.filter(exchange.mutate().request(serverHttpRequest).build());
-            });
-        }
-    }
 
     @Override
     public List<String> shortcutFieldOrder() {
