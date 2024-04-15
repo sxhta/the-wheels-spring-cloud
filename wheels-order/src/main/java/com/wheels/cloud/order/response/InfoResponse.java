@@ -1,10 +1,8 @@
 package com.wheels.cloud.order.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.sxhta.cloud.common.domain.BaseHashEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -15,7 +13,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @Schema(name = "OrderInfoResponse", description = "订单详情响应体")
-public class OrderInfoResponse implements Serializable {
+public class InfoResponse implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

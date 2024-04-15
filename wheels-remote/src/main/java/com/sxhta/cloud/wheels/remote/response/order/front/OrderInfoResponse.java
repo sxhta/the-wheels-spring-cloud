@@ -1,4 +1,4 @@
-package com.sxhta.cloud.wheels.remote.response.order;
+package com.sxhta.cloud.wheels.remote.response.order.front;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;

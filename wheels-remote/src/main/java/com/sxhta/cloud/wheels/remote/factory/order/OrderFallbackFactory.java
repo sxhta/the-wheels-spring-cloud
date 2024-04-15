@@ -6,7 +6,12 @@ import com.sxhta.cloud.common.web.page.TableDataInfo;
 import com.sxhta.cloud.wheels.remote.domain.SysFile;
 import com.sxhta.cloud.wheels.remote.openfeign.order.OrderOpenfeign;
 import com.sxhta.cloud.wheels.remote.request.order.OrderSearchRequest;
-import com.sxhta.cloud.wheels.remote.response.order.*;
+import com.sxhta.cloud.wheels.remote.response.order.admin.OrderAdminInfoResponse;
+import com.sxhta.cloud.wheels.remote.response.order.admin.OrderAdminResponse;
+import com.sxhta.cloud.wheels.remote.response.order.admin.OrderExpectationResponse;
+import com.sxhta.cloud.wheels.remote.response.order.front.OrderInfoResponse;
+import com.sxhta.cloud.wheels.remote.response.order.front.OrderResponse;
+import com.sxhta.cloud.wheels.remote.response.order.owner.OrderOwnerResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.openfeign.FallbackFactory;
@@ -64,6 +69,11 @@ public class OrderFallbackFactory implements FallbackFactory<OrderOpenfeign>, Se
             @Override
             public CommonResponse<SysFile> getBackstageExport(OrderSearchRequest request, String source) {
                 return CommonResponse.error("订单导出失败:" + throwable.getMessage());
+            }
+
+            @Override
+            public CommonResponse<TableDataInfo<OrderOwnerResponse>> getOwnerList(String ownerHash, Integer location, Integer orderType, PageRequest pageRequest, String source) {
+                return CommonResponse.error("接单列表获取失败:" + throwable.getMessage());
             }
         };
     }

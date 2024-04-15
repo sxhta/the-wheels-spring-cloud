@@ -104,4 +104,13 @@ public class Order extends BaseHashEntity implements Serializable {
 
     @Schema(description = "修改人")
     private String updateBy;
+
+    @Schema(description = "司机端接状态，1不可接单，2可接单，3成功接单，4取消订单")
+    private Integer ownerAcceptStatus;
+
+    @Schema(description = "司机接单时间")
+    private LocalDateTime ownerCreateTime;
+
+    @Schema(description = "是否确认，0否，1是")
+    private Boolean isAffirmance;
 }

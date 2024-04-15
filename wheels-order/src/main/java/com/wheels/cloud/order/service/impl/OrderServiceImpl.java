@@ -16,13 +16,19 @@ import com.sxhta.cloud.wheels.remote.domain.order.Order;
 import com.sxhta.cloud.wheels.remote.domain.user.WheelsFrontUser;
 import com.sxhta.cloud.wheels.remote.openfeign.user.FrontUserOpenFeign;
 import com.sxhta.cloud.wheels.remote.request.order.OrderSearchRequest;
-import com.sxhta.cloud.wheels.remote.response.order.*;
+import com.sxhta.cloud.wheels.remote.response.order.admin.OrderAdminInfoResponse;
+import com.sxhta.cloud.wheels.remote.response.order.admin.OrderAdminResponse;
+import com.sxhta.cloud.wheels.remote.response.order.admin.OrderExpectationResponse;
+import com.sxhta.cloud.wheels.remote.response.order.front.OrderInfoResponse;
+import com.sxhta.cloud.wheels.remote.response.order.front.OrderResponse;
+import com.sxhta.cloud.wheels.remote.response.order.owner.OrderOwnerResponse;
 import com.sxhta.cloud.wheels.remote.vo.FrontUserCacheVo;
 import com.sxhta.cloud.wheels.remote.vo.excel.PublicExportData;
 import com.wheels.cloud.order.exportvo.AdminOrderExportVo;
 import com.wheels.cloud.order.exprot.ExcelTitleHandler;
 import com.wheels.cloud.order.mapper.OrderMapper;
 import com.wheels.cloud.order.request.OrderRequest;
+import com.wheels.cloud.order.response.InfoResponse;
 import com.wheels.cloud.order.service.OrderInfoService;
 import com.wheels.cloud.order.service.OrderService;
 import com.wheels.cloud.order.utils.EasyExcelStyleUtils;
@@ -41,7 +47,6 @@ import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -55,16 +60,6 @@ import java.util.concurrent.atomic.AtomicReference;
 public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements OrderService, Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
-
-//    @Value("${file.path}")
-//    private String localFilePath;
-//    //文件地址
-////    @Value("${file.domain}")
-////    private String storagePath;
-//
-//    @Value("${file.prefix}")
-//    private String prefixPath;
-
     @Inject
     private TokenService<FrontUserCacheVo, WheelsFrontUser> tokenService;
 
@@ -90,6 +85,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Override
     public OrderResponse getInfoByHash(String hash) {
         final var lqw = new LambdaQueryWrapper<Order>();
+        lqw.isNull(Order::getDeleteTime);
         lqw.eq(Order::getHash, hash);
         final var entity = getOne(lqw);
         if (ObjectUtil.isNull(entity)) {
@@ -102,31 +98,19 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     @Override
     public Boolean softDeleteByHash(String hash) {
-        final var lqw = new LambdaQueryWrapper<Order>();
-        lqw.eq(Order::getHash, hash);
-        final var entity = getOne(lqw);
-        if (ObjectUtil.isNull(entity)) {
-            throw new CommonNullException("");
-        }
-        entity.setDeleteTime(LocalDateTime.now());
-        return updateById(entity);
+        return null;
     }
 
     @Override
     public Boolean deleteByHash(String hash) {
-        final var lqw = new LambdaQueryWrapper<Order>();
-        lqw.eq(Order::getHash, hash);
-        final var entity = getOne(lqw);
-        if (ObjectUtil.isNull(entity)) {
-            throw new CommonNullException("");
-        }
-        return removeById(entity);
+        return null;
     }
 
     @Override
     public Boolean updateEntity(OrderRequest request) {
         final var hash = request.getHash();
         final var lqw = new LambdaQueryWrapper<Order>();
+        lqw.isNull(Order::getDeleteTime);
         lqw.eq(Order::getHash, hash);
         final var entity = getOne(lqw);
         if (ObjectUtil.isNull(entity)) {
@@ -140,7 +124,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     public List<OrderResponse> getAdminList(OrderSearchRequest request) {
         final var lqw = new LambdaQueryWrapper<Order>();
         lqw.isNull(Order::getDeleteTime);
-
         final var entityList = list(lqw);
         final var responseList = new ArrayList<OrderResponse>();
         entityList.forEach(entity -> {
@@ -334,6 +317,33 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         return sysFile;
     }
 
+    @Override
+    public List<OrderOwnerResponse> getOwnerList(String ownerHash, Integer location, Integer orderType) {
+        final var lqw = new LambdaQueryWrapper<Order>();
+        lqw.and(i -> i.isNull(Order::getDeleteTime))
+                .and(i -> i.eq(Order::getOwnerHash,ownerHash))
+                .and(i -> i.eq(Order::getPayStatus, 3))
+                .and(i -> i.eq(Order::getOrderStatus, 1))
+                .and(i -> i.eq(Order::getIsRefund, false))
+                .and(i -> i.eq(Order::getOrderType, orderType));
+        lqw.orderByDesc(Order::getCreateTime);
+        if (ObjectUtil.isNotNull(location) && location==1) {
+            lqw.last("LIMIT 2");
+        }
+        final var orderList = list(lqw);
+        final var responseList = new ArrayList<OrderOwnerResponse>();
+        if (CollUtil.isEmpty(orderList)) {
+            return responseList;
+        }
+        orderList.forEach(order -> {
+            final var response = new OrderOwnerResponse();
+            final var infoByOrderHash = orderInfoService.getInfoByOrderHash(order.getHash());
+            BeanUtils.copyProperties(infoByOrderHash,response);
+            BeanUtils.copyProperties(order,response);
+            responseList.add(response);
+        });
+        return responseList;
+    }
 
     private PublicExportData getAdminOrderExport(OrderSearchRequest request) throws ParseException {
         final var exportResponseList = new ArrayList<AdminOrderExportVo>();//数据

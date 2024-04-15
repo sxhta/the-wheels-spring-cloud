@@ -1,9 +1,10 @@
-package com.sxhta.cloud.wheels.remote.response.order;
+package com.sxhta.cloud.wheels.remote.response.order.admin;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -12,6 +13,9 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 @Schema(name = "OrderAdminInfoResponse", description = "订单后管详情响应体")
 public class OrderAdminInfoResponse extends OrderAdminResponse implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Schema(description = "出行类型，1跨境出行，2接送机")
     private Integer travelType;

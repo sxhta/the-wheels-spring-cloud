@@ -1,4 +1,4 @@
-package com.sxhta.cloud.wheels.remote.response.order;
+package com.sxhta.cloud.wheels.remote.response.order.admin;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
