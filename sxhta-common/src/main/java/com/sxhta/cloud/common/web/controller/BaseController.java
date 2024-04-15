@@ -46,7 +46,7 @@ public abstract class BaseController {
      * 设置请求分页数据
      */
     protected void startPage(PageRequest pageRequest) {
-        PageHelper.startPage(pageRequest);
+        PageHelper.startPage(pageRequest.getPageNum(), pageRequest.getPageSize());
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.sxhta.cloud.system.backend.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.sxhta.cloud.remote.domain.SysUser;
 
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 /**
  * 用户 业务层
  */
-public interface ISysUserService {
+public interface ISysUserService extends IService<SysUser> {
     /**
      * 根据条件分页查询用户列表
      *

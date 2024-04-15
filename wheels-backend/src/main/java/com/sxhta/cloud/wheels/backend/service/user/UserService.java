@@ -23,4 +23,5 @@ public interface UserService extends IService<WheelsFrontUser>, ICommonService<U
 
     List<String> getUserHashListByName(String name);
 
+    List<WheelsFrontUser> getAdminEntityList();
 }

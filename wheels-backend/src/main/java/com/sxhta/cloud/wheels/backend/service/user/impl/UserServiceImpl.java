@@ -207,4 +207,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, WheelsFrontUser> im
         }
         return userHashList;
     }
+
+    @Override
+    public List<WheelsFrontUser> getAdminEntityList() {
+        final var lqw = new LambdaQueryWrapper<WheelsFrontUser>();
+        lqw.isNull(WheelsFrontUser::getDeleteTime);
+        final var entityList = list(lqw);
+        return entityList;
+    }
 }
