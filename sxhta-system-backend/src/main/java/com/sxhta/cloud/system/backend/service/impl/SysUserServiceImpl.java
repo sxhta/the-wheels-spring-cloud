@@ -2,6 +2,7 @@ package com.sxhta.cloud.system.backend.service.impl;
 
 
 import cn.hutool.core.util.ObjectUtil;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.sxhta.cloud.common.component.BeanValidatorComponent;
 import com.sxhta.cloud.common.constant.UserConstants;
@@ -35,7 +36,7 @@ import java.util.stream.Collectors;
  * 用户 业务层处理
  */
 @Service
-public class SysUserServiceImpl implements ISysUserService {
+public class SysUserServiceImpl extends ServiceImpl<SysUserMapper,SysUser> implements ISysUserService {
 
     private static final Logger log = LoggerFactory.getLogger(SysUserServiceImpl.class);
 

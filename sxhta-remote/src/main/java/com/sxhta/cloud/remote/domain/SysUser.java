@@ -32,7 +32,7 @@ public class SysUser extends AbstractUserEntity {
      */
     @Excel(name = "登录名称")
     @Xss(message = "用户账号不能包含脚本字符")
-    @NotBlank(message = "用户账号不能为空")
+//    @NotBlank(message = "用户账号不能为空")
     @Size(max = 30, message = "用户账号长度不能超过30个字符")
     private String userName;
 

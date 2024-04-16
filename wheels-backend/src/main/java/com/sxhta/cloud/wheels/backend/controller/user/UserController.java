@@ -11,6 +11,7 @@ import com.sxhta.cloud.wheels.backend.request.user.UserSearchRequest;
 import com.sxhta.cloud.wheels.backend.response.common.ImageUploadResponse;
 import com.sxhta.cloud.wheels.backend.response.user.UserResponse;
 import com.sxhta.cloud.wheels.backend.service.user.UserService;
+import com.sxhta.cloud.wheels.remote.domain.user.WheelsFrontUser;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.inject.Inject;
@@ -30,10 +31,18 @@ public class UserController extends BaseController implements
 
     @Override
     @Operation(summary = "用户列表")
-    @GetMapping("/list")
+    @GetMapping("/list1")
     public TableDataInfo<UserResponse> getAdminList(UserSearchRequest request, PageRequest pageRequest) {
         startPage(pageRequest);
         final var list = userService.getAdminList(request);
+        return CommonResponse.list(list);
+    }
+
+    @Operation(summary = "用户列表")
+    @GetMapping("/list")
+    public TableDataInfo<WheelsFrontUser> getAdminList1(UserSearchRequest request, PageRequest pageRequest) {
+        startPage(pageRequest);
+        final var list = userService.getAdminEntityList();
         return CommonResponse.list(list);
     }
 
