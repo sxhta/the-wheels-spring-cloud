@@ -215,4 +215,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, WheelsFrontUser> im
         final var entityList = list(lqw);
         return entityList;
     }
+
+
 }

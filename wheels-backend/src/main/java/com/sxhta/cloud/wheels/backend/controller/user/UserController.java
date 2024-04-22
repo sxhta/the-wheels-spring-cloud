@@ -31,15 +31,14 @@ public class UserController extends BaseController implements
 
     @Override
     @Operation(summary = "用户列表")
-    @GetMapping("/list1")
+    @GetMapping("/list")
     public TableDataInfo<UserResponse> getAdminList(UserSearchRequest request, PageRequest pageRequest) {
-        startPage(pageRequest);
         final var list = userService.getAdminList(request);
         return CommonResponse.list(list);
     }
 
     @Operation(summary = "用户列表")
-    @GetMapping("/list")
+    @GetMapping("/list1")
     public TableDataInfo<WheelsFrontUser> getAdminList1(UserSearchRequest request, PageRequest pageRequest) {
         startPage(pageRequest);
         final var list = userService.getAdminEntityList();
