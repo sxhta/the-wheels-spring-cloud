@@ -17,7 +17,6 @@ import com.sxhta.cloud.wheels.order.exprot.ExcelTitleHandler;
 import com.sxhta.cloud.wheels.order.mapper.OrderMapper;
 import com.sxhta.cloud.wheels.order.request.OrderRequest;
 import com.sxhta.cloud.wheels.order.service.OrderInfoService;
-import com.sxhta.cloud.wheels.order.service.OrderService;
 import com.sxhta.cloud.wheels.order.utils.EasyExcelStyleUtils;
 import com.sxhta.cloud.wheels.order.utils.TimesUtils;
 import com.sxhta.cloud.wheels.remote.domain.order.Order;
@@ -57,7 +56,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * 订单管理 服务实现类
  */
 @Service
-public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements OrderService, Serializable {
+public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements com.wheels.cloud.order.service.OrderService, Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     @Inject
