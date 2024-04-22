@@ -16,8 +16,8 @@ public class CodeGenerator {
         generate();
     }
 
-//    private static final String PARENT_PATH = "com.sxhta.cloud.wheels";//后管
-    private static final String PARENT_PATH = "com.wheels.cloud.frontend";//订单模块
+    //    private static final String PARENT_PATH = "com.sxhta.cloud.wheels";//后管
+    private static final String PARENT_PATH = "com.sxhta.cloud.wheels.frontend";//订单模块
 
     private static void generate() {
         //
@@ -43,10 +43,10 @@ public class CodeGenerator {
 //                    builder.mapperBuilder().enableMapperAnnotation().build();
                     builder.controllerBuilder().enableHyphenStyle()  // 开启驼峰转连字符
                             .enableRestStyle();  // 开启生成@RestController 控制器
-                    builder.addInclude("wheels_area","wheels_route","wheels_other_fee") // 设置需要生成的表名
-                            .addTablePrefix("item_", "sys_","unify_","wheels_"); // 设置过滤表前缀
+                    builder.addInclude("wheels_area", "wheels_route", "wheels_other_fee") // 设置需要生成的表名
+                            .addTablePrefix("item_", "sys_", "unify_", "wheels_"); // 设置过滤表前缀
                 })
-                .injectionConfig(consumer->{
+                .injectionConfig(consumer -> {
                     Map<String, Object> customMap = new HashMap<>();
                     customMap.put("response", PARENT_PATH + ".response");
                     customMap.put("request", PARENT_PATH + ".request");

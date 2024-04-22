@@ -43,17 +43,19 @@ public interface FrontUserOpenFeign extends Serializable {
 
     //通过id查询HASH
     @GetMapping("/auth/user/info/id/{id}")
-    CommonResponse<FrontUserHashVo> getHashById(@PathVariable("id") Long id,@RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+    CommonResponse<FrontUserHashVo> getHashById(@PathVariable("id") Long id, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
 
     @Operation(summary = "用户名模糊查询")
     @GetMapping("/auth/user/hash/name/list/{userName}")
-    CommonResponse<List<String>> getHashListByUserName(@PathVariable("userName") String userName,@RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+    CommonResponse<List<String>> getHashListByUserName(@PathVariable("userName") String userName, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
 
     @Operation(summary = "电话模糊查询")
     @GetMapping("/auth/user/hash/phone/list/{userPhone}")
-    CommonResponse<List<String>> getHashListByUserPhone(@PathVariable("userPhone") String userPhone,@RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+    CommonResponse<List<String>> getHashListByUserPhone(@PathVariable("userPhone") String userPhone, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
 
     @Operation(summary = "HASH查询")
     @GetMapping("/auth/user/info/hash/{userHash}")
-    CommonResponse<WheelsUserResponse> getInfoByHash(@PathVariable("userHash") String userHash,@RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+    CommonResponse<WheelsUserResponse> getInfoByHash(@PathVariable("userHash") String userHash, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+
+
 }

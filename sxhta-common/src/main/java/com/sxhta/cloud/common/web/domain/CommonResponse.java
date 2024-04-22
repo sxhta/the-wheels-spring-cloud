@@ -100,7 +100,8 @@ public final class CommonResponse<T> implements Serializable {
         rspData.setCode(HttpStatus.OK.value());
         rspData.setRows(list);
         rspData.setMsg("查询成功");
-        rspData.setTotal(new PageInfo<>(list).getTotal());
+        final var total = new PageInfo<>(list).getTotal();
+        rspData.setTotal(total);
         return rspData;
     }
 

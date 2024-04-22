@@ -9,6 +9,7 @@
         <result property="deptId" column="dept_id"/>
         <result property="userName" column="user_name"/>
         <result property="nickName" column="nick_name"/>
+        <result property="hash" column="hash"/>
         <result property="email" column="email"/>
         <result property="phonenumber" column="phonenumber"/>
         <result property="sex" column="sex"/>
@@ -49,6 +50,7 @@
     <sql id="selectUserVo">
         select u.user_id,
                u.dept_id,
+               u.hash,
                u.user_name,
                u.nick_name,
                u.email,
@@ -150,35 +152,38 @@
         ${params.dataScope}
     </select>
 
-    <select id="selectUserByUserName" parameterType="String" resultMap="SysUserResult">
+    <select id="selectUserByUserName" parameterType="java.lang.String" resultMap="SysUserResult">
         <include refid="selectUserVo"/>
         where u.user_name = #{userName} and u.del_flag = '0'
     </select>
 
-    <select id="selectUserById" parameterType="Long" resultMap="SysUserResult">
+    <select id="selectUserById" parameterType="java.lang.Long" resultMap="SysUserResult">
         <include refid="selectUserVo"/>
         where u.user_id = #{userId}
     </select>
 
-    <select id="checkUserNameUnique" parameterType="String" resultMap="SysUserResult">
+    <select id="checkUserNameUnique" parameterType="java.lang.String" resultMap="SysUserResult">
         select user_id, user_name
         from sys_user
         where user_name = #{userName}
-          and del_flag = '0' limit 1
+          and del_flag = '0'
+        limit 1
     </select>
 
-    <select id="checkPhoneUnique" parameterType="String" resultMap="SysUserResult">
+    <select id="checkPhoneUnique" parameterType="java.lang.String" resultMap="SysUserResult">
         select user_id, phonenumber
         from sys_user
         where phonenumber = #{phonenumber}
-          and del_flag = '0' limit 1
+          and del_flag = '0'
+        limit 1
     </select>
 
-    <select id="checkEmailUnique" parameterType="String" resultMap="SysUserResult">
+    <select id="checkEmailUnique" parameterType="java.lang.String" resultMap="SysUserResult">
         select user_id, email
         from sys_user
         where email = #{email}
-          and del_flag = '0' limit 1
+          and del_flag = '0'
+        limit 1
     </select>
 
     <insert id="insertUser" parameterType="com.sxhta.cloud.remote.domain.SysUser" useGeneratedKeys="true"
@@ -186,6 +191,7 @@
         insert into sys_user(
         <if test="userId != null and userId != 0">user_id,</if>
         <if test="deptId != null and deptId != 0">dept_id,</if>
+        <if test="hash != null and hash != ''">hash,</if>
         <if test="userName != null and userName != ''">user_name,</if>
         <if test="nickName != null and nickName != ''">nick_name,</if>
         <if test="email != null and email != ''">email,</if>
@@ -200,6 +206,7 @@
         )values(
         <if test="userId != null and userId != ''">#{userId},</if>
         <if test="deptId != null and deptId != ''">#{deptId},</if>
+        <if test="hash != null and hash != ''">#{hash},</if>
         <if test="userName != null and userName != ''">#{userName},</if>
         <if test="nickName != null and nickName != ''">#{nickName},</if>
         <if test="email != null and email != ''">#{email},</if>
@@ -253,13 +260,13 @@
         where user_name = #{userName}
     </update>
 
-    <delete id="deleteUserById" parameterType="Long">
+    <delete id="deleteUserById" parameterType="java.lang.Long">
         update sys_user
         set del_flag = '2'
         where user_id = #{userId}
     </delete>
 
-    <delete id="deleteUserByIds" parameterType="Long">
+    <delete id="deleteUserByIds" parameterType="java.lang.Long">
         update sys_user set del_flag = '2' where user_id in
         <foreach collection="array" item="userId" open="(" separator="," close=")">
             #{userId}

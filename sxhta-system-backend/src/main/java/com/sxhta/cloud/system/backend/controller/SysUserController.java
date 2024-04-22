@@ -2,7 +2,9 @@ package com.sxhta.cloud.system.backend.controller;
 
 
 import cn.hutool.core.util.ObjectUtil;
+import com.sxhta.cloud.common.utils.encrypt.EncryptUtil;
 import com.sxhta.cloud.common.utils.poi.ExcelUtil;
+import com.sxhta.cloud.common.utils.uuid.UUID;
 import com.sxhta.cloud.common.web.controller.BaseController;
 import com.sxhta.cloud.common.web.domain.CommonResponse;
 import com.sxhta.cloud.common.web.page.PageRequest;
@@ -186,7 +188,7 @@ public class SysUserController extends BaseController {
     @RequiresPermissions("system:user:add")
     @Log(title = "用户管理", businessType = BusinessType.INSERT)
     @PostMapping
-    public CommonResponse<Boolean> add(@Validated @RequestBody SysUser user) {
+    public CommonResponse<Boolean> add( @RequestBody SysUser user) {
         if (!userService.checkUserNameUnique(user)) {
             return CommonResponse.error("新增用户'" + user.getUserName() + "'失败，登录账号已存在");
         } else if (ObjectUtil.isNotEmpty(user.getPhonenumber()) && !userService.checkPhoneUnique(user)) {
@@ -196,6 +198,7 @@ public class SysUserController extends BaseController {
         }
         user.setCreateBy(tokenService.getUsername());
         user.setPassword(securityService.encryptPassword(user.getPassword()));
+        user.setHash(EncryptUtil.generateEntityHash(UUID.randomUUID(true).toString()));
         return CommonResponse.result(userService.insertUser(user));
     }
 
@@ -293,5 +296,14 @@ public class SysUserController extends BaseController {
     @GetMapping("/deptTree")
     public CommonResponse<List<TreeSelect>> deptTree(SysDept dept) {
         return CommonResponse.success(deptService.selectDeptTreeList(dept));
+    }
+
+    /**
+     * 获取部门树列表
+     */
+    @RequiresPermissions("system:user:list")
+    @GetMapping("/test/hash")
+    public CommonResponse<SystemUserCacheVo> getHash() {
+        return CommonResponse.success(tokenService.getUserHash());
     }
 }
